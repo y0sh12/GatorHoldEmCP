@@ -1,8 +1,8 @@
 from ctypes import *
-from .deck import Deck
-from .table import Table
-from .player import Player
-from .card import Card
+from deck import Deck
+from table import Table
+from player import Player
+from card import Card
 import timeit
 from random import randint
 import os

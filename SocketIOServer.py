@@ -4,10 +4,10 @@ import os
 import eventlet
 import socketio
 import pathlib
-from .player import Player
-from .room import Room
-from .table import Table
-from .ai import AI
+from player import Player
+from room import Room
+from table import Table
+from ai import AI
 import time
 import random
 import string
