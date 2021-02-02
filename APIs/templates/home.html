@@ -8,6 +8,9 @@
     <h1>Accounts</h1>
     {% for user in users %}
       <p>{{user.username}}</p>
+      <p>{{user.password}}</p>
+      <p>{{user.created_on}}</p>
+      <p>{{user.balance}}</p>
       <form method="POST" action="./update">
         <input type="hidden" value="{{user.username}}" name="olduser">
         <input type="text" value="{{user.username}}" name="newuser">
