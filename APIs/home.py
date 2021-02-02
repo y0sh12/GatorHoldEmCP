@@ -1,7 +1,7 @@
 import os
 import datetime
 
-from flask import Flask, flash, url_for, render_template, request, redirect
+from flask import Flask, flash, url_for, render_template, request, redirect, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -31,10 +31,28 @@ class Account(db.Model):
         return "<Username: %r>" % self.username
 
 
-@app.route("/", methods=["GET"])
-def home():
+@app.route("/", methods=["GET", "POST"])
+def getuser():
     users = Account.query.all()
-    return render_template("home.html", users=users)
+    for user in users:
+        print(user)
+    return jsonify(message="List of users printed in console")
+
+
+@app.route("/balance", methods=["GET", "POST"])
+def balance():
+    username = request.json.get("username")
+    found_balance = Account.query.filter_by(username=username).first().balance
+    return jsonify(balance=found_balance)
+
+
+@app.route("/delete", methods=["POST"])
+def delete():
+    username = request.json.get("username")
+    found_user = Account.query.filter_by(username=username).first()
+    db.session.delete(found_user)
+    db.session.commit()
+    return jsonify(response="Successfully deleted user: %s" % username)
 
 
 @app.route('/new', methods=['POST'])
