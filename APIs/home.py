@@ -16,13 +16,17 @@ db = SQLAlchemy(app)
 
 
 class Account(db.Model):
-    username = db.Column(db.String(80), primary_key=True, unique=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    username = db.Column(db.String(100), primary_key=True, unique=True, nullable=False)
+    email = db.Column(db.String(80), primary_key=False, unique=True, nullable=False)
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
 
-    def __init__(self, username, password, created_on, balance):
+    def __init__(self, id, username, email, password, created_on, balance):
+        self.id = id
         self.username = username
+        self.email = email
         self.password = password
         self.created_on = created_on
         self.balance = balance
