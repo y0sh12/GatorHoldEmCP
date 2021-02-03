@@ -1,5 +1,6 @@
 import os
 import datetime
+import uuid
 
 from flask import Flask, flash, url_for, render_template, request, redirect, jsonify
 
@@ -16,7 +17,7 @@ db = SQLAlchemy(app)
 
 
 class Account(db.Model):
-    id = db.Column(db.Integer, primary_key=True, unique=True, nullable=False)
+    id = db.Column(db.String(400), primary_key=True, unique=True, nullable=False)
     username = db.Column(db.String(100), primary_key=True, unique=True, nullable=False)
     email = db.Column(db.String(80), primary_key=False, unique=True, nullable=False)
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
@@ -39,7 +40,9 @@ class Account(db.Model):
 def getuser():
     users = Account.query.all()
     for user in users:
-        print(user)
+        print(user.username)
+        print(user.password)
+        print(user.email)
     return jsonify(message="List of users printed in console")
 
 
@@ -65,12 +68,15 @@ def new():
     password = request.json.get("password")
     balance = request.json.get("balance")
     created_on = datetime.datetime.now()
+    id = str(uuid.uuid1())
+    email = request.json.get("email")
     print(username, password, balance)
-    if not request.json.get("username") or not request.json.get("password") or not request.json.get("balance"):
+    if not request.json.get("username") or not request.json.get("password") or not request.json.get("balance") \
+            or not request.json.get("email"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            account = Account(username, password, created_on, balance)
+            account = Account(id, username, email, password, created_on, balance)
             db.session.add(account)
             db.session.commit()
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
@@ -78,6 +84,7 @@ def new():
             if "UNIQUE constraint failed" in str(ex):
                 return "{\"response\": \"username has been taken\"}", 400
             else:
+                print(ex)
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
 @app.route('/auth', methods=['GET'])
@@ -98,6 +105,33 @@ def auth():
                 return "{\"response\": \"Username doesn't exist in database\"}", 404
             else:
                 return "{\"response\": \"bruh idk what happened\"}", 500
+
+@app.route('/change_password', methods=['PATCH'])
+def change_password():
+    username = request.json.get("username")
+    old_password = request.json.get("old_password")
+    new_password = request.json.get("new_password")
+    if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
+        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+    else:
+        try:
+            real_password = Account.query.filter_by(username=username).first().password
+            account = Account.query.filter_by(username=username).first()
+            if old_password == real_password:
+                account.password = new_password
+                db.session.commit()
+                return "{\"response\": \"Your password has been updated!\"}", 200
+            else:
+                return "{\"response\": \"Old password doesn\'t match records\"}", 403
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return "{\"response\": \"Username doesn't exist in database\"}", 404
+            else:
+                print(str(ex))
+                return "{\"response\": \"bruh idk what happened\"}", 500
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
