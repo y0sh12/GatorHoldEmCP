@@ -31,7 +31,7 @@ class Account(db.Model):
         return "<Username: %r>" % self.username
 
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/", methods=["GET"])
 def getuser():
     users = Account.query.all()
     for user in users:
@@ -39,14 +39,14 @@ def getuser():
     return jsonify(message="List of users printed in console")
 
 
-@app.route("/balance", methods=["GET", "POST"])
+@app.route("/balance", methods=["GET"])
 def balance():
     username = request.json.get("username")
     found_balance = Account.query.filter_by(username=username).first().balance
     return jsonify(balance=found_balance)
 
 
-@app.route("/delete", methods=["POST"])
+@app.route("/delete", methods=["DELETE"])
 def delete():
     username = request.json.get("username")
     found_user = Account.query.filter_by(username=username).first()
