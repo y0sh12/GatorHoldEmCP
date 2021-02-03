@@ -76,6 +76,24 @@ def new():
             else:
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+@app.route('/auth', methods=['GET'])
+def auth():
+    username = request.json.get("username")
+    password1 = request.json.get("password")
+    if not request.json.get("username") or not request.json.get("password"):
+        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+    else:
+        try:
+            password2 = Account.query.filter_by(username=username).first().password
+            if password1 == password2:
+                return "{\"response\": \"True\"}", 200
+            else:
+                return "{\"response\": \"False\"}", 403
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return "{\"response\": \"Username doesn't exist in database\"}", 404
+            else:
+                return "{\"response\": \"bruh idk what happened\"}", 500
 
 if __name__ == "__main__":
     app.run(debug=True)
