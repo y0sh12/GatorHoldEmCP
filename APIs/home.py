@@ -43,6 +43,7 @@ def getuser():
         print(user.username)
         print(user.password)
         print(user.email)
+        print(user.id)
     return jsonify(message="List of users printed in console")
 
 
@@ -130,6 +131,27 @@ def change_password():
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+
+@app.route('/change_balance', methods=['PATCH'])
+def change_balance():
+    id = request.json.get("id")
+    change = int(request.json.get("change"))
+    if not request.json.get("id") or not request.json.get("change"):
+        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+    else:
+        try:
+            account = Account.query.filter_by(id=id).first()
+            account.balance = account.balance + change
+            if account.balance < 0:
+                account.balance = 0
+            db.session.commit()
+            return "{\"response\": \"Balance has been updated to " + str(account.balance) + "\"}", 200
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return "{\"response\": \"Id doesn't exist in database\"}", 404
+            else:
+                print(str(ex))
+                return "{\"response\": \"bruh idk what happened\"}", 500
 
 
 
