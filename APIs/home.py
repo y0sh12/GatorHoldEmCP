@@ -38,20 +38,38 @@ class Account(db.Model):
 
 @app.route("/", methods=["GET"])
 def getuser():
+    return jsonify(message="Root route")
+
+
+@app.route("/users/get/all", methods=["GET"])
+# Gives all users and their information
+# PASSWORD IS FETCHED FOR TESTING, DO NOT KEEP IN FINAL
+def get_all_users():
     users = Account.query.all()
     for user in users:
-        print(user.username)
-        print(user.password)
-        print(user.email)
-        print(user.id)
+        print(user.id, end=' ')
+        print(user.email, end=' ')
+        print(user.username, end=' ')
+        print(user.password, end=' ')
+        print(user.created_on)
+
+
     return jsonify(message="List of users printed in console")
 
 
 @app.route("/balance", methods=["GET"])
+# Balance of a user
+# FORMAT: link.com/balance/?username=[username_to_query]
 def balance():
-    username = request.json.get("username")
-    found_balance = Account.query.filter_by(username=username).first().balance
-    return jsonify(balance=found_balance)
+    if 'username' in request.args:
+        username = str(request.args['username'])
+    else:
+        return jsonify(message="Error: No username provided")
+    found_balance = Account.query.filter_by(username=username).first()
+    if found_balance:
+        return jsonify(balance=found_balance.balance)
+    else:
+        return jsonify(message="Error: User not found")
 
 
 @app.route("/delete", methods=["DELETE"])
@@ -88,6 +106,7 @@ def new():
                 print(ex)
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+
 @app.route('/auth', methods=['GET'])
 def auth():
     username = request.json.get("username")
@@ -106,6 +125,7 @@ def auth():
                 return "{\"response\": \"Username doesn't exist in database\"}", 404
             else:
                 return "{\"response\": \"bruh idk what happened\"}", 500
+
 
 @app.route('/change_password', methods=['PATCH'])
 def change_password():
@@ -152,7 +172,6 @@ def change_balance():
             else:
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
-
 
 
 if __name__ == "__main__":
