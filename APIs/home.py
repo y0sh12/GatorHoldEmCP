@@ -37,34 +37,49 @@ class Account(db.Model):
 
 
 @app.route("/", methods=["GET"])
-def getuser():
-    return jsonify(message="Root route")
+def root_route():
+    return jsonify(message="This does nothing and should do nothing right now")
 
 
-@app.route("/users/get/all", methods=["GET"])
+@app.route("/users/all", methods=["GET"])
 # Gives all users and their information
-# PASSWORD IS FETCHED FOR TESTING, DO NOT KEEP IN FINAL
-def get_all_users():
+# FORMAT: link.com/users/all
+def all_users():
+    all_users = []
     users = Account.query.all()
     for user in users:
-        print(user.id, end=' ')
-        print(user.email, end=' ')
-        print(user.username, end=' ')
-        print(user.password, end=' ')
-        print(user.created_on)
+        new_user = {
+            "id": user.id,
+            "email": user.email,
+            "username": user.username,
+            "created_on": user.created_on.strftime("%m/%d/%Y")
+        }
+        all_users.append(new_user)
+
+    return jsonify(all_users)
 
 
-    return jsonify(message="List of users printed in console")
-
-
-@app.route("/balance", methods=["GET"])
-# Balance of a user
-# FORMAT: link.com/balance/?username=[username_to_query]
-def balance():
-    if 'username' in request.args:
-        username = str(request.args['username'])
+@app.route("/users/find/<username>", methods=["GET"])
+# Gives a user's information
+# FORMAT: link.com/users/find/<username_to_query>
+def get_user(username):
+    found_user = Account.query.filter_by(username=username).first()
+    if found_user:
+        return jsonify(
+            id=found_user.id,
+            email=found_user.email,
+            username=found_user.username,
+            balance=found_user.balance,
+            created_on=found_user.created_on.strftime("%m/%d/%Y")
+        )
     else:
-        return jsonify(message="Error: No username provided")
+        return jsonify(message="Error: User not found")
+
+
+@app.route("/users/find/<username>/balance", methods=["GET"])
+# Balance of a user
+# FORMAT: link.com/users/find/<username_to_query>/balance
+def balance(username):
     found_balance = Account.query.filter_by(username=username).first()
     if found_balance:
         return jsonify(balance=found_balance.balance)
@@ -72,13 +87,17 @@ def balance():
         return jsonify(message="Error: User not found")
 
 
-@app.route("/delete", methods=["DELETE"])
-def delete():
-    username = request.json.get("username")
+@app.route("/users/delete/<username>", methods=["DELETE"])
+# Deletes a user based on the username
+# FORMAT: link.com/users/delete/<username_to_delete>
+def delete(username):
     found_user = Account.query.filter_by(username=username).first()
-    db.session.delete(found_user)
-    db.session.commit()
-    return jsonify(response="Successfully deleted user: %s" % username)
+    if found_user:
+        db.session.delete(found_user)
+        db.session.commit()
+        return jsonify(message="Successfully deleted user: %s" % username)
+    else:
+        return jsonify(message="Error: User not found")
 
 
 @app.route('/new', methods=['POST'])
