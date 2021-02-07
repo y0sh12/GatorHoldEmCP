@@ -484,13 +484,12 @@ def show(room):
 
 def main():
     try:
-        temp = os.getcwd()
-        cwd = str(pathlib.Path(__file__).parent.resolve())
-        if not os.path.exists(cwd + "/res/HandRanks.dat"):
-            os.chdir(cwd)
-            os.system("python3 AiInstallation.py")
-
-        os.chdir(temp)
+        # temp = os.getcwd()
+        # cwd = str(pathlib.Path(__file__).parent.resolve())
+        # if not os.path.exists(cwd + "/res/HandRanks.dat"):
+        #     os.chdir(cwd)
+        #     os.system("python3 AiInstallation.py")
+        # os.chdir(temp)
         eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
     except KeyboardInterrupt as e:
         sys.exit(0)
