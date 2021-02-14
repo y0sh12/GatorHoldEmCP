@@ -4,6 +4,7 @@ import logo from '../images/LOGO.png';
 import {Link} from "react-router-dom";
 import Login from "../Login/Login";
 import userData from "../axiosCalls.js";
+import ConfirmPage from "../ConfirmPage/ConfirmPage";
 
 export default class Register extends Component {
     constructor(props) {
@@ -13,7 +14,8 @@ export default class Register extends Component {
             username: '',
             password: '',
             confirmPassword: '',
-            balance: 1000
+            balance: 1000,
+            isRegistered:false
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -39,7 +41,7 @@ export default class Register extends Component {
                 alert(response.errors);
             }
             else{
-                alert("Your account has been created!");
+                this.setState({isRegistered: true});
             }
         })
     } 
@@ -53,12 +55,17 @@ export default class Register extends Component {
         else{
             error = '';
         }
+        if (this.state.isRegistered){
+            return (
+                <ConfirmPage/>
+            )
+        }
+        else{
         return (
             <div>
                 <header>
                 <img src={logo} alt="Logo" />
                 </header>
-                {/* <body> */}
                 <form autoComplete = "off" onSubmit={this.handleRegister} >
                 <label>
                     Email*: 
@@ -82,9 +89,9 @@ export default class Register extends Component {
                 <span>
                 <p>Already have an account? <span><Link to = "/Login">Login!</Link></span></p>
                 </span>
-                {/* </body> */}
             </div>
         )
+        }
     }
 }
 
