@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import './Register.css';
 import logo from '../images/LOGO.png';
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import Login from "../Login/Login";
 import userData from "../axiosCalls.js";
 import ConfirmPage from "../ConfirmPage/ConfirmPage";
+
 
 export default class Register extends Component {
     constructor(props) {
@@ -15,7 +16,8 @@ export default class Register extends Component {
             password: '',
             confirmPassword: '',
             balance: 1000,
-            isRegistered:false
+            isRegistered:false,
+            isError:''
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -34,57 +36,66 @@ export default class Register extends Component {
     handleRegister = (event)  => {
         //Axios calls to API
         event.preventDefault();
+        if(this.matchingPasswords()){
         userData.createUser(this.state)
         .then((response) => {
             console.log(response);
             if(response.created === false){
-                alert(response.errors);
+                this.setState({isError: response.errors});
             }
             else{
                 this.setState({isRegistered: true});
             }
         })
+    }
     } 
     
 
     render() {
         let error = '';
+        if(this.state.isError != ''){
+            error = <p className = "error">{this.state.isError}</p>
+        }
+        let warning = '';
         if (!this.matchingPasswords()){
-            error = <p className = "error">Passwords not matching!</p>
+            warning = <p className = "error">Passwords not matching!</p>
         }
         else{
-            error = '';
+            warning = '';
         }
         if (this.state.isRegistered){
             return (
-                <ConfirmPage/>
+                <Redirect
+                to={{
+                    pathname: "/ConfirmPage",
+                    state: {confirmWhat: "Your account has been created!"}
+                }}/>
             )
         }
         else{
         return (
             <div>
-                <header>
-                <img src={logo} alt="Logo" />
-                </header>
+                <header><img src={logo} alt="Logo" /></header>
+                {error}
                 <form autoComplete = "off" onSubmit={this.handleRegister} >
                 <label>
                     Email*: 
-                    <input required placeholder= "Email" type="text" name= "email" value={this.state.email} onChange={this.handleChange} />
+                    <input required placeholder= "Email" type="email" name= "email" value={this.state.email} onChange={this.handleChange} />
                     </label><br></br>
                 <label>
                     Username*:
-                    <input required placeholder= "Username" type="text" name= "username" value={this.state.username} onChange={this.handleChange} />
+                    <input required placeholder= "Username" type="username" name= "username" value={this.state.username} onChange={this.handleChange} />
                     </label><br></br>
                     <label>
                     Password*:
                     <input required placeholder= "Password" type="password" name= "password" value={this.state.password} onChange={this.handleChange} />
                     </label><br></br>
-                    <label>
+                    <label >
                     Confirm Password*:
-                    <input required placeholder= "Confirm Password" type="password" name= "confirmPassword" value={this.state.confirmPassword} onChange={this.handleChange} />
+                    <input  required placeholder= "Confirm Password" type="password" name= "confirmPassword" value={this.state.confirmPassword} onChange={this.handleChange} />
                     </label><br></br>
-                    {error}
-                    <input type="submit" value="Register" />
+                    {warning}
+                    <input type="submit" value = "Register"/>
                 </form>
                 <span>
                 <p>Already have an account? <span><Link to = "/Login">Login!</Link></span></p>

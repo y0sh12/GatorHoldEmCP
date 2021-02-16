@@ -4,10 +4,12 @@ import { Route, Switch, Redirect,BrowserRouter  } from 'react-router-dom';
 import Register from "./Register/Register";
 import Login from "./Login/Login";
 import ConfirmPage from "./ConfirmPage/ConfirmPage";
+import Home from "./Home/Home";
+import ForgotPassword from "./ForgotPassword/ForgotPassword";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       {/* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -27,6 +29,8 @@ function App() {
       <Route exact path="/Login" component={Login} />
       <Route exact path="/Register" component={Register} />
       <Route exact path="/ConfirmPage" component={ConfirmPage} />
+      <Route exact path="/Home" component={Home} />
+      <Route exact path="/ForgotPassword" component={ForgotPassword} />
       <Route exact path="/">
             <Redirect to="/Login" />
           </Route>      

@@ -17,19 +17,9 @@ code {
 }
 
 div {
-  text-align: center;
-  align-items: center;
   min-height: 100vh;
   background-color: #B2E086;
-  display: block;
-}
-
-form {
   text-align:center;
-  align-items: center;
 }
 
 
-form input{
-  display:inline-block;
-}
