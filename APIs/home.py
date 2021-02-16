@@ -126,7 +126,7 @@ def new():
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
 
-@app.route('/auth', methods=['GET'])
+@app.route('/auth', methods=['POST'])
 def auth():
     username = request.json.get("username")
     password1 = request.json.get("password")
