@@ -6,6 +6,7 @@ import userData from "../axiosCalls.js";
 import Register from "../Register/Register";
 import ForgotPassword from "../ForgotPassword/ForgotPassword";
 import Home from "../Home/Home";
+import Header from "../BasicComponents/Header"
 
 export default class Login extends Component {
     constructor(props) {
@@ -50,7 +51,10 @@ export default class Login extends Component {
             return(
                 <Redirect
                 to={{
-                    pathname: "/Home"
+                    pathname: "/Home",
+                    state:{
+                        username: this.state.username
+                    }
                 }}
                 />
             )
@@ -58,9 +62,7 @@ export default class Login extends Component {
         else{
         return (
             <div>
-                <header>
-                <img src={logo} alt="Logo" />
-                </header>
+                <Header/>
                 {error}
                 <form onSubmit={this.handleLogin} >
                 <label>
@@ -71,10 +73,10 @@ export default class Login extends Component {
                     Password*:
                     <input required placeholder= "Password" type="password" name= "password" value={this.state.password} onChange={this.handleChange} />
                     </label><br></br>
-                    <Link to = "/ForgotPassword">Forgot Password?</Link><br></br>
+                    <Link className = "link"  to = "/ForgotPassword">Forgot Password?</Link><br></br>
                     <input type="submit" value="Login" />
                 </form>
-                <p>Don't have an account? <span><Link to = "/Register">Register Now!</Link></span></p>
+                <p>Don't have an account? <span><Link className = "link"  to = "/Register">Register Now!</Link></span></p>
             </div>
         )
         }

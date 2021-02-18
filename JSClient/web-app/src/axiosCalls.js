@@ -81,5 +81,18 @@ userData.resetPass = async function(reset) {
     return response;
 }
 
+//PLAYER BALANCE AXIOS CALL
+userData.getBalance = async function(username) {
+    let balance = null;
+        const userBalance = await axios.get('http://127.0.0.1:5000/users/find/' + username + '/balance');
+        if(userBalance.data.balance){
+            balance = userBalance.data.balance
+        }
+        else{
+            return "Balance not found"
+        }
+    return balance;
+}
+
 
 export default userData;

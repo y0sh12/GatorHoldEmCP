@@ -18,8 +18,22 @@ code {
 
 div {
   min-height: 100vh;
+  min-width: 100vw;
   background-color: #B2E086;
   text-align:center;
+  /* align-items: center; */
 }
 
+li {
+  list-style-type: none;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.link:visited{
+  text-decoration: none;
+  color: blue;
+}
 

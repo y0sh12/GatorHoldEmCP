@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import './ForgotPassword.css';
 import logo from '../images/LOGO.png';
 import userData from "../axiosCalls.js";
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import ConfirmPage from "../ConfirmPage/ConfirmPage";
+import Header from "../BasicComponents/Header"
 
 export default class ForgotPassword extends Component {
     constructor(props) {
@@ -74,9 +75,7 @@ export default class ForgotPassword extends Component {
         }
         return (
             <div>
-                <header>
-                <img src={logo} alt="Logo" />
-                </header>
+                <Header whereTo = '/Login' username = {null} backButton = {true}/>
                 <p>Reset your Password</p>
                 {error}
                 <form autoComplete = "off" onSubmit={this.handleReset} >
@@ -99,6 +98,7 @@ export default class ForgotPassword extends Component {
                     {warning}
                     <input type="submit" value="Reset" />
                 </form>
+                {/* <Link className = "link"  to = "/Login">Back</Link> */}
             </div>
         )
     }

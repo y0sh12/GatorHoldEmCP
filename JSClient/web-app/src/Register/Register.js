@@ -5,6 +5,7 @@ import {Link, Redirect} from "react-router-dom";
 import Login from "../Login/Login";
 import userData from "../axiosCalls.js";
 import ConfirmPage from "../ConfirmPage/ConfirmPage";
+import Header from "../BasicComponents/Header"
 
 
 export default class Register extends Component {
@@ -74,8 +75,8 @@ export default class Register extends Component {
         }
         else{
         return (
-            <div>
-                <header><img src={logo} alt="Logo" /></header>
+            <>
+                <Header/>
                 {error}
                 <form autoComplete = "off" onSubmit={this.handleRegister} >
                 <label>
@@ -98,9 +99,9 @@ export default class Register extends Component {
                     <input type="submit" value = "Register"/>
                 </form>
                 <span>
-                <p>Already have an account? <span><Link to = "/Login">Login!</Link></span></p>
+                <p>Already have an account? <span><Link className = "link"  to = "/Login">Login!</Link></span></p>
                 </span>
-            </div>
+            </>
         )
         }
     }

@@ -6,6 +6,8 @@ import Login from "./Login/Login";
 import ConfirmPage from "./ConfirmPage/ConfirmPage";
 import Home from "./Home/Home";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
+import JoinLobby from "./JoinLobby/JoinLobby";
+import CreateLobby from "./CreateLobby/CreateLobby";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
       <Route exact path="/ConfirmPage" component={ConfirmPage} />
       <Route exact path="/Home" component={Home} />
       <Route exact path="/ForgotPassword" component={ForgotPassword} />
+      <Route exact path="/JoinLobby" component={JoinLobby} />
+      <Route exact path="/CreateLobby" component={CreateLobby} />
       <Route exact path="/">
             <Redirect to="/Login" />
           </Route>      
