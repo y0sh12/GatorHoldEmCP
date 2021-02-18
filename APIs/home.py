@@ -38,7 +38,7 @@ class Account(db.Model):
 
 @app.route("/", methods=["GET"])
 def root_route():
-    return jsonify(message="This does nothing and should do nothing right now")
+    return jsonify(response="This does nothing and should do nothing right now")
 
 
 @app.route("/users/all", methods=["GET"])
@@ -73,7 +73,7 @@ def get_user(username):
             created_on=found_user.created_on.strftime("%m/%d/%Y")
         )
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route("/users/find/<username>/balance", methods=["GET"])
@@ -84,7 +84,7 @@ def balance(username):
     if found_balance:
         return jsonify(balance=found_balance.balance)
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route("/users/delete/<username>", methods=["DELETE"])
@@ -97,7 +97,7 @@ def delete(username):
         db.session.commit()
         return jsonify(message="Successfully deleted user: %s" % username)
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route('/new', methods=['POST'])

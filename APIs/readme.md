@@ -1,5 +1,110 @@
 # API Details
 
+###GetUserAPI
+
+#####Api route:
+/users/all
+#####Type:
+GET
+
+#####Possible responses:  
+200 OK response:
+Returns list of all users and relevant information
+Response format:
+```json
+{
+    "id": integer
+    "email": string
+    "username": string
+    "created_on": string 
+}
+```
+
+#####Api route:
+/users/find/{username}
+#####Type:
+GET
+#####Path:
+username: user to find
+
+
+#####Possible responses:  
+200 OK response:
+Returns user information
+Response format:
+```json
+{
+    "balance": integer
+    "created_on": string 
+    "email": string
+    "id": integer
+    "username": string
+}
+```
+
+404 Not Found response:  
+Returns when unable to identify user
+Response format:
+```json
+{
+    "response": "user not found"
+}
+```
+
+#####Api route:
+/users/find/{username}/balance
+#####Type:
+GET
+#####Path:
+username: user to find
+
+
+#####Possible responses:  
+200 OK response:
+Returns user balance
+Response format:
+```json
+{
+    "balance": integer
+}
+```
+
+404 Not Found response:  
+Returns when unable to identify user
+Response format:
+```json
+{
+    "response": "user not found"
+}
+```
+###DeleteUserAPI
+
+#####Api route:
+/users/delete/{username}
+#####Type:
+GET
+#####Path:
+username: user to find
+
+#####Possible responses:  
+200 OK response:
+User has been deleted and a confirmation message is sent back
+Response format:
+```json
+{
+    "response": "Successfully deleted user: {username}"
+}
+```
+
+404 Not Found response:  
+Returns when unable to identify user
+Response format:
+```json
+{
+    "response": "user not found"
+}
+```
+
 ###CreateUserAPI
 #####Api route:
 /new  
@@ -38,6 +143,8 @@ Response format:
     "response": "you're missing one or more values in the body"
 }
 ```
+
+
 
 ###AuthenticateUserAPI
 #####Api route:
