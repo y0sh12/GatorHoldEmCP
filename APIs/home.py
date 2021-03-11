@@ -2,7 +2,7 @@ import os
 import datetime
 import uuid
 
-from flask import Flask, flash, url_for, render_template, request, redirect, jsonify
+from flask import Flask, request, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,6 +23,9 @@ class Account(db.Model):
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
+    email_verified = db.Column(db.String, unique=False, nullable=False)
+    forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
+    forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
     def __init__(self, id, username, email, password, created_on, balance):
         self.id = id
@@ -31,6 +34,10 @@ class Account(db.Model):
         self.password = password
         self.created_on = created_on
         self.balance = balance
+        self.email_verified = False
+        self.forgot_pass_code = None
+        self.forgot_expiry = None
+
 
     def __repr__(self):
         return "<Username: %r>" % self.username
