@@ -1,6 +1,11 @@
 import os
 import datetime
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 import uuid
+from email.utils import make_msgid
 
 from flask import Flask, request, jsonify
 
@@ -59,7 +64,8 @@ def all_users():
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "created_on": user.created_on.strftime("%m/%d/%Y")
+            "created_on": user.created_on.strftime("%m/%d/%Y"),
+            "email_verified": user.email_verified
         }
         all_users.append(new_user)
 
@@ -124,6 +130,7 @@ def new():
             account = Account(id, username, email, password, created_on, balance)
             db.session.add(account)
             db.session.commit()
+            sendEmail(email, "EmailVerification", "Verify Your Email!")
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
@@ -199,6 +206,50 @@ def change_balance():
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+
+@app.route('/email_verified', methods=['PATCH'])
+def email_verified():
+    id = request.json.get("id")
+    if not request.json.get("id"):
+        return "{\"response\": \"you're missing the id\"}", 400
+    else:
+        try:
+            account = Account.query.filter_by(id=id).first()
+            account.email_verified = True
+            db.session.commit()
+            return "{\"response\": \"Email verified for " + account.email + "\"}", 200
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return "{\"response\": \"Id doesn't exist in database\"}", 404
+            else:
+                print(str(ex))
+                return "{\"response\": \"bruh idk what happened\"}", 500
+
+def sendEmail(email, htmlFileName, subject):
+    fromaddr = 'gatorholdem@gmail.com'
+    password = '@3y?W3b%JH.^N>2y'
+    html = open(htmlFileName + ".html")
+    msg = MIMEMultipart('related')
+    msg['From'] = fromaddr
+    msg['To'] = email
+    msg['Subject'] = subject
+    msgAlternative = MIMEMultipart('alternative')
+    msg.attach(msgAlternative)
+    msgText = MIMEText('This is the alternative plain text message.')
+    msgAlternative.attach(msgText)
+    msgText = MIMEText(html.read(), 'html')
+    msgAlternative.attach(msgText)
+    fp = open('gators.png', 'rb')
+    msgImage = MIMEImage(fp.read())
+    fp.close()
+    msgImage.add_header('Content-ID', '<gatorImage>')
+    msg.attach(msgImage)
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, password)
+    text = msg.as_string()
+    server.sendmail(fromaddr, email, text)
+    server.quit()
 
 if __name__ == "__main__":
     app.run(debug=True)
