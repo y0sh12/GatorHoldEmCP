@@ -130,7 +130,7 @@ def new():
             account = Account(id, username, email, password, created_on, balance)
             db.session.add(account)
             db.session.commit()
-            sendEmail(email, "EmailVerification", "Verify Your Email!")
+            sendEmail(email, "EmailVerification", "Verify Your Email!", id)
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
@@ -207,28 +207,25 @@ def change_balance():
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
 
-@app.route('/email_verified', methods=['PATCH'])
-def email_verified():
-    id = request.json.get("id")
-    if not request.json.get("id"):
-        return "{\"response\": \"you're missing the id\"}", 400
-    else:
-        try:
-            account = Account.query.filter_by(id=id).first()
-            account.email_verified = True
-            db.session.commit()
-            return "{\"response\": \"Email verified for " + account.email + "\"}", 200
-        except Exception as ex:
-            if "NoneType" in str(ex):
-                return "{\"response\": \"Id doesn't exist in database\"}", 404
-            else:
-                print(str(ex))
-                return "{\"response\": \"bruh idk what happened\"}", 500
+@app.route('/email_verified/<idd>', methods=['GET'])
+def email_verified(idd):
+    try:
+        account = Account.query.filter_by(id=idd).first()
+        account.email_verified = True
+        db.session.commit()
+        return "{\"response\": \"Email verified for " + account.email + "\"}", 200
+    except Exception as ex:
+        if "NoneType" in str(ex):
+            return "{\"response\": \"Id doesn't exist in database\"}", 404
+        else:
+            print(str(ex))
+            return "{\"response\": \"bruh idk what happened\"}", 500
 
-def sendEmail(email, htmlFileName, subject):
+def sendEmail(email, htmlFileName, subject, id):
     fromaddr = 'gatorholdem@gmail.com'
     password = '@3y?W3b%JH.^N>2y'
-    html = open(htmlFileName + ".html")
+    html = open(htmlFileName + ".html").read()
+    html = html.replace("UUID", id)
     msg = MIMEMultipart('related')
     msg['From'] = fromaddr
     msg['To'] = email
@@ -237,7 +234,7 @@ def sendEmail(email, htmlFileName, subject):
     msg.attach(msgAlternative)
     msgText = MIMEText('This is the alternative plain text message.')
     msgAlternative.attach(msgText)
-    msgText = MIMEText(html.read(), 'html')
+    msgText = MIMEText(html, 'html')
     msgAlternative.attach(msgText)
     fp = open('gators.png', 'rb')
     msgImage = MIMEImage(fp.read())
