@@ -7,6 +7,7 @@ import smtplib
 import uuid
 from email.utils import make_msgid
 
+import flask
 from flask import Flask, request, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
@@ -213,13 +214,9 @@ def email_verified(idd):
         account = Account.query.filter_by(id=idd).first()
         account.email_verified = True
         db.session.commit()
-        return "{\"response\": \"Email verified for " + account.email + "\"}", 200
+        return flask.render_template('VerificationSuccess.html')
     except Exception as ex:
-        if "NoneType" in str(ex):
-            return "{\"response\": \"Id doesn't exist in database\"}", 404
-        else:
-            print(str(ex))
-            return "{\"response\": \"bruh idk what happened\"}", 500
+        return flask.render_template('VerificationFail.html')
 
 def sendEmail(email, htmlFileName, subject, id):
     fromaddr = 'gatorholdem@gmail.com'
