@@ -490,7 +490,7 @@ def main():
         #     os.chdir(cwd)
         #     os.system("python3 AiInstallation.py")
         # os.chdir(temp)
-        eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+        eventlet.wsgi.server(eventlet.listen(('', 6000)), app)
     except KeyboardInterrupt as e:
         sys.exit(0)
 
