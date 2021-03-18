@@ -13,14 +13,14 @@
 		9BD928F52602BFA400248AF8 /* gatorholdemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928F42602BFA400248AF8 /* gatorholdemTests.swift */; };
 		9BD929002602BFA400248AF8 /* gatorholdemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928FF2602BFA400248AF8 /* gatorholdemUITests.swift */; };
 		9BD929122602BFFA00248AF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BD929102602BFFA00248AF8 /* Main.storyboard */; };
-		9BD9291A2602C0C700248AF8 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD929192602C0C700248AF8 /* ViewController.swift */; };
-		9BD929222602C0FA00248AF8 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD929212602C0FA00248AF8 /* SignUpViewController.swift */; };
 		9BD929272602C11100248AF8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD929262602C11100248AF8 /* API.swift */; };
 		9BD9292C2602C12900248AF8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD9292B2602C12900248AF8 /* Constants.swift */; };
-		9BD929312602C14000248AF8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD929302602C14000248AF8 /* HomeViewController.swift */; };
 		9BD929372602C17700248AF8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 9BD929362602C17700248AF8 /* SocketIO */; };
-		9BD9293C2602C25000248AF8 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD9293B2602C24F00248AF8 /* LoginViewController.swift */; };
 		9BD9294C2602C6B100248AF8 /* GHlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BD9294B2602C6B100248AF8 /* GHlogo.png */; };
+		9BEB264B2603FE3600578C9B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB264A2603FE3600578C9B /* HomeViewController.swift */; };
+		9BEB26522603FE5500578C9B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB264F2603FE5500578C9B /* LoginViewController.swift */; };
+		9BEB26532603FE5500578C9B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB26502603FE5500578C9B /* SignUpViewController.swift */; };
+		9BEB26542603FE5500578C9B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB26512603FE5500578C9B /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,13 +53,13 @@
 		9BD928FF2602BFA400248AF8 /* gatorholdemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gatorholdemUITests.swift; sourceTree = "<group>"; };
 		9BD929012602BFA400248AF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9BD929112602BFFA00248AF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9BD929192602C0C700248AF8 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ViewController.swift; path = "../../../Documents/GATORHOLDEM/GATORHOLDEM/View Controllers/ViewController.swift"; sourceTree = "<group>"; };
-		9BD929212602C0FA00248AF8 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = "../../../Documents/GATORHOLDEM/GATORHOLDEM/View Controllers/SignUpViewController.swift"; sourceTree = "<group>"; };
 		9BD929262602C11100248AF8 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/API.swift; sourceTree = "<group>"; };
 		9BD9292B2602C12900248AF8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/Helper/Constants.swift; sourceTree = "<group>"; };
-		9BD929302602C14000248AF8 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = "../../../Documents/GATORHOLDEM/GATORHOLDEM/View Controllers/HomeViewController.swift"; sourceTree = "<group>"; };
-		9BD9293B2602C24F00248AF8 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "../../../Documents/GATORHOLDEM/GATORHOLDEM/View Controllers/LoginViewController.swift"; sourceTree = "<group>"; };
 		9BD9294B2602C6B100248AF8 /* GHlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GHlogo.png; path = ../../GHlogo.png; sourceTree = "<group>"; };
+		9BEB264A2603FE3600578C9B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		9BEB264F2603FE5500578C9B /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		9BEB26502603FE5500578C9B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		9BEB26512603FE5500578C9B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,13 +113,13 @@
 			children = (
 				9BD928DD2602BFA100248AF8 /* AppDelegate.swift */,
 				9BD928DF2602BFA100248AF8 /* SceneDelegate.swift */,
-				9BD929192602C0C700248AF8 /* ViewController.swift */,
-				9BD929212602C0FA00248AF8 /* SignUpViewController.swift */,
-				9BD9293B2602C24F00248AF8 /* LoginViewController.swift */,
-				9BD929302602C14000248AF8 /* HomeViewController.swift */,
+				9BEB264A2603FE3600578C9B /* HomeViewController.swift */,
 				9BD929262602C11100248AF8 /* API.swift */,
 				9BD929102602BFFA00248AF8 /* Main.storyboard */,
 				9BD9294B2602C6B100248AF8 /* GHlogo.png */,
+				9BEB264F2603FE5500578C9B /* LoginViewController.swift */,
+				9BEB26502603FE5500578C9B /* SignUpViewController.swift */,
+				9BEB26512603FE5500578C9B /* ViewController.swift */,
 				9BD9292B2602C12900248AF8 /* Constants.swift */,
 				9BD928E62602BFA400248AF8 /* Assets.xcassets */,
 				9BD928EB2602BFA400248AF8 /* Info.plist */,
@@ -281,13 +281,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BEB26522603FE5500578C9B /* LoginViewController.swift in Sources */,
 				9BD928DE2602BFA100248AF8 /* AppDelegate.swift in Sources */,
-				9BD9291A2602C0C700248AF8 /* ViewController.swift in Sources */,
-				9BD929222602C0FA00248AF8 /* SignUpViewController.swift in Sources */,
+				9BEB26542603FE5500578C9B /* ViewController.swift in Sources */,
+				9BEB26532603FE5500578C9B /* SignUpViewController.swift in Sources */,
 				9BD928E02602BFA100248AF8 /* SceneDelegate.swift in Sources */,
-				9BD9293C2602C25000248AF8 /* LoginViewController.swift in Sources */,
+				9BEB264B2603FE3600578C9B /* HomeViewController.swift in Sources */,
 				9BD929272602C11100248AF8 /* API.swift in Sources */,
-				9BD929312602C14000248AF8 /* HomeViewController.swift in Sources */,
 				9BD9292C2602C12900248AF8 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
