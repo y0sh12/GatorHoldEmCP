@@ -195,7 +195,7 @@ def forgot_password():
     if found_user:
         found_user.forgot_expiry = datetime.datetime.now(datetime.timezone.utc)
         db.session.commit()
-        sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
+        # sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
         return jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
 
     else:
@@ -203,30 +203,34 @@ def forgot_password():
 
 
 @app.route('/forgot_password/change_password', methods=['PATCH'])
-def change_password():
-    username = request.json.get("username")
+def change_password_email():
+    email = request.json.get("email")
     new_password = request.json.get("new_password")
-    if not request.json.get("username") or not request.json.get("new_password"):
+    if not request.json.get("email") or not request.json.get("new_password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            real_password = Account.query.filter_by(username=username).first().password
-            account = Account.query.filter_by(username=username).first()
+            real_password = Account.query.filter_by(username=email).first().password
+            account = Account.query.filter_by(username=email).first()
             if new_password != real_password:
-                # TO DO: Add time comparison to change password
-                curr_time = datetime.datetime.now(datetime.timezone.utc)
+                current_time = datetime.datetime.now(datetime.timezone.utc)
+                stored_time = account.forgot_expiry.replace(tzinfo=datetime.timezone.utc)
+                test_time = current_time - stored_time
 
-                account.password = new_password
-                db.session.commit()
-                return "{\"response\": \"Your password has been updated!\"}", 200
+                if test_time < datetime.timedelta(minutes=15):
+                    account.password = new_password
+                    db.session.commit()
+                    return jsonify(response="Your password has been updated!"), 200
+                else:
+                    jsonify(response="Password reset has expired"), 403
             else:
-                return "{\"response\": \"Please choose a different password\"}", 403
+                jsonify(response="Please choose a different password"), 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                return "{\"response\": \"Username doesn't exist in database\"}", 404
+                jsonify(response="Username doesn't exist in database"), 404
             else:
                 print(str(ex))
-                return "{\"response\": \"bruh idk what happened\"}", 500
+                jsonify(response="bruh idk what happened"), 500
 
 
 @app.route('/change_balance', methods=['PATCH'])
