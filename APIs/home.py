@@ -29,7 +29,7 @@ class Account(db.Model):
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
-    email_verified = db.Column(db.String, unique=False, nullable=False)
+    email_verified = db.Column(db.Boolean, unique=False, nullable=False)
     forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
     forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
@@ -84,7 +84,8 @@ def get_user(username):
             email=found_user.email,
             username=found_user.username,
             balance=found_user.balance,
-            created_on=found_user.created_on.strftime("%m/%d/%Y")
+            created_on=found_user.created_on.strftime("%m/%d/%Y"),
+            email_verified=found_user.email_verified
         )
     else:
         return jsonify(response="Error: User not found"), 404
@@ -119,7 +120,7 @@ def new():
     username = request.json.get("username")
     password = request.json.get("password")
     balance = request.json.get("balance")
-    created_on = datetime.datetime.now()
+    created_on = datetime.datetime.utcnow()
     id = str(uuid.uuid1())
     email = request.json.get("email")
     print(username, password, balance)
@@ -178,6 +179,48 @@ def change_password():
                 return "{\"response\": \"Your password has been updated!\"}", 200
             else:
                 return "{\"response\": \"Old password doesn\'t match records\"}", 403
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return "{\"response\": \"Username doesn't exist in database\"}", 404
+            else:
+                print(str(ex))
+                return "{\"response\": \"bruh idk what happened\"}", 500
+
+
+@app.route('/forgot_password', methods=['PATCH'])
+def forgot_password():
+    email = request.json.get("email")
+    found_user = Account.query.filter_by(email=email).first()
+
+    if found_user:
+        found_user.forgot_expiry = datetime.datetime.now(datetime.timezone.utc)
+        db.session.commit()
+        sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
+        return jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
+
+    else:
+        return jsonify(response="Error: User not found"), 404
+
+
+@app.route('/forgot_password/change_password', methods=['PATCH'])
+def change_password():
+    username = request.json.get("username")
+    new_password = request.json.get("new_password")
+    if not request.json.get("username") or not request.json.get("new_password"):
+        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+    else:
+        try:
+            real_password = Account.query.filter_by(username=username).first().password
+            account = Account.query.filter_by(username=username).first()
+            if new_password != real_password:
+                # TO DO: Add time comparison to change password
+                curr_time = datetime.datetime.now(datetime.timezone.utc)
+
+                account.password = new_password
+                db.session.commit()
+                return "{\"response\": \"Your password has been updated!\"}", 200
+            else:
+                return "{\"response\": \"Please choose a different password\"}", 403
         except Exception as ex:
             if "NoneType" in str(ex):
                 return "{\"response\": \"Username doesn't exist in database\"}", 404
