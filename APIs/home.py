@@ -1,8 +1,14 @@
 import os
 import datetime
+from email.mime.image import MIMEImage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 import uuid
+from email.utils import make_msgid
 
-from flask import Flask, flash, url_for, render_template, request, redirect, jsonify
+import flask
+from flask import Flask, request, jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,6 +29,9 @@ class Account(db.Model):
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
+    email_verified = db.Column(db.Boolean, unique=False, nullable=False)
+    forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
+    forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
     def __init__(self, id, username, email, password, created_on, balance):
         self.id = id
@@ -31,6 +40,10 @@ class Account(db.Model):
         self.password = password
         self.created_on = created_on
         self.balance = balance
+        self.email_verified = False
+        self.forgot_pass_code = None
+        self.forgot_expiry = None
+
 
     def __repr__(self):
         return "<Username: %r>" % self.username
@@ -38,7 +51,7 @@ class Account(db.Model):
 
 @app.route("/", methods=["GET"])
 def root_route():
-    return jsonify(message="This does nothing and should do nothing right now")
+    return jsonify(response="This does nothing and should do nothing right now")
 
 
 @app.route("/users/all", methods=["GET"])
@@ -52,7 +65,8 @@ def all_users():
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "created_on": user.created_on.strftime("%m/%d/%Y")
+            "created_on": user.created_on.strftime("%m/%d/%Y"),
+            "email_verified": user.email_verified
         }
         all_users.append(new_user)
 
@@ -70,10 +84,11 @@ def get_user(username):
             email=found_user.email,
             username=found_user.username,
             balance=found_user.balance,
-            created_on=found_user.created_on.strftime("%m/%d/%Y")
+            created_on=found_user.created_on.strftime("%m/%d/%Y"),
+            email_verified=found_user.email_verified
         )
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route("/users/find/<username>/balance", methods=["GET"])
@@ -84,7 +99,7 @@ def balance(username):
     if found_balance:
         return jsonify(balance=found_balance.balance)
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route("/users/delete/<username>", methods=["DELETE"])
@@ -97,7 +112,7 @@ def delete(username):
         db.session.commit()
         return jsonify(message="Successfully deleted user: %s" % username)
     else:
-        return jsonify(message="Error: User not found")
+        return jsonify(response="Error: User not found"), 404
 
 
 @app.route('/new', methods=['POST'])
@@ -105,7 +120,7 @@ def new():
     username = request.json.get("username")
     password = request.json.get("password")
     balance = request.json.get("balance")
-    created_on = datetime.datetime.now()
+    created_on = datetime.datetime.utcnow()
     id = str(uuid.uuid1())
     email = request.json.get("email")
     print(username, password, balance)
@@ -117,6 +132,7 @@ def new():
             account = Account(id, username, email, password, created_on, balance)
             db.session.add(account)
             db.session.commit()
+            sendEmail(email, "EmailVerification", "Verify Your Email!", id)
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
@@ -171,6 +187,62 @@ def change_password():
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
 
+@app.route('/forgot_password', methods=['PATCH'])
+def forgot_password():
+    email = request.json.get("email")
+    found_user = Account.query.filter_by(email=email).first()
+
+    if found_user:
+        found_user.forgot_expiry = datetime.datetime.now(datetime.timezone.utc)
+        db.session.commit()
+        sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
+        return jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
+
+    else:
+        return jsonify(response="Error: User not found"), 404
+
+@app.route('/forgot_password/change_password/<idd>', methods=['GET'])
+def return_forgot_password_page(idd):
+    try:
+        account = Account.query.filter_by(id=idd).first()
+        account.email_verified = True
+        db.session.commit()
+        return flask.render_template('VerificationSuccess.html')
+    except Exception as ex:
+        return flask.render_template('VerificationFail.html')
+
+
+@app.route('/forgot_password/change_password', methods=['PATCH'])
+def change_password_email():
+    email = request.json.get("email")
+    new_password = request.json.get("new_password")
+    if not request.json.get("email") or not request.json.get("new_password"):
+        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+    else:
+        try:
+            real_password = Account.query.filter_by(username=email).first().password
+            account = Account.query.filter_by(username=email).first()
+            if new_password != real_password:
+                current_time = datetime.datetime.now(datetime.timezone.utc)
+                stored_time = account.forgot_expiry.replace(tzinfo=datetime.timezone.utc)
+                test_time = current_time - stored_time
+
+                if test_time < datetime.timedelta(minutes=15):
+                    account.password = new_password
+                    db.session.commit()
+                    return jsonify(response="Your password has been updated!"), 200
+                else:
+                    jsonify(response="Password reset has expired"), 403
+            else:
+                jsonify(response="Please choose a different password"), 403
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                jsonify(response="Username doesn't exist in database"), 404
+            else:
+                print(str(ex))
+                jsonify(response="bruh idk what happened"), 500
+
+
 @app.route('/change_balance', methods=['PATCH'])
 def change_balance():
     id = request.json.get("id")
@@ -192,6 +264,43 @@ def change_balance():
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+
+@app.route('/email_verified/<idd>', methods=['GET'])
+def email_verified(idd):
+    try:
+        account = Account.query.filter_by(id=idd).first()
+        account.email_verified = True
+        db.session.commit()
+        return flask.render_template('VerificationSuccess.html')
+    except Exception as ex:
+        return flask.render_template('VerificationFail.html')
+
+def sendEmail(email, htmlFileName, subject, id):
+    fromaddr = 'gatorholdem@gmail.com'
+    password = '@3y?W3b%JH.^N>2y'
+    html = open(htmlFileName + ".html").read()
+    html = html.replace("UUID", id)
+    msg = MIMEMultipart('related')
+    msg['From'] = fromaddr
+    msg['To'] = email
+    msg['Subject'] = subject
+    msgAlternative = MIMEMultipart('alternative')
+    msg.attach(msgAlternative)
+    msgText = MIMEText('This is the alternative plain text message.')
+    msgAlternative.attach(msgText)
+    msgText = MIMEText(html, 'html')
+    msgAlternative.attach(msgText)
+    fp = open('gators.png', 'rb')
+    msgImage = MIMEImage(fp.read())
+    fp.close()
+    msgImage.add_header('Content-ID', '<gatorImage>')
+    msg.attach(msgImage)
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(fromaddr, password)
+    text = msg.as_string()
+    server.sendmail(fromaddr, email, text)
+    server.quit()
 
 if __name__ == "__main__":
     app.run(debug=True)

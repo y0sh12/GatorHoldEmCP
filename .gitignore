@@ -5,4 +5,4 @@ build/
 *.egg-info/
 APIs/__pycache__
 .idea/
-APIs/accounts.db
+__pycache__
