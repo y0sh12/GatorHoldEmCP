@@ -195,11 +195,21 @@ def forgot_password():
     if found_user:
         found_user.forgot_expiry = datetime.datetime.now(datetime.timezone.utc)
         db.session.commit()
-        # sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
+        sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
         return jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
 
     else:
         return jsonify(response="Error: User not found"), 404
+
+@app.route('/forgot_password/change_password/<idd>', methods=['GET'])
+def return_forgot_password_page(idd):
+    try:
+        account = Account.query.filter_by(id=idd).first()
+        account.email_verified = True
+        db.session.commit()
+        return flask.render_template('VerificationSuccess.html')
+    except Exception as ex:
+        return flask.render_template('VerificationFail.html')
 
 
 @app.route('/forgot_password/change_password', methods=['PATCH'])
