@@ -119,6 +119,7 @@ def delete(username):
 def new():
     username = request.json.get("username")
     password = request.json.get("password")
+    password = encryptString(password)
     balance = request.json.get("balance")
     created_on = datetime.datetime.utcnow()
     id = str(uuid.uuid1())
@@ -145,7 +146,7 @@ def new():
 @app.route('/auth', methods=['POST'])
 def auth():
     username = request.json.get("username")
-    password1 = request.json.get("password")
+    password1 = encryptString(request.json.get("password"))
     if not request.json.get("username") or not request.json.get("password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
@@ -165,8 +166,8 @@ def auth():
 @app.route('/change_password', methods=['PATCH'])
 def change_password():
     username = request.json.get("username")
-    old_password = request.json.get("old_password")
-    new_password = request.json.get("new_password")
+    old_password = encryptString(request.json.get("old_password"))
+    new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
@@ -215,7 +216,7 @@ def return_forgot_password_page(idd):
 @app.route('/forgot_password/change_password', methods=['PATCH'])
 def change_password_email():
     email = request.json.get("email")
-    new_password = request.json.get("new_password")
+    new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("email") or not request.json.get("new_password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
@@ -301,6 +302,9 @@ def sendEmail(email, htmlFileName, subject, id):
     text = msg.as_string()
     server.sendmail(fromaddr, email, text)
     server.quit()
+
+def encryptString(plaintext):
+    return plaintext
 
 if __name__ == "__main__":
     app.run(debug=True)
