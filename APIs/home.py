@@ -29,7 +29,7 @@ class Account(db.Model):
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
-    email_verified = db.Column(db.Boolean, unique=False, nullable=False)
+    email_verified = db.Column(db.String, unique=False, nullable=False)
     forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
     forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
@@ -131,6 +131,7 @@ def new():
     else:
         try:
             account = Account(id, username, email, password, created_on, balance)
+            print(account.email_verified)
             db.session.add(account)
             db.session.commit()
             sendEmail(email, "EmailVerification", "Verify Your Email!", id)
