@@ -235,15 +235,15 @@ def change_password_email():
                     db.session.commit()
                     return jsonify(response="Your password has been updated!"), 200
                 else:
-                    jsonify(response="Password reset has expired"), 403
+                    return jsonify(response="Password reset has expired"), 403
             else:
-                jsonify(response="Please choose a different password"), 403
+                return jsonify(response="Please choose a different password"), 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                jsonify(response="Username doesn't exist in database"), 404
+                return jsonify(response="Username doesn't exist in database"), 404
             else:
                 print(str(ex))
-                jsonify(response="bruh idk what happened"), 500
+                return jsonify(response="bruh idk what happened"), 500
 
 
 @app.route('/change_balance', methods=['PATCH'])
