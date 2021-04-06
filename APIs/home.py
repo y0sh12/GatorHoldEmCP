@@ -5,6 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
 import uuid
+from cryptography.fernet import Fernet
 from email.utils import make_msgid
 
 import flask
@@ -305,6 +306,17 @@ def sendEmail(email, htmlFileName, subject, id):
 
 def encryptString(plaintext):
     return plaintext
+
+def print_hi(name, f):
+    file = open('key.key', 'rb')
+    key = file.read()
+    file.close()
+    encoded = name.encode('ascii')
+    print(key)
+    f = Fernet(key)
+    #print(f.decrypt(a))
+    encrypted = f.encrypt(encoded)
+    return encrypted
 
 if __name__ == "__main__":
     app.run(debug=True)
