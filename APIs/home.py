@@ -115,7 +115,7 @@ def delete(username):
 
 @app.route('/new', methods=['POST'])
 def new():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     password = request.json.get("password")
     password = encryptString(password)
     balance = request.json.get("balance")
@@ -144,7 +144,7 @@ def new():
 
 @app.route('/auth', methods=['POST'])
 def auth():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     password1 = request.json.get("password")
     if not request.json.get("username") or not request.json.get("password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
@@ -165,7 +165,7 @@ def auth():
 
 @app.route('/change_password', methods=['PATCH'])
 def change_password():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     old_password = request.json.get("old_password")
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
