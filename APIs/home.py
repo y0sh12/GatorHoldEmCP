@@ -120,7 +120,7 @@ def new():
     password = encryptString(password)
     balance = request.json.get("balance")
     created_on = datetime.datetime.utcnow()
-    id = str(uuid.uuid1())
+    idd = str(uuid.uuid1())
     email = request.json.get("email")
     print(username, password, balance)
     if not request.json.get("username") or not request.json.get("password") or not request.json.get("balance") \
@@ -128,11 +128,11 @@ def new():
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            account = Account(id, username, email, password, created_on, balance)
+            account = Account(idd, username, email, password, created_on, balance)
             print(account.email_verified)
             db.session.add(account)
             db.session.commit()
-            sendEmail(email, "EmailVerification", "Verify Your Email!", id)
+            sendEmail(email, "EmailVerification", "Verify Your Email!", idd)
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
@@ -248,13 +248,13 @@ def change_password_email():
 
 @app.route('/change_balance', methods=['PATCH'])
 def change_balance():
-    id = request.json.get("id")
+    idd = request.json.get("id")
     change = int(request.json.get("change"))
     if not request.json.get("id") or not request.json.get("change"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            account = Account.query.filter_by(id=id).first()
+            account = Account.query.filter_by(id=idd).first()
             account.balance = account.balance + change
             if account.balance < 0:
                 account.balance = 0
@@ -266,6 +266,24 @@ def change_balance():
             else:
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
+
+@app.route('/reset_balance', methods=['PATCH'])
+def reset_balance():
+    idd = request.json.get("id")
+    if not request.json.get("id"):
+        return jsonify(response="you're missing one or more values in the body"), 400
+    else:
+        try:
+            account = Account.query.filter_by(id=idd).first()
+            account.balance = 1000
+            db.session.commit()
+            return jsonify(response="Balance has been reset to 1000"), 200
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return jsonify(response="ID doesn't exist in database"), 404
+            else:
+                print(str(ex))
+                return jsonify(response="bruh idk what happened"), 500
 
 
 @app.route('/email_verified/<idd>', methods=['GET'])
@@ -279,11 +297,11 @@ def email_verified(idd):
         return flask.render_template('VerificationFail.html')
 
 
-def sendEmail(email, htmlFileName, subject, id):
+def sendEmail(email, htmlFileName, subject, idd):
     fromaddr = 'gatorholdem@gmail.com'
     password = 'nwfxjyuvbylruzkv'
     html = open(htmlFileName + ".html").read()
-    html = html.replace("UUID", id)
+    html = html.replace("UUID", idd)
     msg = MIMEMultipart('related')
     msg['From'] = fromaddr
     msg['To'] = email
