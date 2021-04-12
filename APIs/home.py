@@ -281,7 +281,7 @@ def email_verified(idd):
 
 def sendEmail(email, htmlFileName, subject, id):
     fromaddr = 'gatorholdem@gmail.com'
-    password = '@3y?W3b%JH.^N>2y'
+    password = 'nwfxjyuvbylruzkv'
     html = open(htmlFileName + ".html").read()
     html = html.replace("UUID", id)
     msg = MIMEMultipart('related')
