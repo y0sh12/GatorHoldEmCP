@@ -132,7 +132,7 @@ def new():
             print(account.email_verified)
             db.session.add(account)
             db.session.commit()
-            sendEmail(email, "EmailVerification", "Verify Your Email!", idd)
+            sendEmail(email, "emailVerification", "Verify Your Email!", idd)
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
