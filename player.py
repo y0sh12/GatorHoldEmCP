@@ -107,7 +107,7 @@ class Player:
         self._balance = self._balance + int(gains)
 
         if self.AI is False:
-            url = "http://abaig.pythonanywhere.com/change_balanc"
+            url = "http://abaig.pythonanywhere.com/change_balance"
             payload = {'id': self.id(), 'change': gains}
             response = reqs.patch(url, json=payload)
             # print(response.content)
