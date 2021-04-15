@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import './Login.css';
-import logo from '../images/LOGO.png';
 import {Link, Redirect} from "react-router-dom";
 import userData from "../axiosCalls.js";
 import Register from "../Register/Register";
-import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import ForgotPasswordEmail from "../ForgotPasswordEmail/ForgotPasswordEmail";
 import Home from "../Home/Home";
 import Header from "../BasicComponents/Header"
+import Alert from 'react-bootstrap/Alert'
 
 export default class Login extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ export default class Login extends Component {
             username: '',
             password: '',
             isLoggedIn:false,
-            isError:''
+            isError:null
         };
     
         this.handleChange = this.handleChange.bind(this);
@@ -37,16 +37,21 @@ export default class Login extends Component {
                 this.setState({isError:response.errors});
             }
             else{
-                this.setState({isLoggedIn: true});
+                userData.verifiedOrNot(this.state.username)
+                .then((response1) => {
+                    console.log("Email verified: " + response1)
+                    if(response1 == "1"){
+                        this.setState({isLoggedIn: true});
+                    }
+                    else{
+                        this.setState({isError:"Please activate your account!"});
+                    }
+                })
             }
         })
     }   
 
     render() {
-        let error = '';
-        if(this.state.isError != ''){
-            error = <p className = "error">{this.state.isError}</p>
-        }
         if(this.state.isLoggedIn){
             return(
                 <Redirect
@@ -61,9 +66,12 @@ export default class Login extends Component {
         }
         else{
         return (
-            <div>
+            <>
                 <Header/>
-                {error}
+                {/* <Alert dismissible onClose = {() => this.setState({isError:null})}show = {this.state.isError != null} variant = "danger"
+                className = "error"
+                >{this.state.isError}</Alert> */}
+                <p className = "error">{this.state.isError}</p>
                 <form onSubmit={this.handleLogin} >
                 <label>
                     Username*:
@@ -73,11 +81,11 @@ export default class Login extends Component {
                     Password*:
                     <input required placeholder= "Password" type="password" name= "password" value={this.state.password} onChange={this.handleChange} />
                     </label><br></br>
-                    <Link className = "link"  to = "/ForgotPassword">Forgot Password?</Link><br></br>
+                    <Link className = "link"  to = "/ForgotPasswordEmail">Forgot Password?</Link><br></br>
                     <input type="submit" value="Login" />
                 </form>
                 <p>Don't have an account? <span><Link className = "link"  to = "/Register">Register Now!</Link></span></p>
-            </div>
+            </>
         )
         }
     }

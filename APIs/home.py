@@ -29,7 +29,7 @@ class Account(db.Model):
     password = db.Column(db.String(200), primary_key=False, unique=False, nullable=False)
     created_on = db.Column(db.DateTime, index=False, unique=False, nullable=True)
     balance = db.Column(db.Integer, unique=False, nullable=False)
-    email_verified = db.Column(db.Boolean, unique=False, nullable=False)
+    email_verified = db.Column(db.String, unique=False, nullable=False)
     forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
     forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
@@ -220,8 +220,8 @@ def change_password_email():
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            real_password = Account.query.filter_by(username=email).first().password
-            account = Account.query.filter_by(username=email).first()
+            real_password = Account.query.filter_by(email=email).first().password
+            account = Account.query.filter_by(email=email).first()
             if new_password != real_password:
                 current_time = datetime.datetime.now(datetime.timezone.utc)
                 stored_time = account.forgot_expiry.replace(tzinfo=datetime.timezone.utc)
@@ -232,15 +232,15 @@ def change_password_email():
                     db.session.commit()
                     return jsonify(response="Your password has been updated!"), 200
                 else:
-                    jsonify(response="Password reset has expired"), 403
+                    return jsonify(response="Password reset has expired"), 403
             else:
-                jsonify(response="Please choose a different password"), 403
+                return jsonify(response="Please choose a different password"), 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                jsonify(response="Username doesn't exist in database"), 404
+                return jsonify(response="Username doesn't exist in database"), 404
             else:
                 print(str(ex))
-                jsonify(response="bruh idk what happened"), 500
+                return jsonify(response="bruh idk what happened"), 500
 
 
 @app.route('/change_balance', methods=['PATCH'])

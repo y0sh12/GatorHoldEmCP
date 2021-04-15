@@ -19,9 +19,9 @@ code {
 div {
   min-height: 100vh;
   min-width: 100vw;
-  background-color: #B2E086;
+  background-color: #72b434;
+  /* background-image: url(./felt.png); */
   text-align:center;
-  /* align-items: center; */
 }
 
 li {
@@ -31,9 +31,17 @@ li {
 .link{
   text-decoration: none;
 }
+.remove{
+  background-color: #f44336;
+}
+.start{
+  background-color:blue;
+  color:yellow;
+}
 
 .link:visited{
   text-decoration: none;
   color: blue;
 }
+
 

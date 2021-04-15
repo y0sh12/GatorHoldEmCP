@@ -47,6 +47,26 @@ def on_event(sid, room_id):
     return pl_list
 
 
+def active_player_list_webapp(room_id):
+    room = next((room for room in roomList if room.room_id == room_id), None)
+    if room is None:
+        print("room does not exist")
+    pl_list = []
+    for pl in room.get_player_list():
+        if pl.AI:
+            temp_pl = Player(pl._client_number, False, pl.get_name(), True)
+            temp_pl._isFolded = pl.isFolded
+            temp_pl._investment = pl.investment
+            temp_pl._bankrupt = pl.bankrupt
+            temp_pl._balance = pl.balance
+        else:
+            temp_pl = copy.deepcopy(pl)
+
+        temp_pl.hand = []
+        pl_list.append(temp_pl.__dict__)
+    return pl_list
+
+
 @sio.on('in_room')
 def in_room(sid, data):
     name = data[0]
@@ -85,7 +105,7 @@ def disconnect(sid):
         player._investment = 0
         player.declare_bankrupt()
         player._connected = False
-
+        
         # If game in progress, just make sure that there are at least two active players
         if room.game_in_progress:
             pass
@@ -102,7 +122,8 @@ def disconnect(sid):
             # If one human player,
             if connected_players + ai_num <= 1:
                 sio.emit('game_ended', "The game has ended.", room=room.room_id)
-                room.game_in_progress = False
+                # room.game_in_progress = False
+            sio.emit('left_room', (player._name + " has left the room!"), room=room.room_id, skip_sid=sid)
 
         else:
             # We are in lobby
@@ -110,6 +131,7 @@ def disconnect(sid):
             is_vip_ = player.is_vip
             # Remove diconnecting player
             room.remove_player(player)
+            sio.emit('left_room', (player._name + " has left the room!"), room=room.room_id, skip_sid=sid)
 
             # count ai players in room
             ai_players = sum([1 for p in room.get_player_list() if p.AI == True])
@@ -194,6 +216,7 @@ def leave_room(sid):
     print(sid)
 
 
+
 @sio.on('start_game')
 def start_game(sid, room_id):
     room = next((room for room in roomList if room.room_id == room_id), None)
@@ -217,6 +240,7 @@ def start_game(sid, room_id):
         else:
             table.new_round()
             sio.emit('new_hand')
+            # Here
             table.distribute_cards()
 
             small_blind = str(table.small_blind.get_client_number())
@@ -326,6 +350,8 @@ def game_loop(room, num_raises=0):
         is_check = True if player.investment == table.minimum_bet else False
         checkOrCall = "Check" if is_check else "Call"
         info = str(player.balance), str(player.investment), str(table.minimum_bet), str(checkOrCall)
+        print("ROOM: " , room)
+        sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
         sio.emit('which_players_turn', [player.get_client_number(), str(table.minimum_bet)], room=room.room_id)
         if player.AI:
             option = player.make_choice(num_of_opponents, player.hand, table.visible_cards, table.pot, table.minimum_bet - player.investment, player.investment)
@@ -333,6 +359,7 @@ def game_loop(room, num_raises=0):
         else:
             try:
                 option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 300)
+                print("OPTION: ", option)
             except:
                 print("Client failed to respond")
                 if is_check:
@@ -448,6 +475,8 @@ def game_loop(room, num_raises=0):
     return True
 
 
+
+
 def show(room):
     sio.emit('round_ended')
 
@@ -490,7 +519,7 @@ def main():
         #     os.chdir(cwd)
         #     os.system("python3 AiInstallation.py")
         # os.chdir(temp)
-        eventlet.wsgi.server(eventlet.listen(('', 5000)), app)
+        eventlet.wsgi.server(eventlet.listen(('', 5001)), app)
     except KeyboardInterrupt as e:
         sys.exit(0)
 

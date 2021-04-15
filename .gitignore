@@ -6,3 +6,4 @@ build/
 APIs/__pycache__
 .idea/
 __pycache__
+APIs/accounts.db

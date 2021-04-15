@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './Register.css';
-import logo from '../images/LOGO.png';
 import {Link, Redirect} from "react-router-dom";
 import Login from "../Login/Login";
 import userData from "../axiosCalls.js";
@@ -16,7 +15,7 @@ export default class Register extends Component {
             username: '',
             password: '',
             confirmPassword: '',
-            balance: 1000,
+            balance: 500,
             isRegistered:false,
             isError:''
         };
@@ -53,23 +52,16 @@ export default class Register extends Component {
     
 
     render() {
-        let error = '';
-        if(this.state.isError != ''){
-            error = <p className = "error">{this.state.isError}</p>
-        }
         let warning = '';
         if (!this.matchingPasswords()){
             warning = <p className = "error">Passwords not matching!</p>
-        }
-        else{
-            warning = '';
         }
         if (this.state.isRegistered){
             return (
                 <Redirect
                 to={{
                     pathname: "/ConfirmPage",
-                    state: {confirmWhat: "Your account has been created!"}
+                    state: {confirmWhat: "A confirmation link has been sent to your email. Please verify to activate your account!"}
                 }}/>
             )
         }
@@ -77,7 +69,7 @@ export default class Register extends Component {
         return (
             <>
                 <Header/>
-                {error}
+                <p className = "error">{this.state.isError}</p>
                 <form autoComplete = "off" onSubmit={this.handleRegister} >
                 <label>
                     Email*: 

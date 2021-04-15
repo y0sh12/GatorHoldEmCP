@@ -1,5 +1,4 @@
 import React from 'react'
-import logo from '../images/LOGO.png';
 import {Link} from "react-router-dom";
 
 export default function Header(props) {
@@ -13,7 +12,7 @@ export default function Header(props) {
             }
         }}className = "link">Back</Link>
             <header>
-                <img src={logo} alt="Logo" />
+                <img src= '/images/LOGO.png'alt="Logo" />
                 </header>
         </>
     )
@@ -21,7 +20,7 @@ export default function Header(props) {
     else{
         return(
         <header>
-            <img src={logo} alt="Logo" />
+            <img src='/images/LOGO.png' alt="Logo" />
         </header>
         )
     }

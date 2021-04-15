@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import './ForgotPassword.css';
-import logo from '../images/LOGO.png';
 import userData from "../axiosCalls.js";
 import { Redirect, Link } from 'react-router-dom';
 import ConfirmPage from "../ConfirmPage/ConfirmPage";
@@ -10,8 +9,7 @@ export default class ForgotPassword extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            old_password: '',
+            email: '',
             new_password: '',
             confirm_new_password: '',
             isReset:false,
@@ -52,10 +50,6 @@ export default class ForgotPassword extends Component {
     } 
 
     render() {
-        let error = '';
-        if(this.state.isError != ''){
-            error = <p className = "error">{this.state.isError}</p>
-        }
         let warning = '';
         if (!this.matchingPasswords()){
             warning = <p className = "error">New passwords not matching!</p>
@@ -68,24 +62,20 @@ export default class ForgotPassword extends Component {
                 <Redirect
                 to={{
                     pathname: "/ConfirmPage",
-                    state: {confirmWhat: "Your password has been reset!"}
+                    state: {confirmWhat: "Your password has been successfully reset!"}
                 }}
                 />
             )
         }
         return (
-            <div>
-                <Header whereTo = '/Login' username = {null} backButton = {true}/>
+            <>
+                <Header />
                 <p>Reset your Password</p>
-                {error}
+                <p className = "error">{this.state.isError}</p>
                 <form autoComplete = "off" onSubmit={this.handleReset} >
                 <label>
-                    Username*:
-                    <input required placeholder= "Username" type="username" name= "username" value={this.state.username} onChange={this.handleChange} />
-                    </label><br></br>
-                    <label>
-                    Old Password*:
-                    <input required placeholder= "Password" type="password" name= "old_password" value={this.state.old_password} onChange={this.handleChange} />
+                    Email*:
+                    <input required placeholder= "Email" type="username" name= "email" value={this.state.email} onChange={this.handleChange} />
                     </label><br></br>
                     <label>
                     New Password*:
@@ -98,8 +88,7 @@ export default class ForgotPassword extends Component {
                     {warning}
                     <input type="submit" value="Reset" />
                 </form>
-                {/* <Link className = "link"  to = "/Login">Back</Link> */}
-            </div>
+            </>
         )
     }
 }
