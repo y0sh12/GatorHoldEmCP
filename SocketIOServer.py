@@ -4,7 +4,7 @@ import os
 import eventlet
 import socketio
 import pathlib
-from player import Player
+from player import Player, InvalidBalanceError
 from room import Room
 from table import Table
 from ai import AI
@@ -12,9 +12,9 @@ import time
 import random
 import string
 import math
+import requests as reqs
 
 roomList = []
-
 
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
@@ -102,7 +102,7 @@ def disconnect(sid):
             # If one human player,
             if connected_players + ai_num <= 1:
                 sio.emit('game_ended', "The game has ended.", room=room.room_id)
-                room.game_in_progress = False
+                # room.game_in_progress = False
 
         else:
             # We are in lobby
@@ -158,12 +158,21 @@ def remove_player(sid, data):
 @sio.on('my_name')
 def on_event(sid, name, room_id):
     room = next((room for room in roomList if room.room_id == room_id), None)
-    if len(room.get_player_list()) == 0:
-        print("vip")
-        room.add_player(Player(sid, True, name))
-        sio.emit('vip', room=sid)
-    else:
-        room.add_player(Player(sid, False, name))
+    try:
+        if len(room.get_player_list()) == 0:
+            # print("vip")
+            room.add_player(Player(sid, True, name))
+            sio.emit('vip', room=sid)
+        else:
+            room.add_player(Player(sid, False, name))
+
+    except reqs.HTTPError as err:
+        print(err)
+        sio.emit('connection_error', "Error: Account server unreachable", room=sid)
+
+    except InvalidBalanceError as err:
+        print(err)
+        sio.emit('connection_error', "Error: Balance under 50", room=sid)
 
     sio.emit('user_connection', (name + " has joined the room!"), room=room_id, skip_sid=sid)
 
@@ -207,7 +216,7 @@ def start_game(sid, room_id):
     balance_dict = {p.get_client_number(): p.balance for p in room.get_player_list()}
 
     while True:
-        #If everyone is bakrupt get out
+        #If everyone is bankrupt get out
         isBroke = 0
         for player in room.get_player_list():
             if player.balance == 0:
@@ -295,6 +304,7 @@ def start_game(sid, room_id):
     for player in room.get_player_list():
         if player.balance != 0:
             winner = player
+
     sio.emit('message', str(winner) + " has won the game!",
              room=room.room_id)
 
@@ -349,13 +359,24 @@ def game_loop(room, num_raises=0):
                 sio.emit('message', str(player.name) + " is going all in!", room = room.room_id)
                 table.add_to_pot(player.balance)
                 player.add_investment(player.balance)
-                player.change_balance(-player.balance)
+                try:
+                    player.change_balance(-player.balance)
+
+                except reqs.HTTPError as err:
+                    print(err)
+                    sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
             else:
                 if is_check:
                     sio.emit('message', str(player.name) + " checked", room = room.room_id)
                 else:
                     sio.emit('message', str(player.name) + " called", room = room.room_id)
-                player.change_balance(-(table.minimum_bet - player.investment))
+                try:
+                    player.change_balance(-(table.minimum_bet - player.investment))
+
+                except reqs.HTTPError as err:
+                    print(err)
+                    sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+
                 table.add_to_pot(table.minimum_bet - player.investment)
                 player.add_investment(table.minimum_bet - player.investment)
             # if is_check:
@@ -401,7 +422,14 @@ def game_loop(room, num_raises=0):
                 else:
                     sio.emit('message', str(player.name) + " has raised by $" + str(_raise), room = room.room_id)
                     table.change_minimum_bet(int(_raise))
-                    player.change_balance(-(table.minimum_bet - player.investment))
+
+                    try:
+                        player.change_balance(-(table.minimum_bet - player.investment))
+
+                    except reqs.HTTPError as err:
+                        print(err)
+                        sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+
                     table.add_to_pot(table.minimum_bet - player.investment)
                     player.add_investment(table.minimum_bet - player.investment)
                     check = len(room.get_player_list()) - folded - bankrupt_players
@@ -422,7 +450,13 @@ def game_loop(room, num_raises=0):
         if active_players == 1:
             for p in room.get_player_list():
                 if not p.isFolded:
-                    p.change_balance(table.pot)
+                    try:
+                        p.change_balance(table.pot)
+
+                    except reqs.HTTPError as err:
+                        print(err)
+                        sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+
                     sio.emit('message', str(p) + " has won the pot: $" + str(table.pot), room=room.room_id)
             return False
 
@@ -474,13 +508,23 @@ def show(room):
         ties_with_max = [p for p in room.get_player_list() if p.best_hand == max_combination and p.best_sum == max_sum]
 
     if len(ties_with_max) == 1:  # if one player wins whole pot, no ties
-        ties_with_max[0].change_balance(table.pot)
+        try:
+            ties_with_max[0].change_balance(table.pot)
+
+        except reqs.HTTPError as err:
+            print(err)
+            sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+
         sio.emit('message', str(ties_with_max[0]) + " has won the pot: $" + str(table.pot), room=room.room_id)
     else:
         split = table.pot / len(ties_with_max)
         for p in ties_with_max:
-            p.change_balance(split)
-            sio.emit('message', str(p) + "has won a split of the pot: $" + str(split) + "\n", room=room.room_id)
+            try:
+                p.change_balance(split)
+
+            except reqs.HTTPError as err:
+                print(err)
+                sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
 
 def main():
     try:
