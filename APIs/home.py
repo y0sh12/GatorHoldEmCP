@@ -1,15 +1,14 @@
-import os
 import datetime
+import os
+import smtplib
+import uuid
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import smtplib
-import uuid
-from email.utils import make_msgid
 
 import flask
+from cryptography.fernet import Fernet
 from flask import Flask, request, jsonify
-
 from flask_sqlalchemy import SQLAlchemy
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -33,8 +32,8 @@ class Account(db.Model):
     forgot_pass_code = db.Column(db.Integer, unique=False, nullable=True)
     forgot_expiry = db.Column(db.DateTime, unique=False, nullable=True)
 
-    def __init__(self, id, username, email, password, created_on, balance):
-        self.id = id
+    def __init__(self, idd, username, email, password, created_on, balance):
+        self.id = idd
         self.username = username
         self.email = email
         self.password = password
@@ -43,7 +42,6 @@ class Account(db.Model):
         self.email_verified = False
         self.forgot_pass_code = None
         self.forgot_expiry = None
-
 
     def __repr__(self):
         return "<Username: %r>" % self.username
@@ -58,7 +56,7 @@ def root_route():
 # Gives all users and their information
 # FORMAT: link.com/users/all
 def all_users():
-    all_users = []
+    all_users_list = []
     users = Account.query.all()
     for user in users:
         new_user = {
@@ -68,9 +66,9 @@ def all_users():
             "created_on": user.created_on.strftime("%m/%d/%Y"),
             "email_verified": user.email_verified
         }
-        all_users.append(new_user)
+        all_users_list.append(new_user)
 
-    return jsonify(all_users)
+    return jsonify(all_users_list)
 
 
 @app.route("/users/find/<username>", methods=["GET"])
@@ -117,11 +115,12 @@ def delete(username):
 
 @app.route('/new', methods=['POST'])
 def new():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     password = request.json.get("password")
+    password = encryptString(password)
     balance = request.json.get("balance")
     created_on = datetime.datetime.utcnow()
-    id = str(uuid.uuid1())
+    idd = str(uuid.uuid1())
     email = request.json.get("email")
     print(username, password, balance)
     if not request.json.get("username") or not request.json.get("password") or not request.json.get("balance") \
@@ -129,10 +128,11 @@ def new():
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            account = Account(id, username, email, password, created_on, balance)
+            account = Account(idd, username, email, password, created_on, balance)
+            print(account.email_verified)
             db.session.add(account)
             db.session.commit()
-            sendEmail(email, "EmailVerification", "Verify Your Email!", id)
+            sendEmail(email, "emailVerification", "Verify Your Email!", idd)
             return "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
@@ -144,13 +144,14 @@ def new():
 
 @app.route('/auth', methods=['POST'])
 def auth():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     password1 = request.json.get("password")
     if not request.json.get("username") or not request.json.get("password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             password2 = Account.query.filter_by(username=username).first().password
+            password2 = decryptString(password2)
             if password1 == password2:
                 return "{\"response\": \"True\"}", 200
             else:
@@ -164,14 +165,15 @@ def auth():
 
 @app.route('/change_password', methods=['PATCH'])
 def change_password():
-    username = request.json.get("username")
+    username = request.json.get("username").lower()
     old_password = request.json.get("old_password")
-    new_password = request.json.get("new_password")
+    new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             real_password = Account.query.filter_by(username=username).first().password
+            real_password = decryptString(real_password)
             account = Account.query.filter_by(username=username).first()
             if old_password == real_password:
                 account.password = new_password
@@ -201,6 +203,7 @@ def forgot_password():
     else:
         return jsonify(response="Error: User not found"), 404
 
+
 @app.route('/forgot_password/change_password/<idd>', methods=['GET'])
 def return_forgot_password_page(idd):
     try:
@@ -215,7 +218,7 @@ def return_forgot_password_page(idd):
 @app.route('/forgot_password/change_password', methods=['PATCH'])
 def change_password_email():
     email = request.json.get("email")
-    new_password = request.json.get("new_password")
+    new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("email") or not request.json.get("new_password"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
@@ -245,13 +248,13 @@ def change_password_email():
 
 @app.route('/change_balance', methods=['PATCH'])
 def change_balance():
-    id = request.json.get("id")
+    idd = request.json.get("id")
     change = int(request.json.get("change"))
     if not request.json.get("id") or not request.json.get("change"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            account = Account.query.filter_by(id=id).first()
+            account = Account.query.filter_by(id=idd).first()
             account.balance = account.balance + change
             if account.balance < 0:
                 account.balance = 0
@@ -264,6 +267,24 @@ def change_balance():
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+@app.route('/reset_balance', methods=['PATCH'])
+def reset_balance():
+    idd = request.json.get("id")
+    if not request.json.get("id"):
+        return jsonify(response="you're missing one or more values in the body"), 400
+    else:
+        try:
+            account = Account.query.filter_by(id=idd).first()
+            account.balance = 1000
+            db.session.commit()
+            return jsonify(response="Balance has been reset to 1000"), 200
+        except Exception as ex:
+            if "NoneType" in str(ex):
+                return jsonify(response="ID doesn't exist in database"), 404
+            else:
+                print(str(ex))
+                return jsonify(response="bruh idk what happened"), 500
+
 
 @app.route('/email_verified/<idd>', methods=['GET'])
 def email_verified(idd):
@@ -275,11 +296,12 @@ def email_verified(idd):
     except Exception as ex:
         return flask.render_template('VerificationFail.html')
 
-def sendEmail(email, htmlFileName, subject, id):
+
+def sendEmail(email, htmlFileName, subject, idd):
     fromaddr = 'gatorholdem@gmail.com'
-    password = '@3y?W3b%JH.^N>2y'
+    password = 'nwfxjyuvbylruzkv'
     html = open(htmlFileName + ".html").read()
-    html = html.replace("UUID", id)
+    html = html.replace("UUID", idd)
     msg = MIMEMultipart('related')
     msg['From'] = fromaddr
     msg['To'] = email
@@ -301,6 +323,23 @@ def sendEmail(email, htmlFileName, subject, id):
     text = msg.as_string()
     server.sendmail(fromaddr, email, text)
     server.quit()
+
+
+def encryptString(plaintext):
+    file = open('key.key', 'rb')
+    key = file.read()
+    file.close()
+    encoded = plaintext.encode('ascii')
+    print(key)
+    f = Fernet(key)
+    return f.encrypt(encoded)
+
+def decryptString(encryptedString):
+    file = open('key.key', 'rb')
+    key = file.read()
+    file.close()
+    f = Fernet(key)
+    return f.decrypt(encryptedString).decode('ascii')
 
 if __name__ == "__main__":
     app.run(debug=True)

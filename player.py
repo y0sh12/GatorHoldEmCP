@@ -1,6 +1,31 @@
+import requests as reqs
+import json
+
+class InvalidBalanceError(Exception):
+    pass
+
 class Player:
+
     def __init__(self, client_number, is_vip, name, ai_bot_bool=False):
-        self._balance = 500
+        if not ai_bot_bool:
+            response = reqs.get("http://abaig.pythonanywhere.com/users/find/" + name)
+            print(response.content)
+            try:
+                response.raise_for_status()
+            except reqs.HTTPError:
+                raise reqs.HTTPError
+
+            if response.json()['balance'] < 50:
+                raise InvalidBalanceError("Error: Balance under 50")
+
+            self._balance = response.json()['balance']
+            self._email = response.json()['email']
+            self._id = response.json()['id']
+
+        else:
+            self._balance = 1000
+            self._email = "ai@email.com"
+            self._id = "0"
         self._client_number = client_number  # None = AI
         self._name = name
         self.AI = ai_bot_bool
@@ -36,6 +61,12 @@ class Player:
     def balance(self):
         return self._balance
 
+    def id(self):
+        return self._id
+
+    def email(self):
+        return self._email
+
     @property
     def best_hand(self):
         return self._best_hand
@@ -70,7 +101,21 @@ class Player:
         self._best_hand_sum = value
     
     def change_balance(self, gains):
+        if gains == 0:
+            return
+
         self._balance = self._balance + int(gains)
+
+        if self.AI is False:
+            url = "http://abaig.pythonanywhere.com/change_balance"
+            payload = {'id': self.id(), 'change': gains}
+            response = reqs.patch(url, json=payload)
+            # print(response.content)
+            # print("Player id: " + self.id() + ", gains value: " + str(gains))
+            try:
+                response.raise_for_status()
+            except reqs.HTTPError:
+                raise reqs.HTTPError
 
     def fold(self):
         self._isFolded = True
@@ -104,7 +149,6 @@ class Player:
 
     def get_name(self):
         return self._name
-
 
     def __str__(self):
         return self._name
