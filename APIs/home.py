@@ -223,8 +223,8 @@ def change_password_email():
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            real_password = decryptString(Account.query.filter_by(username=email).first().password)
-            account = Account.query.filter_by(username=email).first()
+            real_password = decryptString(Account.query.filter_by(email=email).first().password)
+            account = Account.query.filter_by(email=email).first()
             if decryptString(new_password) != real_password:
                 current_time = datetime.datetime.now(datetime.timezone.utc)
                 stored_time = account.forgot_expiry.replace(tzinfo=datetime.timezone.utc)
