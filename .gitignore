@@ -6,3 +6,4 @@ build/
 APIs/__pycache__
 .idea/
 __pycache__
+JSClient/web-app/node_modules
