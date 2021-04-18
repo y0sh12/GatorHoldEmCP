@@ -118,7 +118,8 @@ def new():
     username = request.json.get("username").lower()
     password = request.json.get("password")
     password = encryptString(password)
-    balance = request.json.get("balance")
+    # balance = request.json.get("balance")
+    balance = 1000
     created_on = datetime.datetime.utcnow()
     idd = str(uuid.uuid1())
     email = request.json.get("email")
