@@ -5,6 +5,7 @@ import Login from "../Login/Login";
 import {Link, Redirect} from "react-router-dom";
 import userData from "../axiosCalls.js";
 import io from "socket.io-client";
+import {Alert, ListGroup, Button, ListGroupItem, Modal, Nav, Card, Badge, OverlayTrigger, Popover} from 'react-bootstrap'
 import {socket} from "../socket.js"
 
 
@@ -26,11 +27,11 @@ export default class Game extends Component {
             round_num:'0',
             pot:0,
             myTurn:false,
-            theMessage:'',
+            theMessage:'GAME HAS BEGUN',
             theCheckorCall:'Check',
-            raiseAmount:0,
+            raiseAmount:50,
             option:'',
-            theAck:null
+            modal:false
 
         };
         this.handleLeave = this.handleLeave.bind(this);
@@ -43,20 +44,20 @@ export default class Game extends Component {
 
     }
 
-
-    componentDidMount(){
-        //Fetch player balance at start
+    componentWillMount(){
         if(typeof this.props.location.state === 'undefined'){
             this.setState({isLoggedIn: false});
         }
-        // else{
-        //     userData.getBalance(this.props.location.state.username)
-        //     .then((response) => {
-        //         this.setState({balance:response});
-        //     })
-        // }
+    }
+
+
+    componentDidMount(){
+        if(typeof this.props.location.state === 'undefined'){
+            this.setState({isLoggedIn: false});
+        }
 
         //Socket handlers
+        if(socket != null){
         socket.on("left_room", (message) => {
             this.setState({theMessage:message});
             console.log(this.state.theMessage);
@@ -78,6 +79,7 @@ export default class Game extends Component {
         });
         socket.on("new_hand", () => {
             this.setState({cards:['','','','','']});
+            this.setState({raiseAmount:50});
         });
         socket.on('emit_hand', (card1, card2) => {
             this.setState({hand:[card1, card2]});
@@ -145,11 +147,11 @@ export default class Game extends Component {
         });
         socket.on('flop', (flop) => {
             let array = flop.match(/\b[\w']+(?:[^\w\n]+[\w']+){0,3}\b/g);
-            this.setState({cards:[array[0], array[1], array[2]]});
+            this.setState({cards:[array[0], array[1], array[2], '', '']});
         });
         socket.on('turn', (turn) => {
             let array = turn.match(/\b[\w']+(?:[^\w\n]+[\w']+){0,3}\b/g);
-            this.setState({cards:[array[0], array[1], array[2], array[3]]});
+            this.setState({cards:[array[0], array[1], array[2], array[3], '']});
         });
         socket.on('river', (river) => {
             let array = river.match(/\b[\w']+(?:[^\w\n]+[\w']+){0,3}\b/g);
@@ -160,17 +162,43 @@ export default class Game extends Component {
             socket.disconnect();
         });
     }
+    }
 
-
+    componentWillUnmount(){
+        if(socket!= null){
+        socket.off('left_room');
+        socket.off('vip');
+        socket.off('disconnect');
+        socket.off('message');
+        socket.off('new_hand');
+        socket.off('emit_hand');
+        socket.off('board_init_info');
+        socket.off('update_players');
+        socket.off('which_players_turn');
+        socket.off('your_turn');
+        socket.off('raise');
+        socket.off('you_timed_out');
+        socket.off('flop');
+        socket.off('turn');
+        socket.off('river');
+        socket.off('game_ended');
+        }
+    
+    }
 
     renderPlayer = (player) => {  
         if(player._name != this.props.location.state.username){
         return(
-            <li key = {player._client_id}>
-                <p><b>{player._name}</b></p>
-                <p>Balance: {player._balance}</p>
-                <p>Investment: {player._investment}</p>
-            </li>
+            <Card key = {player._client_id} text='black' style={{marginRight: "1vw", backgroundColor:"#C3770F", opacity: ((player._isFolded || player._isBankrupt || !player._connected) ? "50%" : "100%")}}>
+                <Card.Header><b>{player._name}</b></Card.Header>
+                <Card.Body>
+                    <Card.Text>
+                         <i>Balance: </i><b>${player._balance}</b><br></br>
+                        <i>Investment: </i><b>${player._investment}</b>
+                    </Card.Text>
+
+                </Card.Body>
+            </Card>
             
         )
         }
@@ -178,16 +206,18 @@ export default class Game extends Component {
 
     renderMyInfo = (me) => {
         return (
-            <li key = {me._client_id}>
-                <p>Your balance: <b>{me._balance}</b></p>
-                <p>Your investment: {me._investment}</p>
-            </li>
+            <Card key = {me._client_id} text='black' style={{backgroundColor:"#C3770F"}}>
+                <Card.Body>
+                <i>Your balance: </i><b>{this.state.balance}</b><br></br>
+                <i>Your investment: </i><b>{me._investment}</b>
+                </Card.Body>
+            </Card>
         )
     }
 
     renderCard = (card, index) => {
         return(
-                <img style = {{width: "15%", height:"15%"}} key = {index} src = {this.decodeCard(card)}/>
+                <img style = {{marginRight:"1vw", width:"6.5vw"}} key = {index} src = {this.decodeCard(card)}/>
         )
     }
 
@@ -211,6 +241,9 @@ export default class Game extends Component {
             break;
         }
         return "images/" + rank + "_of_" + suit + "s.png";
+    }
+    else{
+        return "images/back.png";
     }
     }
 
@@ -265,27 +298,53 @@ export default class Game extends Component {
             )
         }
         return (
-            < >
-                <button onClick = {this.handleLeave}>Back to Home</button>
-                <header><b>GAME ROOM</b></header>
-                <span>
+            <>
+                <Modal variant = "warning" centered show={this.state.modal} onHide={() => {this.setState({modal:false})}} >
+                    <Modal.Header closeButton><Modal.Title>Are you sure you want to leave the game?</Modal.Title></Modal.Header>
+                    <Modal.Body>You will not be able to join back into the game!</Modal.Body>
+                    <Modal.Footer> 
+                    <Button variant="secondary" onClick={() => {this.setState({modal:false})}}>Close</Button>
+                    <Button variant = "danger" onClick = {this.handleLeave}>LEAVE GAME</Button>
+                    </Modal.Footer>
+                </Modal>
+            <body>
+                <Nav className="justify-content-between">
+                    <Nav.Item><Button variant = "danger" onClick = {() => {this.setState({modal:true})}}>LEAVE GAME</Button></Nav.Item>
+                    <Badge style = {{fontSize:"1.5em"}} pill variant="light"><b>ROUND: </b>{this.state.round_num}</Badge>
+                </Nav>
+                <ListGroup style = {{marginBottom:"1vh"}} className = "justify-content-center" horizontal>
                     {this.state.theList.map((player)=> {return this.renderPlayer(player)})}
-                </span>
-                <span>{this.state.cards.map((card, index)=> {return this.renderCard(card, index)})}</span>
-                <p>{this.state.theMessage}</p>
-                <p>Pot: {this.state.pot}</p>
-                <p>Minimum Bet: {this.state.minimum_bet}</p>
-                <p>Round Number: {this.state.round_num}</p>
-                <ul>{this.state.theList.filter(player => player._name === this.props.location.state.username).map((me) => {return this.renderMyInfo(me)})}</ul>
-                {/* <p>Your balance: <b>{this.state.balance}</b></p> */}
-                <header>Your HAND:</header>
-                <span>{this.state.hand.map((card, index)=> {return this.renderCard(card, index)})}</span>
-                <div>
-                <button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption}>{this.state.theCheckorCall}</button>
-                <button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption}>Fold</button>
-                <button disabled = {!this.state.myTurn} name = 'Raise' onClick = {this.chooseOption}>Raise</button>
-                <input disabled = {!this.state.myTurn} onChange = {this.raiseSlider.bind(this)} type="range" min={this.state.minimum_bet} max={this.state.balance} value={this.state.raiseAmount}></input>
-                </div>
+                </ListGroup>
+                <Nav style = {{marginBottom:"1vh"}} className = "justify-content-around">
+                <b style = {{fontSize:"1.5em"}}><Badge variant="light" pill>POT: </Badge> ${this.state.pot}</b>
+                <b style = {{fontSize:"1.5em"}}><Badge  variant="light" pill>MINIMUM BET: </Badge> ${this.state.minimum_bet}</b></Nav>
+                {this.state.cards.map((card, index)=> {return this.renderCard(card, index)})}
+                <Nav style = {{margin:"1rem"}} className = "justify-content-center"><b style = {{fontSize:"1.5em"}}> <Badge variant="light" pill >{this.state.theMessage}</Badge></b></Nav>
+                <Nav style = {{margin:"1rem"}} className = "justify-content-center">{this.state.theList.filter(player => player._name === this.props.location.state.username).map((me) => {return this.renderMyInfo(me)})}</Nav>
+                {this.state.hand.map((card, index)=> {return this.renderCard(card, index)})}
+                <Nav className = "justify-content-between">
+               <OverlayTrigger
+                trigger="click"
+                placement='top-end'
+                overlay={
+                    <Popover>
+                            <img style = {{width:"30vw"}} src = "images/Rankings.png"></img>
+                    </Popover>}>
+                <Button style = {{color:"blue"}} variant="warning">Poker Hierarchy</Button>
+                </OverlayTrigger>
+                <ListGroup horizontal>
+                    <Button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption} style = {{color:"blue", marginRight:"1vw"}} variant="warning">{this.state.theCheckorCall}</Button>
+                    <Button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption} variant = "danger">FOLD</Button>
+                    <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE</Button>
+                </ListGroup>
+                {/* <ListGroup>
+                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/D.png"></img>: {this.state.dealer}</ListGroupItem>
+                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/SB.png"></img>: {this.state.small_blind}</ListGroupItem>
+                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/BB.png"></img>: {this.state.big_blind}</ListGroupItem>
+                </ListGroup> */}
+                <p>D, sb, bb list</p>
+               </Nav>
+            </body>
             </>
         )
     }

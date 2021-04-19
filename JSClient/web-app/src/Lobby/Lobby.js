@@ -6,7 +6,8 @@ import Header from "../BasicComponents/Header"
 import {Link, Redirect} from "react-router-dom";
 import userData from "../axiosCalls.js";
 import {socket} from "../socket.js"
-// import {Serializer} from 'jsonapi-serializer';
+import {Alert, ListGroup, Button, ListGroupItem, Modal, Spinner, Nav} from 'react-bootstrap'
+import ModalHeader from 'react-bootstrap/esm/ModalHeader';
 
 export default class Lobby extends Component {
     constructor(props) {
@@ -18,6 +19,8 @@ export default class Lobby extends Component {
             is_vip:false,
             goBack:false,
             stillIn:true,
+            isLoading:false,
+            modal:false,
             theList: [],
             start:false
         };
@@ -26,6 +29,13 @@ export default class Lobby extends Component {
         this.handleRemove = this.handleRemove.bind(this);
         this.startGame = this.startGame.bind(this);
     }
+
+    componentWillMount(){
+        if(typeof this.props.location.state === 'undefined'){
+            this.setState({isLoggedIn: false});
+        }
+    }
+
 
     componentDidMount() {
         //Get Player Balance
@@ -39,6 +49,7 @@ export default class Lobby extends Component {
             })
         }
         //Socket Handlers
+        if(socket != null){
         socket.on("left_room", (message) => {
             console.log(message)
             socket.emit('active_player_list', this.props.location.state.roomID, (pl_list) => {
@@ -71,6 +82,7 @@ export default class Lobby extends Component {
             this.setState({theList:pl_list});
         });
     }
+    }
 
     componentWillUnmount(){
         if(socket!= null){
@@ -87,13 +99,12 @@ export default class Lobby extends Component {
 
     renderPlayer = (player, index) => {  
         return(
-            <li key ={player._client_number}>
-                <br></br>
-                {index === 0 && <b>HOST: </b>}
+            <ListGroupItem horizontal key ={player._client_number} variant="primary" style = {{marginBottom: "2vh"}}>
+            {index === 0 && <b>HOST: </b>}
              <b>{player._name}</b>
              {(this.props.location.state.is_vip || this.state.is_vip) && index != 0 &&
-             <button className = "remove" onClick = {() => this.handleRemove(index)}> REMOVE</button>}
-            </li>
+             <Button style = {{color:"black"}} variant = "danger" onClick = {() => this.handleRemove(index)}> REMOVE</Button>}
+            </ListGroupItem>
         )
     }
 
@@ -109,8 +120,10 @@ export default class Lobby extends Component {
 
     startGame = (event) => {
         event.preventDefault();
+        this.setState({isLoading:true});
         if(this.state.theList.length <2 ){
             this.setState({isError: "Must have atleast two players in the lobby to start the game!"})
+            this.setState({isLoading:false});
         }
         else{
         socket.emit('start_game', this.props.location.state.roomID);
@@ -159,20 +172,32 @@ export default class Lobby extends Component {
         else{
         return (
             <>
-            <Header/>
-            <button onClick = {this.handleLeave}>Back to Home</button>
+            <Modal variant = "warning" centered size="sm" show={this.state.modal} onHide={() => {this.setState({modal:false})}} >
+                <Modal.Body>Are you sure you want to leave the lobby?</Modal.Body>
+                <Modal.Footer> 
+                <Button variant="secondary" onClick={() => {this.setState({modal:false})}}>Close</Button>
+                <Button variant = "danger" onClick = {this.handleLeave}>Leave Lobby</Button>
+                </Modal.Footer>
+            </Modal>
+            <body>
+            <Nav style = {{margin:"1rem"}} className="justify-content-between">
+                <Button variant = "danger" onClick = {() => {this.setState({modal:true})}}>Back to Home</Button>
+                <b><img style = {{width:"1.5rem", height:"1.5rem"}} src = "images/User.png"></img>  Welcome {this.props.location.state.username} !</b>               
+            </Nav>
+            <img src= '/images/LOGO.png' alt="Logo" />
             <br></br>
-            {typeof(this.props.location.state) != 'undefined' &&
-                <header><b>ROOM: {this.props.location.state.roomID}</b></header> }
-                {(this.props.location.state.is_vip || this.state.is_vip) && <p className = "error">{this.state.isError}</p>}
-                <ul>
+            <h3>LOBBY: {this.props.location.state.roomID}</h3>
+                <ListGroup style = {{display:"inline-block", width:"20%", marginTop: "2vh", marginBottom:"2vh"}} variant="flush">
+                {(this.props.location.state.is_vip || this.state.is_vip) && <Alert dismissible onClose = {() => this.setState({isError:''})}show = {this.state.isError != ''} variant = "danger">{this.state.isError}</Alert>}
                 {this.state.theList.map((player, index)=> {return this.renderPlayer(player, index)})}
-                </ul>
-                <br></br>
-                {(this.props.location.state.is_vip || this.state.is_vip) && <button className = "start" onClick = {this.startGame}>START GAME</button>} 
+                {(this.props.location.state.is_vip || this.state.is_vip) && <Button style = {{color:"blue"}} variant="warning" onClick = {this.startGame}><b>START GAME</b>
+                {this.state.isLoading && <Spinner animation="border" color = "blue" size="sm"></Spinner>}
+                </Button>} 
+                </ListGroup>
                 <br></br>
                 {(!this.props.location.state.is_vip && !this.state.is_vip) &&  <i>Waiting for host to start game...</i>}
-                <p>Your balance: <b>{this.state.balance}</b></p>
+                <h5>Your balance: <b>${this.state.balance}</b></h5>
+                </body>
             </>
         )
     }

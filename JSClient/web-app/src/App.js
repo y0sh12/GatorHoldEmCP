@@ -3,13 +3,12 @@ import './App.css';
 import { Route, Switch, Redirect,BrowserRouter  } from 'react-router-dom';
 import Register from "./Register/Register";
 import Login from "./Login/Login";
-import ConfirmPage from "./ConfirmPage/ConfirmPage";
 import Home from "./Home/Home";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import ForgotPasswordEmail from "./ForgotPasswordEmail/ForgotPasswordEmail";
+import ChangePassword from "./ChangePassword/ChangePassword"
 import Lobby from "./Lobby/Lobby";
 import Game from "./Game/Game";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
@@ -32,12 +31,12 @@ function App() {
       <Switch>
       <Route exact path="/Login" component={Login} />
       <Route exact path="/Home" component={Home} />
+      <Route exact path="/ChangePassword" component={ChangePassword} />
       <Route exact path="/Lobby" component={Lobby} />
       <Route exact path="/Game" component={Game} />
       <Route exact path="/Register" component={Register} />
       <Route exact path="/ForgotPassword" component={ForgotPassword} />
       <Route exact path="/ForgotPasswordEmail" component={ForgotPasswordEmail} />
-      <Route exact path="/ConfirmPage" component={ConfirmPage} />
       <Route exact path="/">
             <Redirect to="/Login" />
           </Route>      

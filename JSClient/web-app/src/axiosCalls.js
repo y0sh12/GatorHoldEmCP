@@ -63,6 +63,7 @@ userData.resetPass = async function(reset) {
     }
     try{
         const userReset = await axios.patch('http://abaig.pythonanywhere.com/forgot_password/change_password', reset);
+        console.log(userReset.data.response);
         if(userReset.data.response === "Your password has been updated!"){
             response.isReset = true;
         }
@@ -92,7 +93,6 @@ userData.resetPassEmail = async function(email){
     }
     try{
         const userReset = await axios.patch('http://abaig.pythonanywhere.com/forgot_password', email);
-        console.log(userReset.data.response);
         if(userReset.data.response.toString().includes('UTC')){
             response.isSent = true;
         }
@@ -103,6 +103,33 @@ userData.resetPassEmail = async function(email){
         }
     }
     return response;
+}
+
+//SEND PASSWORD CHANGE AXIOS CALL
+userData.changePass = async function(change){
+    const response = {
+        errors: "",
+        isChanged: false,
+    }
+    try{
+        const userChange = await axios.patch('http://abaig.pythonanywhere.com/change_password', change);
+        if(userChange.data.response.toString().includes("Your password has been updated!")){
+            response.isChanged = true;
+        }
+    }
+    catch(err) {
+        if(err.toString().includes('403')){
+            response.errors = "Old Password does not match username!"
+        }
+        else if(err.toString().includes('404')){
+            response.errors = "Username does not exist!"
+        }
+        else{
+            response.errors = "bruh idk what happened"
+        }
+    }
+    return response;
+
 }
 
 //PLAYER BALANCE AXIOS CALL
@@ -116,21 +143,22 @@ userData.getBalance = async function(username) {
         }
 }
 
-//SET BALANCE AXIOS CALL
-userData.setBalance = async function(info){
+//RESET BALANCE AXIOS CALL
+userData.resetBalance = async function(id){
     const response = {
         errors: "",
-        isChanged: false,
+        isReset: false,
     }
-    const userBalance = await axios.patch('http://abaig.pythonanywhere.com/change_balance', info);
+    const userReset = await axios.patch('http://abaig.pythonanywhere.com/reset_balance', id);
+    console.log(userReset.data.response);
     try{
-        if(userBalance.data.response === "Balance has been updated to ") {
-            response.isChanged = true;
+        if(userReset.data.response === "Balance has been reset to 1000") {
+            response.isReset = true;
         }
     }
     catch(err){
         if(err.toString().includes('404')){
-            response.errors = "ID does not exist!";
+            response.errors = "Username does not exist!";
         }
         else{
             response.errors = "bruh idk what happened";
