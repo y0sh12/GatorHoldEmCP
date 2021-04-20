@@ -7,20 +7,110 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9B049D082624EF0900646666 /* ClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B049D072624EF0900646666 /* ClientManager.swift */; };
+		9B0AEC7B2628D87000269365 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B0AEC7A2628D87000269365 /* ChangePasswordViewController.swift */; };
+		9B1850182628C865007EE467 /* ForgotPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B1850172628C865007EE467 /* ForgotPasswordViewController.swift */; };
+		9B18F955262D41D10014F48C /* GHAppLogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B18F954262D41D10014F48C /* GHAppLogo.png */; };
+		9B32F9A2262E19CF00FC5225 /* green.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B32F9A1262E19CF00FC5225 /* green.png */; };
+		9B331D3B260BBC5500C671EC /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B331D3A260BBC5500C671EC /* HelperFunctions.swift */; };
+		9B5A637226040F9F0078BD42 /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5A637126040F9F0078BD42 /* LobbyViewController.swift */; };
+		9B6D238D262DD7130066434B /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 9B6D238C262DD7130066434B /* ConfettiSwiftUI */; };
+		9B6D238E262DD7130066434B /* ConfettiSwiftUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 9B6D238C262DD7130066434B /* ConfettiSwiftUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		9B6D2398262DEECC0066434B /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D2392262DEECC0066434B /* yellow.png */; };
+		9B6D2399262DEECC0066434B /* blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D2393262DEECC0066434B /* blue.png */; };
+		9B6D239B262DEECC0066434B /* white.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D2395262DEECC0066434B /* white.png */; };
+		9B6D239C262DEECC0066434B /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D2396262DEECC0066434B /* red.png */; };
+		9B6D239D262DEECC0066434B /* purple.png in Resources */ = {isa = PBXBuildFile; fileRef = 9B6D2397262DEECC0066434B /* purple.png */; };
+		9B6D23A1262DEEF50066434B /* Emitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6D23A0262DEEF50066434B /* Emitter.swift */; };
+		9B71E5BE260404C80050FB10 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B71E5BD260404C80050FB10 /* API.swift */; };
+		9B71E5C6260405270050FB10 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B71E5C5260405270050FB10 /* Constants.swift */; };
+		9B75020C262229C500446085 /* felt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9B75020B262229C500446085 /* felt.jpg */; };
+		9B75021126222C6800446085 /* feltLG.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9B75021026222C6800446085 /* feltLG.jpg */; };
+		9B75021626222F1900446085 /* feltBG.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9B75021526222F1800446085 /* feltBG.jpg */; };
+		9B9E6D5F2613C412002D0B4F /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9E6D5E2613C412002D0B4F /* GameViewController.swift */; };
+		9BBCC3412620C9D400B52AC6 /* pokerChip.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BBCC3402620C9D400B52AC6 /* pokerChip.png */; };
 		9BD928DE2602BFA100248AF8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928DD2602BFA100248AF8 /* AppDelegate.swift */; };
 		9BD928E02602BFA100248AF8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928DF2602BFA100248AF8 /* SceneDelegate.swift */; };
 		9BD928E72602BFA400248AF8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD928E62602BFA400248AF8 /* Assets.xcassets */; };
 		9BD928F52602BFA400248AF8 /* gatorholdemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928F42602BFA400248AF8 /* gatorholdemTests.swift */; };
 		9BD929002602BFA400248AF8 /* gatorholdemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD928FF2602BFA400248AF8 /* gatorholdemUITests.swift */; };
 		9BD929122602BFFA00248AF8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9BD929102602BFFA00248AF8 /* Main.storyboard */; };
-		9BD929272602C11100248AF8 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD929262602C11100248AF8 /* API.swift */; };
-		9BD9292C2602C12900248AF8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD9292B2602C12900248AF8 /* Constants.swift */; };
 		9BD929372602C17700248AF8 /* SocketIO in Frameworks */ = {isa = PBXBuildFile; productRef = 9BD929362602C17700248AF8 /* SocketIO */; };
 		9BD9294C2602C6B100248AF8 /* GHlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BD9294B2602C6B100248AF8 /* GHlogo.png */; };
 		9BEB264B2603FE3600578C9B /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB264A2603FE3600578C9B /* HomeViewController.swift */; };
 		9BEB26522603FE5500578C9B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB264F2603FE5500578C9B /* LoginViewController.swift */; };
 		9BEB26532603FE5500578C9B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB26502603FE5500578C9B /* SignUpViewController.swift */; };
 		9BEB26542603FE5500578C9B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BEB26512603FE5500578C9B /* ViewController.swift */; };
+		9BEE541126220457002DB41F /* BB.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BEE541026220457002DB41F /* BB.png */; };
+		9BEE54162622046F002DB41F /* D.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BEE54152622046F002DB41F /* D.png */; };
+		9BEE541B26220477002DB41F /* SB.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BEE541A26220477002DB41F /* SB.png */; };
+		9BF1B4B6261B6904002F65BE /* 7_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B473261B6903002F65BE /* 7_of_diamonds.png */; };
+		9BF1B4B7261B6904002F65BE /* queen_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B474261B6903002F65BE /* queen_of_spades.png */; };
+		9BF1B4B8261B6904002F65BE /* jack_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B475261B6903002F65BE /* jack_of_spades.png */; };
+		9BF1B4B9261B6904002F65BE /* 8_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B476261B6903002F65BE /* 8_of_diamonds.png */; };
+		9BF1B4BA261B6904002F65BE /* 6_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B477261B6903002F65BE /* 6_of_clubs.png */; };
+		9BF1B4BB261B6904002F65BE /* 9_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B478261B6903002F65BE /* 9_of_hearts.png */; };
+		9BF1B4BC261B6904002F65BE /* ace_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B479261B6903002F65BE /* ace_of_hearts.png */; };
+		9BF1B4BD261B6904002F65BE /* 8_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47A261B6903002F65BE /* 8_of_spades.png */; };
+		9BF1B4BE261B6904002F65BE /* queen_of_diamonds2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47B261B6903002F65BE /* queen_of_diamonds2.png */; };
+		9BF1B4BF261B6904002F65BE /* jack_of_hearts2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47C261B6903002F65BE /* jack_of_hearts2.png */; };
+		9BF1B4C0261B6904002F65BE /* king_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47D261B6903002F65BE /* king_of_clubs.png */; };
+		9BF1B4C1261B6904002F65BE /* 7_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47E261B6903002F65BE /* 7_of_clubs.png */; };
+		9BF1B4C2261B6904002F65BE /* jack_of_spades2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B47F261B6903002F65BE /* jack_of_spades2.png */; };
+		9BF1B4C3261B6904002F65BE /* jack_of_clubs2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B480261B6903002F65BE /* jack_of_clubs2.png */; };
+		9BF1B4C4261B6904002F65BE /* queen_of_clubs2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B481261B6903002F65BE /* queen_of_clubs2.png */; };
+		9BF1B4C5261B6904002F65BE /* 10_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B482261B6903002F65BE /* 10_of_diamonds.png */; };
+		9BF1B4C6261B6904002F65BE /* 10_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B483261B6903002F65BE /* 10_of_spades.png */; };
+		9BF1B4C7261B6904002F65BE /* black_joker.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B484261B6903002F65BE /* black_joker.png */; };
+		9BF1B4C8261B6904002F65BE /* king_of_hearts2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B485261B6903002F65BE /* king_of_hearts2.png */; };
+		9BF1B4C9261B6904002F65BE /* ace_of_spades2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B486261B6903002F65BE /* ace_of_spades2.png */; };
+		9BF1B4CA261B6904002F65BE /* jack_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B487261B6903002F65BE /* jack_of_clubs.png */; };
+		9BF1B4CB261B6904002F65BE /* 6_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B488261B6903002F65BE /* 6_of_spades.png */; };
+		9BF1B4CC261B6904002F65BE /* king_of_spades2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B489261B6903002F65BE /* king_of_spades2.png */; };
+		9BF1B4CD261B6904002F65BE /* 4_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48A261B6903002F65BE /* 4_of_hearts.png */; };
+		9BF1B4CE261B6904002F65BE /* 2_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48B261B6903002F65BE /* 2_of_spades.png */; };
+		9BF1B4CF261B6904002F65BE /* queen_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48C261B6903002F65BE /* queen_of_clubs.png */; };
+		9BF1B4D0261B6904002F65BE /* 3_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48D261B6903002F65BE /* 3_of_hearts.png */; };
+		9BF1B4D1261B6904002F65BE /* 5_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48E261B6903002F65BE /* 5_of_spades.png */; };
+		9BF1B4D2261B6904002F65BE /* 6_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B48F261B6903002F65BE /* 6_of_diamonds.png */; };
+		9BF1B4D3261B6904002F65BE /* queen_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B490261B6903002F65BE /* queen_of_diamonds.png */; };
+		9BF1B4D4261B6904002F65BE /* 7_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B491261B6903002F65BE /* 7_of_hearts.png */; };
+		9BF1B4D5261B6904002F65BE /* king_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B492261B6903002F65BE /* king_of_hearts.png */; };
+		9BF1B4D6261B6904002F65BE /* ace_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B493261B6903002F65BE /* ace_of_clubs.png */; };
+		9BF1B4D7261B6904002F65BE /* 9_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B494261B6903002F65BE /* 9_of_diamonds.png */; };
+		9BF1B4D8261B6904002F65BE /* 6_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B495261B6903002F65BE /* 6_of_hearts.png */; };
+		9BF1B4D9261B6904002F65BE /* 9_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B496261B6903002F65BE /* 9_of_clubs.png */; };
+		9BF1B4DA261B6904002F65BE /* king_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B497261B6903002F65BE /* king_of_diamonds.png */; };
+		9BF1B4DB261B6904002F65BE /* 4_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B498261B6903002F65BE /* 4_of_spades.png */; };
+		9BF1B4DC261B6904002F65BE /* 2_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B499261B6903002F65BE /* 2_of_hearts.png */; };
+		9BF1B4DD261B6904002F65BE /* 3_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49A261B6903002F65BE /* 3_of_diamonds.png */; };
+		9BF1B4DE261B6904002F65BE /* 10_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49B261B6903002F65BE /* 10_of_hearts.png */; };
+		9BF1B4DF261B6904002F65BE /* king_of_clubs2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49C261B6903002F65BE /* king_of_clubs2.png */; };
+		9BF1B4E0261B6904002F65BE /* king_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49D261B6903002F65BE /* king_of_spades.png */; };
+		9BF1B4E1261B6904002F65BE /* jack_of_diamonds2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49E261B6903002F65BE /* jack_of_diamonds2.png */; };
+		9BF1B4E2261B6904002F65BE /* 8_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B49F261B6903002F65BE /* 8_of_clubs.png */; };
+		9BF1B4E3261B6904002F65BE /* 4_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A0261B6903002F65BE /* 4_of_diamonds.png */; };
+		9BF1B4E4261B6904002F65BE /* jack_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A1261B6903002F65BE /* jack_of_diamonds.png */; };
+		9BF1B4E5261B6904002F65BE /* 3_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A2261B6903002F65BE /* 3_of_spades.png */; };
+		9BF1B4E6261B6904002F65BE /* 5_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A3261B6903002F65BE /* 5_of_hearts.png */; };
+		9BF1B4E7261B6904002F65BE /* 7_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A4261B6903002F65BE /* 7_of_spades.png */; };
+		9BF1B4E8261B6904002F65BE /* ace_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A5261B6903002F65BE /* ace_of_spades.png */; };
+		9BF1B4E9261B6904002F65BE /* 5_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A6261B6903002F65BE /* 5_of_diamonds.png */; };
+		9BF1B4EA261B6904002F65BE /* 9_of_spades.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A7261B6903002F65BE /* 9_of_spades.png */; };
+		9BF1B4EB261B6904002F65BE /* queen_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A8261B6903002F65BE /* queen_of_hearts.png */; };
+		9BF1B4EC261B6904002F65BE /* ace_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4A9261B6903002F65BE /* ace_of_diamonds.png */; };
+		9BF1B4ED261B6904002F65BE /* king_of_diamonds2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AA261B6903002F65BE /* king_of_diamonds2.png */; };
+		9BF1B4EE261B6904002F65BE /* 5_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AB261B6903002F65BE /* 5_of_clubs.png */; };
+		9BF1B4EF261B6904002F65BE /* 2_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AC261B6903002F65BE /* 2_of_clubs.png */; };
+		9BF1B4F0261B6904002F65BE /* jack_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AD261B6903002F65BE /* jack_of_hearts.png */; };
+		9BF1B4F1261B6904002F65BE /* 10_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AE261B6903002F65BE /* 10_of_clubs.png */; };
+		9BF1B4F2261B6904002F65BE /* queen_of_spades2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4AF261B6904002F65BE /* queen_of_spades2.png */; };
+		9BF1B4F3261B6904002F65BE /* queen_of_hearts2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B0261B6904002F65BE /* queen_of_hearts2.png */; };
+		9BF1B4F4261B6904002F65BE /* 2_of_diamonds.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B1261B6904002F65BE /* 2_of_diamonds.png */; };
+		9BF1B4F5261B6904002F65BE /* 8_of_hearts.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B2261B6904002F65BE /* 8_of_hearts.png */; };
+		9BF1B4F6261B6904002F65BE /* red_joker.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B3261B6904002F65BE /* red_joker.png */; };
+		9BF1B4F7261B6904002F65BE /* 3_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B4261B6904002F65BE /* 3_of_clubs.png */; };
+		9BF1B4F8261B6904002F65BE /* 4_of_clubs.png in Resources */ = {isa = PBXBuildFile; fileRef = 9BF1B4B5261B6904002F65BE /* 4_of_clubs.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +130,41 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9B6D2386262DD3E70066434B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9B6D238E262DD7130066434B /* ConfettiSwiftUI in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		9B049D072624EF0900646666 /* ClientManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientManager.swift; sourceTree = "<group>"; };
+		9B0AEC7A2628D87000269365 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		9B1850172628C865007EE467 /* ForgotPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordViewController.swift; sourceTree = "<group>"; };
+		9B18F954262D41D10014F48C /* GHAppLogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GHAppLogo.png; sourceTree = "<group>"; };
+		9B32F9A1262E19CF00FC5225 /* green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = green.png; sourceTree = "<group>"; };
+		9B331D3A260BBC5500C671EC /* HelperFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HelperFunctions.swift; path = gatorholdem/HelperFunctions.swift; sourceTree = SOURCE_ROOT; };
+		9B5A637126040F9F0078BD42 /* LobbyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewController.swift; sourceTree = "<group>"; };
+		9B6D2392262DEECC0066434B /* yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yellow.png; sourceTree = "<group>"; };
+		9B6D2393262DEECC0066434B /* blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blue.png; sourceTree = "<group>"; };
+		9B6D2395262DEECC0066434B /* white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white.png; sourceTree = "<group>"; };
+		9B6D2396262DEECC0066434B /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
+		9B6D2397262DEECC0066434B /* purple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = purple.png; sourceTree = "<group>"; };
+		9B6D23A0262DEEF50066434B /* Emitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emitter.swift; sourceTree = "<group>"; };
+		9B71E5BD260404C80050FB10 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		9B71E5C5260405270050FB10 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9B75020B262229C500446085 /* felt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = felt.jpg; sourceTree = "<group>"; };
+		9B75021026222C6800446085 /* feltLG.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = feltLG.jpg; sourceTree = "<group>"; };
+		9B75021526222F1800446085 /* feltBG.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = feltBG.jpg; sourceTree = "<group>"; };
+		9B9E6D5E2613C412002D0B4F /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		9BBCC3402620C9D400B52AC6 /* pokerChip.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pokerChip.png; sourceTree = "<group>"; };
 		9BD928DA2602BFA100248AF8 /* gatorholdem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gatorholdem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD928DD2602BFA100248AF8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD928DF2602BFA100248AF8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,13 +177,81 @@
 		9BD928FF2602BFA400248AF8 /* gatorholdemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gatorholdemUITests.swift; sourceTree = "<group>"; };
 		9BD929012602BFA400248AF8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9BD929112602BFFA00248AF8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9BD929262602C11100248AF8 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = API.swift; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/API.swift; sourceTree = "<group>"; };
-		9BD9292B2602C12900248AF8 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = ../../../Documents/GATORHOLDEM/GATORHOLDEM/Helper/Constants.swift; sourceTree = "<group>"; };
-		9BD9294B2602C6B100248AF8 /* GHlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = GHlogo.png; path = ../../GHlogo.png; sourceTree = "<group>"; };
+		9BD9294B2602C6B100248AF8 /* GHlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GHlogo.png; sourceTree = "<group>"; };
 		9BEB264A2603FE3600578C9B /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9BEB264F2603FE5500578C9B /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9BEB26502603FE5500578C9B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		9BEB26512603FE5500578C9B /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9BEE541026220457002DB41F /* BB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BB.png; sourceTree = "<group>"; };
+		9BEE54152622046F002DB41F /* D.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = D.png; sourceTree = "<group>"; };
+		9BEE541A26220477002DB41F /* SB.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SB.png; sourceTree = "<group>"; };
+		9BF1B473261B6903002F65BE /* 7_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B474261B6903002F65BE /* queen_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_spades.png; sourceTree = "<group>"; };
+		9BF1B475261B6903002F65BE /* jack_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_spades.png; sourceTree = "<group>"; };
+		9BF1B476261B6903002F65BE /* 8_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B477261B6903002F65BE /* 6_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B478261B6903002F65BE /* 9_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B479261B6903002F65BE /* ace_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ace_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B47A261B6903002F65BE /* 8_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_of_spades.png; sourceTree = "<group>"; };
+		9BF1B47B261B6903002F65BE /* queen_of_diamonds2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_diamonds2.png; sourceTree = "<group>"; };
+		9BF1B47C261B6903002F65BE /* jack_of_hearts2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_hearts2.png; sourceTree = "<group>"; };
+		9BF1B47D261B6903002F65BE /* king_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B47E261B6903002F65BE /* 7_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B47F261B6903002F65BE /* jack_of_spades2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_spades2.png; sourceTree = "<group>"; };
+		9BF1B480261B6903002F65BE /* jack_of_clubs2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_clubs2.png; sourceTree = "<group>"; };
+		9BF1B481261B6903002F65BE /* queen_of_clubs2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_clubs2.png; sourceTree = "<group>"; };
+		9BF1B482261B6903002F65BE /* 10_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B483261B6903002F65BE /* 10_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10_of_spades.png; sourceTree = "<group>"; };
+		9BF1B484261B6903002F65BE /* black_joker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_joker.png; sourceTree = "<group>"; };
+		9BF1B485261B6903002F65BE /* king_of_hearts2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_hearts2.png; sourceTree = "<group>"; };
+		9BF1B486261B6903002F65BE /* ace_of_spades2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ace_of_spades2.png; sourceTree = "<group>"; };
+		9BF1B487261B6903002F65BE /* jack_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B488261B6903002F65BE /* 6_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6_of_spades.png; sourceTree = "<group>"; };
+		9BF1B489261B6903002F65BE /* king_of_spades2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_spades2.png; sourceTree = "<group>"; };
+		9BF1B48A261B6903002F65BE /* 4_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B48B261B6903002F65BE /* 2_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_of_spades.png; sourceTree = "<group>"; };
+		9BF1B48C261B6903002F65BE /* queen_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B48D261B6903002F65BE /* 3_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B48E261B6903002F65BE /* 5_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_of_spades.png; sourceTree = "<group>"; };
+		9BF1B48F261B6903002F65BE /* 6_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B490261B6903002F65BE /* queen_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B491261B6903002F65BE /* 7_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B492261B6903002F65BE /* king_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B493261B6903002F65BE /* ace_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ace_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B494261B6903002F65BE /* 9_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B495261B6903002F65BE /* 6_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 6_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B496261B6903002F65BE /* 9_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B497261B6903002F65BE /* king_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B498261B6903002F65BE /* 4_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_of_spades.png; sourceTree = "<group>"; };
+		9BF1B499261B6903002F65BE /* 2_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B49A261B6903002F65BE /* 3_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B49B261B6903002F65BE /* 10_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B49C261B6903002F65BE /* king_of_clubs2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_clubs2.png; sourceTree = "<group>"; };
+		9BF1B49D261B6903002F65BE /* king_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_spades.png; sourceTree = "<group>"; };
+		9BF1B49E261B6903002F65BE /* jack_of_diamonds2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_diamonds2.png; sourceTree = "<group>"; };
+		9BF1B49F261B6903002F65BE /* 8_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B4A0261B6903002F65BE /* 4_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B4A1261B6903002F65BE /* jack_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B4A2261B6903002F65BE /* 3_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_of_spades.png; sourceTree = "<group>"; };
+		9BF1B4A3261B6903002F65BE /* 5_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B4A4261B6903002F65BE /* 7_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 7_of_spades.png; sourceTree = "<group>"; };
+		9BF1B4A5261B6903002F65BE /* ace_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ace_of_spades.png; sourceTree = "<group>"; };
+		9BF1B4A6261B6903002F65BE /* 5_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B4A7261B6903002F65BE /* 9_of_spades.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 9_of_spades.png; sourceTree = "<group>"; };
+		9BF1B4A8261B6903002F65BE /* queen_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B4A9261B6903002F65BE /* ace_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ace_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B4AA261B6903002F65BE /* king_of_diamonds2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = king_of_diamonds2.png; sourceTree = "<group>"; };
+		9BF1B4AB261B6903002F65BE /* 5_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B4AC261B6903002F65BE /* 2_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B4AD261B6903002F65BE /* jack_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jack_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B4AE261B6903002F65BE /* 10_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B4AF261B6904002F65BE /* queen_of_spades2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_spades2.png; sourceTree = "<group>"; };
+		9BF1B4B0261B6904002F65BE /* queen_of_hearts2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = queen_of_hearts2.png; sourceTree = "<group>"; };
+		9BF1B4B1261B6904002F65BE /* 2_of_diamonds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2_of_diamonds.png; sourceTree = "<group>"; };
+		9BF1B4B2261B6904002F65BE /* 8_of_hearts.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 8_of_hearts.png; sourceTree = "<group>"; };
+		9BF1B4B3261B6904002F65BE /* red_joker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_joker.png; sourceTree = "<group>"; };
+		9BF1B4B4261B6904002F65BE /* 3_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3_of_clubs.png; sourceTree = "<group>"; };
+		9BF1B4B5261B6904002F65BE /* 4_of_clubs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4_of_clubs.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +259,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9B6D238D262DD7130066434B /* ConfettiSwiftUI in Frameworks */,
 				9BD929372602C17700248AF8 /* SocketIO in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -88,6 +281,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9B5A636D26040CDE0078BD42 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9BEB26512603FE5500578C9B /* ViewController.swift */,
+				9BEB26502603FE5500578C9B /* SignUpViewController.swift */,
+				9BEB264F2603FE5500578C9B /* LoginViewController.swift */,
+				9BEB264A2603FE3600578C9B /* HomeViewController.swift */,
+				9B5A637126040F9F0078BD42 /* LobbyViewController.swift */,
+				9B1850172628C865007EE467 /* ForgotPasswordViewController.swift */,
+				9B0AEC7A2628D87000269365 /* ChangePasswordViewController.swift */,
+				9B9E6D5E2613C412002D0B4F /* GameViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9B6D2391262DEECC0066434B /* Confetti */ = {
+			isa = PBXGroup;
+			children = (
+				9B6D2392262DEECC0066434B /* yellow.png */,
+				9B6D2393262DEECC0066434B /* blue.png */,
+				9B32F9A1262E19CF00FC5225 /* green.png */,
+				9B6D2395262DEECC0066434B /* white.png */,
+				9B6D2396262DEECC0066434B /* red.png */,
+				9B6D2397262DEECC0066434B /* purple.png */,
+			);
+			path = Confetti;
+			sourceTree = "<group>";
+		};
 		9BD928D12602BFA100248AF8 = {
 			isa = PBXGroup;
 			children = (
@@ -111,16 +332,16 @@
 		9BD928DC2602BFA100248AF8 /* gatorholdem */ = {
 			isa = PBXGroup;
 			children = (
+				9BF1B37B261B635D002F65BE /* Images */,
+				9B5A636D26040CDE0078BD42 /* ViewControllers */,
 				9BD928DD2602BFA100248AF8 /* AppDelegate.swift */,
+				9B6D23A0262DEEF50066434B /* Emitter.swift */,
+				9B049D072624EF0900646666 /* ClientManager.swift */,
+				9B331D3A260BBC5500C671EC /* HelperFunctions.swift */,
 				9BD928DF2602BFA100248AF8 /* SceneDelegate.swift */,
-				9BEB264A2603FE3600578C9B /* HomeViewController.swift */,
-				9BD929262602C11100248AF8 /* API.swift */,
 				9BD929102602BFFA00248AF8 /* Main.storyboard */,
-				9BD9294B2602C6B100248AF8 /* GHlogo.png */,
-				9BEB264F2603FE5500578C9B /* LoginViewController.swift */,
-				9BEB26502603FE5500578C9B /* SignUpViewController.swift */,
-				9BEB26512603FE5500578C9B /* ViewController.swift */,
-				9BD9292B2602C12900248AF8 /* Constants.swift */,
+				9B71E5BD260404C80050FB10 /* API.swift */,
+				9B71E5C5260405270050FB10 /* Constants.swift */,
 				9BD928E62602BFA400248AF8 /* Assets.xcassets */,
 				9BD928EB2602BFA400248AF8 /* Info.plist */,
 			);
@@ -145,6 +366,98 @@
 			path = gatorholdemUITests;
 			sourceTree = "<group>";
 		};
+		9BF1B37B261B635D002F65BE /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9B6D2391262DEECC0066434B /* Confetti */,
+				9BF1B472261B6903002F65BE /* Cards */,
+				9BD9294B2602C6B100248AF8 /* GHlogo.png */,
+				9B75020B262229C500446085 /* felt.jpg */,
+				9B18F954262D41D10014F48C /* GHAppLogo.png */,
+				9B75021026222C6800446085 /* feltLG.jpg */,
+				9B75021526222F1800446085 /* feltBG.jpg */,
+				9BEE541026220457002DB41F /* BB.png */,
+				9BEE541A26220477002DB41F /* SB.png */,
+				9BEE54152622046F002DB41F /* D.png */,
+				9BBCC3402620C9D400B52AC6 /* pokerChip.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
+		9BF1B472261B6903002F65BE /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				9BF1B473261B6903002F65BE /* 7_of_diamonds.png */,
+				9BF1B474261B6903002F65BE /* queen_of_spades.png */,
+				9BF1B475261B6903002F65BE /* jack_of_spades.png */,
+				9BF1B476261B6903002F65BE /* 8_of_diamonds.png */,
+				9BF1B477261B6903002F65BE /* 6_of_clubs.png */,
+				9BF1B478261B6903002F65BE /* 9_of_hearts.png */,
+				9BF1B479261B6903002F65BE /* ace_of_hearts.png */,
+				9BF1B47A261B6903002F65BE /* 8_of_spades.png */,
+				9BF1B47B261B6903002F65BE /* queen_of_diamonds2.png */,
+				9BF1B47C261B6903002F65BE /* jack_of_hearts2.png */,
+				9BF1B47D261B6903002F65BE /* king_of_clubs.png */,
+				9BF1B47E261B6903002F65BE /* 7_of_clubs.png */,
+				9BF1B47F261B6903002F65BE /* jack_of_spades2.png */,
+				9BF1B480261B6903002F65BE /* jack_of_clubs2.png */,
+				9BF1B481261B6903002F65BE /* queen_of_clubs2.png */,
+				9BF1B482261B6903002F65BE /* 10_of_diamonds.png */,
+				9BF1B483261B6903002F65BE /* 10_of_spades.png */,
+				9BF1B484261B6903002F65BE /* black_joker.png */,
+				9BF1B485261B6903002F65BE /* king_of_hearts2.png */,
+				9BF1B486261B6903002F65BE /* ace_of_spades2.png */,
+				9BF1B487261B6903002F65BE /* jack_of_clubs.png */,
+				9BF1B488261B6903002F65BE /* 6_of_spades.png */,
+				9BF1B489261B6903002F65BE /* king_of_spades2.png */,
+				9BF1B48A261B6903002F65BE /* 4_of_hearts.png */,
+				9BF1B48B261B6903002F65BE /* 2_of_spades.png */,
+				9BF1B48C261B6903002F65BE /* queen_of_clubs.png */,
+				9BF1B48D261B6903002F65BE /* 3_of_hearts.png */,
+				9BF1B48E261B6903002F65BE /* 5_of_spades.png */,
+				9BF1B48F261B6903002F65BE /* 6_of_diamonds.png */,
+				9BF1B490261B6903002F65BE /* queen_of_diamonds.png */,
+				9BF1B491261B6903002F65BE /* 7_of_hearts.png */,
+				9BF1B492261B6903002F65BE /* king_of_hearts.png */,
+				9BF1B493261B6903002F65BE /* ace_of_clubs.png */,
+				9BF1B494261B6903002F65BE /* 9_of_diamonds.png */,
+				9BF1B495261B6903002F65BE /* 6_of_hearts.png */,
+				9BF1B496261B6903002F65BE /* 9_of_clubs.png */,
+				9BF1B497261B6903002F65BE /* king_of_diamonds.png */,
+				9BF1B498261B6903002F65BE /* 4_of_spades.png */,
+				9BF1B499261B6903002F65BE /* 2_of_hearts.png */,
+				9BF1B49A261B6903002F65BE /* 3_of_diamonds.png */,
+				9BF1B49B261B6903002F65BE /* 10_of_hearts.png */,
+				9BF1B49C261B6903002F65BE /* king_of_clubs2.png */,
+				9BF1B49D261B6903002F65BE /* king_of_spades.png */,
+				9BF1B49E261B6903002F65BE /* jack_of_diamonds2.png */,
+				9BF1B49F261B6903002F65BE /* 8_of_clubs.png */,
+				9BF1B4A0261B6903002F65BE /* 4_of_diamonds.png */,
+				9BF1B4A1261B6903002F65BE /* jack_of_diamonds.png */,
+				9BF1B4A2261B6903002F65BE /* 3_of_spades.png */,
+				9BF1B4A3261B6903002F65BE /* 5_of_hearts.png */,
+				9BF1B4A4261B6903002F65BE /* 7_of_spades.png */,
+				9BF1B4A5261B6903002F65BE /* ace_of_spades.png */,
+				9BF1B4A6261B6903002F65BE /* 5_of_diamonds.png */,
+				9BF1B4A7261B6903002F65BE /* 9_of_spades.png */,
+				9BF1B4A8261B6903002F65BE /* queen_of_hearts.png */,
+				9BF1B4A9261B6903002F65BE /* ace_of_diamonds.png */,
+				9BF1B4AA261B6903002F65BE /* king_of_diamonds2.png */,
+				9BF1B4AB261B6903002F65BE /* 5_of_clubs.png */,
+				9BF1B4AC261B6903002F65BE /* 2_of_clubs.png */,
+				9BF1B4AD261B6903002F65BE /* jack_of_hearts.png */,
+				9BF1B4AE261B6903002F65BE /* 10_of_clubs.png */,
+				9BF1B4AF261B6904002F65BE /* queen_of_spades2.png */,
+				9BF1B4B0261B6904002F65BE /* queen_of_hearts2.png */,
+				9BF1B4B1261B6904002F65BE /* 2_of_diamonds.png */,
+				9BF1B4B2261B6904002F65BE /* 8_of_hearts.png */,
+				9BF1B4B3261B6904002F65BE /* red_joker.png */,
+				9BF1B4B4261B6904002F65BE /* 3_of_clubs.png */,
+				9BF1B4B5261B6904002F65BE /* 4_of_clubs.png */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -155,6 +468,7 @@
 				9BD928D62602BFA100248AF8 /* Sources */,
 				9BD928D72602BFA100248AF8 /* Frameworks */,
 				9BD928D82602BFA100248AF8 /* Resources */,
+				9B6D2386262DD3E70066434B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -163,6 +477,7 @@
 			name = gatorholdem;
 			packageProductDependencies = (
 				9BD929362602C17700248AF8 /* SocketIO */,
+				9B6D238C262DD7130066434B /* ConfettiSwiftUI */,
 			);
 			productName = gatorholdem;
 			productReference = 9BD928DA2602BFA100248AF8 /* gatorholdem.app */;
@@ -237,6 +552,7 @@
 			mainGroup = 9BD928D12602BFA100248AF8;
 			packageReferences = (
 				9BD929352602C17700248AF8 /* XCRemoteSwiftPackageReference "socket" */,
+				9B6D238B262DD7130066434B /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			productRefGroup = 9BD928DB2602BFA100248AF8 /* Products */;
 			projectDirPath = "";
@@ -254,9 +570,90 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BF1B4E3261B6904002F65BE /* 4_of_diamonds.png in Resources */,
+				9B75020C262229C500446085 /* felt.jpg in Resources */,
+				9BF1B4E1261B6904002F65BE /* jack_of_diamonds2.png in Resources */,
+				9BF1B4E8261B6904002F65BE /* ace_of_spades.png in Resources */,
+				9BF1B4C5261B6904002F65BE /* 10_of_diamonds.png in Resources */,
+				9BF1B4CD261B6904002F65BE /* 4_of_hearts.png in Resources */,
+				9BF1B4CA261B6904002F65BE /* jack_of_clubs.png in Resources */,
+				9BF1B4CE261B6904002F65BE /* 2_of_spades.png in Resources */,
+				9BF1B4F7261B6904002F65BE /* 3_of_clubs.png in Resources */,
+				9BF1B4E2261B6904002F65BE /* 8_of_clubs.png in Resources */,
+				9BF1B4B7261B6904002F65BE /* queen_of_spades.png in Resources */,
+				9BF1B4ED261B6904002F65BE /* king_of_diamonds2.png in Resources */,
+				9BF1B4C3261B6904002F65BE /* jack_of_clubs2.png in Resources */,
+				9BF1B4E6261B6904002F65BE /* 5_of_hearts.png in Resources */,
+				9BF1B4F0261B6904002F65BE /* jack_of_hearts.png in Resources */,
+				9BF1B4D3261B6904002F65BE /* queen_of_diamonds.png in Resources */,
+				9BF1B4CB261B6904002F65BE /* 6_of_spades.png in Resources */,
+				9BF1B4D8261B6904002F65BE /* 6_of_hearts.png in Resources */,
+				9BF1B4D5261B6904002F65BE /* king_of_hearts.png in Resources */,
+				9BF1B4F1261B6904002F65BE /* 10_of_clubs.png in Resources */,
+				9B75021626222F1900446085 /* feltBG.jpg in Resources */,
+				9B32F9A2262E19CF00FC5225 /* green.png in Resources */,
+				9BF1B4E9261B6904002F65BE /* 5_of_diamonds.png in Resources */,
+				9BF1B4C8261B6904002F65BE /* king_of_hearts2.png in Resources */,
 				9BD928E72602BFA400248AF8 /* Assets.xcassets in Resources */,
+				9BF1B4B6261B6904002F65BE /* 7_of_diamonds.png in Resources */,
+				9BF1B4C0261B6904002F65BE /* king_of_clubs.png in Resources */,
+				9BEE541B26220477002DB41F /* SB.png in Resources */,
+				9BF1B4C2261B6904002F65BE /* jack_of_spades2.png in Resources */,
+				9BF1B4BA261B6904002F65BE /* 6_of_clubs.png in Resources */,
+				9BF1B4C7261B6904002F65BE /* black_joker.png in Resources */,
+				9B6D239C262DEECC0066434B /* red.png in Resources */,
+				9BF1B4D6261B6904002F65BE /* ace_of_clubs.png in Resources */,
+				9B6D2398262DEECC0066434B /* yellow.png in Resources */,
+				9BF1B4B9261B6904002F65BE /* 8_of_diamonds.png in Resources */,
+				9BF1B4DB261B6904002F65BE /* 4_of_spades.png in Resources */,
+				9BBCC3412620C9D400B52AC6 /* pokerChip.png in Resources */,
 				9BD9294C2602C6B100248AF8 /* GHlogo.png in Resources */,
+				9BF1B4E4261B6904002F65BE /* jack_of_diamonds.png in Resources */,
+				9BF1B4C9261B6904002F65BE /* ace_of_spades2.png in Resources */,
+				9BF1B4EE261B6904002F65BE /* 5_of_clubs.png in Resources */,
 				9BD929122602BFFA00248AF8 /* Main.storyboard in Resources */,
+				9BF1B4CF261B6904002F65BE /* queen_of_clubs.png in Resources */,
+				9BEE541126220457002DB41F /* BB.png in Resources */,
+				9BF1B4EC261B6904002F65BE /* ace_of_diamonds.png in Resources */,
+				9BF1B4DD261B6904002F65BE /* 3_of_diamonds.png in Resources */,
+				9BF1B4E0261B6904002F65BE /* king_of_spades.png in Resources */,
+				9BF1B4F3261B6904002F65BE /* queen_of_hearts2.png in Resources */,
+				9B18F955262D41D10014F48C /* GHAppLogo.png in Resources */,
+				9BF1B4F5261B6904002F65BE /* 8_of_hearts.png in Resources */,
+				9BF1B4D9261B6904002F65BE /* 9_of_clubs.png in Resources */,
+				9BF1B4EB261B6904002F65BE /* queen_of_hearts.png in Resources */,
+				9B6D239B262DEECC0066434B /* white.png in Resources */,
+				9BF1B4D0261B6904002F65BE /* 3_of_hearts.png in Resources */,
+				9B6D2399262DEECC0066434B /* blue.png in Resources */,
+				9BF1B4BF261B6904002F65BE /* jack_of_hearts2.png in Resources */,
+				9BF1B4F8261B6904002F65BE /* 4_of_clubs.png in Resources */,
+				9BF1B4F2261B6904002F65BE /* queen_of_spades2.png in Resources */,
+				9BF1B4F4261B6904002F65BE /* 2_of_diamonds.png in Resources */,
+				9BF1B4DA261B6904002F65BE /* king_of_diamonds.png in Resources */,
+				9BF1B4BC261B6904002F65BE /* ace_of_hearts.png in Resources */,
+				9BF1B4DE261B6904002F65BE /* 10_of_hearts.png in Resources */,
+				9BF1B4B8261B6904002F65BE /* jack_of_spades.png in Resources */,
+				9BF1B4E7261B6904002F65BE /* 7_of_spades.png in Resources */,
+				9BF1B4EF261B6904002F65BE /* 2_of_clubs.png in Resources */,
+				9B6D239D262DEECC0066434B /* purple.png in Resources */,
+				9BF1B4BD261B6904002F65BE /* 8_of_spades.png in Resources */,
+				9BF1B4F6261B6904002F65BE /* red_joker.png in Resources */,
+				9BF1B4CC261B6904002F65BE /* king_of_spades2.png in Resources */,
+				9BF1B4D1261B6904002F65BE /* 5_of_spades.png in Resources */,
+				9BEE54162622046F002DB41F /* D.png in Resources */,
+				9BF1B4D4261B6904002F65BE /* 7_of_hearts.png in Resources */,
+				9BF1B4C4261B6904002F65BE /* queen_of_clubs2.png in Resources */,
+				9BF1B4BB261B6904002F65BE /* 9_of_hearts.png in Resources */,
+				9BF1B4D7261B6904002F65BE /* 9_of_diamonds.png in Resources */,
+				9B75021126222C6800446085 /* feltLG.jpg in Resources */,
+				9BF1B4DF261B6904002F65BE /* king_of_clubs2.png in Resources */,
+				9BF1B4D2261B6904002F65BE /* 6_of_diamonds.png in Resources */,
+				9BF1B4BE261B6904002F65BE /* queen_of_diamonds2.png in Resources */,
+				9BF1B4C1261B6904002F65BE /* 7_of_clubs.png in Resources */,
+				9BF1B4E5261B6904002F65BE /* 3_of_spades.png in Resources */,
+				9BF1B4DC261B6904002F65BE /* 2_of_hearts.png in Resources */,
+				9BF1B4EA261B6904002F65BE /* 9_of_spades.png in Resources */,
+				9BF1B4C6261B6904002F65BE /* 10_of_spades.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,12 +680,19 @@
 			files = (
 				9BEB26522603FE5500578C9B /* LoginViewController.swift in Sources */,
 				9BD928DE2602BFA100248AF8 /* AppDelegate.swift in Sources */,
+				9B049D082624EF0900646666 /* ClientManager.swift in Sources */,
+				9B0AEC7B2628D87000269365 /* ChangePasswordViewController.swift in Sources */,
 				9BEB26542603FE5500578C9B /* ViewController.swift in Sources */,
 				9BEB26532603FE5500578C9B /* SignUpViewController.swift in Sources */,
 				9BD928E02602BFA100248AF8 /* SceneDelegate.swift in Sources */,
+				9B331D3B260BBC5500C671EC /* HelperFunctions.swift in Sources */,
+				9B6D23A1262DEEF50066434B /* Emitter.swift in Sources */,
+				9B1850182628C865007EE467 /* ForgotPasswordViewController.swift in Sources */,
 				9BEB264B2603FE3600578C9B /* HomeViewController.swift in Sources */,
-				9BD929272602C11100248AF8 /* API.swift in Sources */,
-				9BD9292C2602C12900248AF8 /* Constants.swift in Sources */,
+				9B5A637226040F9F0078BD42 /* LobbyViewController.swift in Sources */,
+				9B71E5BE260404C80050FB10 /* API.swift in Sources */,
+				9B9E6D5F2613C412002D0B4F /* GameViewController.swift in Sources */,
+				9B71E5C6260405270050FB10 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,6 +772,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -393,6 +798,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -429,6 +835,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -447,6 +854,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -457,6 +865,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QCDS9F9SQP;
 				INFOPLIST_FILE = gatorholdem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -465,7 +874,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SeniorProject.gatorholdem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -475,6 +884,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = QCDS9F9SQP;
 				INFOPLIST_FILE = gatorholdem/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -483,7 +893,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = SeniorProject.gatorholdem;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -609,6 +1019,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		9B6D238B262DD7130066434B /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		9BD929352602C17700248AF8 /* XCRemoteSwiftPackageReference "socket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/socketio/socket.io-client-swift";
@@ -620,6 +1038,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		9B6D238C262DD7130066434B /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9B6D238B262DD7130066434B /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
 		9BD929362602C17700248AF8 /* SocketIO */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 9BD929352602C17700248AF8 /* XCRemoteSwiftPackageReference "socket" */;
