@@ -322,7 +322,7 @@ export default class Game extends Component {
                 <Nav style = {{margin:"1rem"}} className = "justify-content-center"><b style = {{fontSize:"1.5em"}}> <Badge variant="light" pill >{this.state.theMessage}</Badge></b></Nav>
                 <Nav style = {{margin:"1rem"}} className = "justify-content-center">{this.state.theList.filter(player => player._name === this.props.location.state.username).map((me) => {return this.renderMyInfo(me)})}</Nav>
                 {this.state.hand.map((card, index)=> {return this.renderCard(card, index)})}
-                <Nav className = "justify-content-around" style = {{marginLeft:"3.5vw"}}>
+                <Nav className = "justify-content-around" style = {{marginLeft:"5vw"}}>
                <OverlayTrigger
                 trigger="click"
                 placement='top-end'
@@ -335,7 +335,8 @@ export default class Game extends Component {
                 <ListGroup horizontal>
                     <Button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption} style = {{color:"blue", marginRight:"1vw"}} variant="warning">{this.state.theCheckorCall}</Button>
                     <Button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption} variant = "danger">FOLD</Button>
-                    <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE</Button>
+                    <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE ${this.state.raiseAmount}</Button>
+                    <input type = "range" disabled = {!this.state.myTurn || this.state.balance == 0} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
                 </ListGroup>
                 <ButtonGroup>
                     <img style = {{width:"3vw"}} src = "images/SB.png"></img>{this.state.small_blind}

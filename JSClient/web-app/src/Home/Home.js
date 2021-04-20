@@ -119,7 +119,8 @@ handleJoinCreate = (event) =>{
     event.preventDefault();
     if(this.state.balance > 50){
     this.setState({isLoading:true});
-    setSocket(io("http://127.0.0.1:6001", {
+    setSocket(io("http://74.207.233.58:6001", {        
+    // setSocket(io("http://127.0.0.1:6001", {     
     reconnection: false,
     transports: ['websocket']
     }));
