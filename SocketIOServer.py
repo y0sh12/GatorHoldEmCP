@@ -264,7 +264,8 @@ def start_game(sid, room_id):
                 if not player.bankrupt:
                     card_string = str(player.hand[0]), str(player.hand[1])
                     sio.emit('emit_hand', card_string, room=player.get_client_number())
-
+                    
+            sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
             sio.emit('board_init_info', [dealer, small_blind, big_blind, min_bet, round_num], room=room.room_id)
             if not game_loop(room):
                 continue

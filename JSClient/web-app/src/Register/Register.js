@@ -15,7 +15,6 @@ export default class Register extends Component {
             username: '',
             password: '',
             confirmPassword: '',
-            balance:1000,
             isRegistered:false,
             isError:'',
             show:false,

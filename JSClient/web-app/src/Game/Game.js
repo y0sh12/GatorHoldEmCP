@@ -87,9 +87,9 @@ export default class Game extends Component {
 
         });
         socket.on('board_init_info', (board_info) => {
-            this.setState({'dealer': board_info[0]})
-            this.setState({'small_blind': board_info[1]})
-            this.setState({'big_blind': board_info[2]})
+            this.setState({'dealer': this.state.theList.filter(player => player._client_number === board_info[0])[0]._name})
+            this.setState({'small_blind': this.state.theList.filter(player => player._client_number === board_info[1])[0]._name})
+            this.setState({'big_blind': this.state.theList.filter(player => player._client_number === board_info[2])[0]._name})
             this.setState({'minimum_bet': board_info[3]})
             this.setState({'round_num': board_info[4]})
         });
@@ -332,17 +332,16 @@ export default class Game extends Component {
                     </Popover>}>
                 <Button style = {{color:"blue"}} variant="warning">Poker Hierarchy</Button>
                 </OverlayTrigger>
-                <ListGroup horizontal>
+                <ListGroup style = {{marginLeft:"2vw"}} horizontal>
                     <Button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption} style = {{color:"blue", marginRight:"1vw"}} variant="warning">{this.state.theCheckorCall}</Button>
                     <Button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption} variant = "danger">FOLD</Button>
                     <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE</Button>
                 </ListGroup>
-                {/* <ListGroup>
-                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/D.png"></img>: {this.state.dealer}</ListGroupItem>
-                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/SB.png"></img>: {this.state.small_blind}</ListGroupItem>
-                    <ListGroupItem><img style = {{width:"3vw"}} src = "images/BB.png"></img>: {this.state.big_blind}</ListGroupItem>
-                </ListGroup> */}
-                <p>D, sb, bb list</p>
+                <ListGroup horizontal style = {{backgroundColor:"#72b434"}}>
+                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/D.png"></img>: {this.state.dealer}</ListGroupItem>
+                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/SB.png"></img>: {this.state.small_blind}</ListGroupItem>
+                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/BB.png"></img>: {this.state.big_blind}</ListGroupItem>
+                </ListGroup>
                </Nav>
             </body>
             </>
