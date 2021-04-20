@@ -16,6 +16,7 @@ import requests as reqs
 
 roomList = []
 
+# sio = socketio.Server(cors_allowed_origins='*')
 sio = socketio.Server()
 app = socketio.WSGIApp(sio)
 
@@ -563,7 +564,7 @@ def main():
         #     os.chdir(cwd)
         #     os.system("python3 AiInstallation.py")
         # os.chdir(temp)
-        eventlet.wsgi.server(eventlet.listen(('', 5001)), app)
+        eventlet.wsgi.server(eventlet.listen(('', 6001)), app)
     except KeyboardInterrupt as e:
         sys.exit(0)
 
