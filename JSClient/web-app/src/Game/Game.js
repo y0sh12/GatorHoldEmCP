@@ -5,7 +5,7 @@ import Login from "../Login/Login";
 import {Link, Redirect} from "react-router-dom";
 import userData from "../axiosCalls.js";
 import io from "socket.io-client";
-import {Alert, ListGroup, Button, ListGroupItem, Modal, Nav, Card, Badge, OverlayTrigger, Popover} from 'react-bootstrap'
+import {Alert, ListGroup, Button, ListGroupItem, Modal, Nav, Card, Badge, OverlayTrigger, Popover, ButtonGroup} from 'react-bootstrap'
 import {socket} from "../socket.js"
 
 
@@ -322,7 +322,7 @@ export default class Game extends Component {
                 <Nav style = {{margin:"1rem"}} className = "justify-content-center"><b style = {{fontSize:"1.5em"}}> <Badge variant="light" pill >{this.state.theMessage}</Badge></b></Nav>
                 <Nav style = {{margin:"1rem"}} className = "justify-content-center">{this.state.theList.filter(player => player._name === this.props.location.state.username).map((me) => {return this.renderMyInfo(me)})}</Nav>
                 {this.state.hand.map((card, index)=> {return this.renderCard(card, index)})}
-                <Nav className = "justify-content-between">
+                <Nav className = "justify-content-around" style = {{marginLeft:"3.5vw"}}>
                <OverlayTrigger
                 trigger="click"
                 placement='top-end'
@@ -332,16 +332,15 @@ export default class Game extends Component {
                     </Popover>}>
                 <Button style = {{color:"blue"}} variant="warning">Poker Hierarchy</Button>
                 </OverlayTrigger>
-                <ListGroup style = {{marginLeft:"2vw"}} horizontal>
+                <ListGroup horizontal>
                     <Button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption} style = {{color:"blue", marginRight:"1vw"}} variant="warning">{this.state.theCheckorCall}</Button>
                     <Button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption} variant = "danger">FOLD</Button>
                     <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE</Button>
                 </ListGroup>
-                <ListGroup horizontal style = {{backgroundColor:"#72b434"}}>
-                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/D.png"></img>: {this.state.dealer}</ListGroupItem>
-                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/SB.png"></img>: {this.state.small_blind}</ListGroupItem>
-                    <ListGroupItem><img style = {{width:"2vw"}} src = "images/BB.png"></img>: {this.state.big_blind}</ListGroupItem>
-                </ListGroup>
+                <ButtonGroup>
+                    <img style = {{width:"3vw"}} src = "images/SB.png"></img>{this.state.small_blind}
+                    <img style = {{width:"3vw"}} src = "images/BB.png"></img>{this.state.big_blind}
+                </ButtonGroup>
                </Nav>
             </body>
             </>
