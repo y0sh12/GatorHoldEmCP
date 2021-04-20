@@ -19,7 +19,6 @@ class ForgotPasswordViewController: UIViewController {
         self.hideKeyboardWhenTappedAround() 
     }
     
-    
     func isValidEmail(_ email: String) -> Bool {
         
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -29,7 +28,6 @@ class ForgotPasswordViewController: UIViewController {
     
 
     @IBAction func ResetTapped(_ sender: Any) {
-        //confettiAnimation()
         let validEmail:Bool = isValidEmail(EmailTextField.text!)
         if(validEmail){
             MessageLabel.text = "A email has been sent to change your password"
@@ -43,15 +41,5 @@ class ForgotPasswordViewController: UIViewController {
         }
        
     }
-    
-//    func confettiAnimation(){
-//        let emitter = Emitter.get()
-//        emitter.position = CGPoint(x: view.frame.width/2, y: 0)
-//        emitter.emitterSize = CGSize(width: view.frame.width, height: 10)
-//        view.layer.addSublayer(emitter)
-//    }
-    
-
-
 
 }

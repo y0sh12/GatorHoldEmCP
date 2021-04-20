@@ -160,8 +160,12 @@ class GameViewController: UIViewController {
             PlayerLabels[n].alpha = 0
             PlayerLabels[n].adjustsFontSizeToFitWidth = true
         }
+        RoundNumLabel.adjustsFontSizeToFitWidth = true
+        RoundNumLabel.layer.cornerRadius = 5
+        RoundNumLabel.layer.masksToBounds = true
         
         MessageTextLabel.adjustsFontSizeToFitWidth = true
+        TotalPotLabel.adjustsFontSizeToFitWidth = true
         
         ackk = 1
         
@@ -326,6 +330,7 @@ class GameViewController: UIViewController {
     
     func load_card_image(cardString: String) -> String{
         var cardStringArray = cardString.split(separator: " ")
+        print("load card image", cardStringArray, "cardStrinArray length: ", cardStringArray.count)
         
         if (cardStringArray[1] == "11"){
             cardStringArray[1] = "jack"
@@ -344,8 +349,10 @@ class GameViewController: UIViewController {
     }
     
     func place_card(i: Int){
-        self.BoardCards[i].image = UIImage(named: self.load_card_image(cardString: game_info.shared.board[i]))
-        self.BoardCards[i].alpha = 1
+        if(game_info.shared.board[i] != ""){
+            self.BoardCards[i].image = UIImage(named: self.load_card_image(cardString: game_info.shared.board[i]))
+            self.BoardCards[i].alpha = 1
+        }
     }
     
     func doStuff(){
@@ -457,7 +464,7 @@ class GameViewController: UIViewController {
                 }
                 
                 TotalPotLabel.text = "Total Pot: " + String(potTotal)
-                RoundNumLabel.text = "Round: " + game_info.shared.round_num
+                RoundNumLabel.text = "ROUND: " + game_info.shared.round_num
                 CurrentBetLabel.text = "Current Table Bet: " + String(player_dict.sharedInstance.minimumBet) // "Current\n Table Bet:\n" +
 
             }
