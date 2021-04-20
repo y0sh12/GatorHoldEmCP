@@ -99,7 +99,7 @@ export default class Lobby extends Component {
 
     renderPlayer = (player, index) => {  
         return(
-            <ListGroupItem horizontal key ={player._client_number} variant="primary" style = {{marginBottom: "2vh"}}>
+            <ListGroupItem horizontal = "true" key ={player._client_number} variant="primary" style = {{marginBottom: "2vh"}}>
             {index === 0 && <b>HOST: </b>}
              <b>{player._name}</b>
              {(this.props.location.state.is_vip || this.state.is_vip) && index != 0 &&

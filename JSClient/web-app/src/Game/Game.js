@@ -217,7 +217,7 @@ export default class Game extends Component {
 
     renderCard = (card, index) => {
         return(
-                <img style = {{marginRight:"1vw", width:"6.5vw"}} key = {index} src = {this.decodeCard(card)}/>
+                <img style = {{marginRight:"1vw", width:"6vw"}} key = {index} src = {this.decodeCard(card)}/>
         )
     }
 
@@ -308,7 +308,7 @@ export default class Game extends Component {
                     </Modal.Footer>
                 </Modal>
             <body>
-                <Nav className="justify-content-between">
+                <Nav style = {{marginTop:"1vh"}} className="justify-content-between">
                     <Nav.Item><Button variant = "danger" onClick = {() => {this.setState({modal:true})}}>LEAVE GAME</Button></Nav.Item>
                     <Badge style = {{fontSize:"1.5em"}} pill variant="light"><b>ROUND: </b>{this.state.round_num}</Badge>
                 </Nav>
