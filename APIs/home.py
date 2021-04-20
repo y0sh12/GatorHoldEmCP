@@ -49,7 +49,7 @@ class Account(db.Model):
 
 @app.route("/", methods=["GET"])
 def root_route():
-    return jsonify(response="This does nothing and should do nothing right now")
+    return jsonify(response="Welcome to the GatorHoldEm Account API!")
 
 
 @app.route("/users/all", methods=["GET"])
@@ -72,8 +72,6 @@ def all_users():
 
 
 @app.route("/users/find/<username>", methods=["GET"])
-# Gives a user's information
-# FORMAT: link.com/users/find/<username_to_query>
 def get_user(username):
     found_user = Account.query.filter_by(username=username).first()
     if found_user:
@@ -92,7 +90,7 @@ def get_user(username):
 @app.route("/users/find/<username>/balance", methods=["GET"])
 # Balance of a user
 # FORMAT: link.com/users/find/<username_to_query>/balance
-def balance(username):
+def find_balance(username):
     found_balance = Account.query.filter_by(username=username).first()
     if found_balance:
         return jsonify(balance=found_balance.balance)
@@ -266,6 +264,7 @@ def change_balance():
                 print(str(ex))
                 return "{\"response\": \"bruh idk what happened\"}", 500
 
+
 @app.route('/reset_balance', methods=['PATCH'])
 def reset_balance():
     idd = request.json.get("id")
@@ -333,6 +332,7 @@ def encryptString(plaintext):
     f = Fernet(key)
     return f.encrypt(encoded)
 
+
 def decryptString(encryptedString):
     file = open('key.key', 'rb')
     key = file.read()
@@ -340,5 +340,7 @@ def decryptString(encryptedString):
     f = Fernet(key)
     return f.decrypt(encryptedString).decode('ascii')
 
+
 if __name__ == "__main__":
     app.run(debug=True)
+    pass
