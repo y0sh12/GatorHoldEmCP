@@ -28,6 +28,7 @@ export default class Game extends Component {
             pot:0,
             myTurn:false,
             theMessage:'GAME HAS BEGUN',
+            theMessage2:'',
             theCheckorCall:'Check',
             raiseAmount:50,
             option:'',
@@ -99,11 +100,11 @@ export default class Game extends Component {
         socket.on('which_players_turn', (data) => {
             console.log(this.state.theList);
 
-            // var me = this.state.theList.filter(function(player) {
-            //     return player._client_number === data[0];
-            // });
+            var who = this.state.theList.filter(function(player) {
+                return player._client_number === data[0];
+            });
             // console.log(me);
-            // this.setState({theMessage:(me[0]._name + " has to go")});
+            this.setState({theMessage2:(who[0]._name + " has to go")});
 
             // Update minimum bet
             this.setState({minimum_bet:data[1]});
@@ -319,7 +320,7 @@ export default class Game extends Component {
                 <b style = {{fontSize:"1.5em"}}><Badge variant="light" pill>POT: </Badge> ${this.state.pot}</b>
                 <b style = {{fontSize:"1.5em"}}><Badge  variant="light" pill>MINIMUM BET: </Badge> ${this.state.minimum_bet}</b></Nav>
                 {this.state.cards.map((card, index)=> {return this.renderCard(card, index)})}
-                <Nav style = {{margin:"1rem"}} className = "justify-content-center"><b style = {{fontSize:"1.5em"}}> <Badge variant="light" pill >{this.state.theMessage}</Badge></b></Nav>
+                <Nav style = {{margin:"1rem"}} className = "justify-content-center"><b style = {{fontSize:"1.5em"}}> <Badge variant="light" pill >{this.state.theMessage}, {this.state.theMessage2}</Badge></b></Nav>
                 <Nav style = {{margin:"1rem"}} className = "justify-content-center">{this.state.theList.filter(player => player._name === this.props.location.state.username).map((me) => {return this.renderMyInfo(me)})}</Nav>
                 {this.state.hand.map((card, index)=> {return this.renderCard(card, index)})}
                 <Nav className = "justify-content-around" style = {{marginLeft:"5vw"}}>
@@ -339,6 +340,7 @@ export default class Game extends Component {
                     <input type = "range" disabled = {!this.state.myTurn || this.state.balance == 0} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
                 </ListGroup>
                 <ButtonGroup>
+                    <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.small_blind}
                     <img style = {{width:"3vw"}} src = "images/SB.png"></img>{this.state.small_blind}
                     <img style = {{width:"3vw"}} src = "images/BB.png"></img>{this.state.big_blind}
                 </ButtonGroup>
