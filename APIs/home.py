@@ -118,13 +118,12 @@ def new():
     username = request.json.get("username").lower()
     password = request.json.get("password")
     password = encryptString(password)
-    balance = request.json.get("balance")
+    balance = 1000
     created_on = datetime.datetime.utcnow()
     idd = str(uuid.uuid1())
     email = request.json.get("email")
     print(username, password, balance)
-    if not request.json.get("username") or not request.json.get("password") or not request.json.get("balance") \
-            or not request.json.get("email"):
+    if not request.json.get("username") or not request.json.get("password") or not request.json.get("email"):
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
@@ -223,9 +222,9 @@ def change_password_email():
         return "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
-            real_password = Account.query.filter_by(email=email).first().password
+            real_password = decryptString(Account.query.filter_by(email=email).first().password)
             account = Account.query.filter_by(email=email).first()
-            if new_password != real_password:
+            if decryptString(new_password) != real_password:
                 current_time = datetime.datetime.now(datetime.timezone.utc)
                 stored_time = account.forgot_expiry.replace(tzinfo=datetime.timezone.utc)
                 test_time = current_time - stored_time
