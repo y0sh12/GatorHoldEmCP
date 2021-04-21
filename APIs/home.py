@@ -261,17 +261,17 @@ def change_password_email():
                 if test_time < datetime.timedelta(minutes=15):
                     account.password = new_password
                     db.session.commit()
-                    response = Response(jsonify(response="Your password has been updated!"), 200)
+                    response = Response("{\"response: \"Your password has been updated!\"}", 200)
                 else:
-                    response = Response(jsonify(response="Password reset has expired"), 403)
+                    response = Response("{\"response: \"Password reset has expired\"}", 403)
             else:
-                response = Response(jsonify(response="Please choose a different password"), 403)
+                response = Response("{\"response: \"Please choose a different password\"}", 403)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = Response(jsonify(response="Username doesn't exist in database"), 404)
+                response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
             else:
                 print(str(ex))
-                response = Response(jsonify(response="bruh idk what happened"), 500)
+                response = Response("{\"response\" :\"bruh idk what happened\"}", 500)
     # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
@@ -312,13 +312,13 @@ def reset_balance():
             account = Account.query.filter_by(id=idd).first()
             account.balance = 1000
             db.session.commit()
-            response = Response("{\"response\": \"Balance has been updated to 500\"}", 200)
+            response = Response("{\"response\": \"Balance has been reset to 1000\"}", 200)
         except Exception as ex:
             if "NoneType" in str(ex):
                 response = Response("{\"response\": \"ID doesn't exist in database\"}", 404)
             else:
                 print(str(ex))
-                response = Response(jsonify("{\"response\" :\"bruh idk what happened\"}"), 500)
+                response = Response("{\"response\" :\"bruh idk what happened\"}", 500)
     # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
