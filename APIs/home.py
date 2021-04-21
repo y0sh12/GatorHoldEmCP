@@ -67,15 +67,16 @@ def all_users():
             "email_verified": user.email_verified
         }
         all_users_list.append(new_user)
-
-    return jsonify(all_users_list)
+    response = jsonify(all_users_list)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/users/find/<username>", methods=["GET"])
 def get_user(username):
     found_user = Account.query.filter_by(username=username).first()
     if found_user:
-        return jsonify(
+        response = jsonify(
             id=found_user.id,
             email=found_user.email,
             username=found_user.username,
@@ -84,7 +85,9 @@ def get_user(username):
             email_verified=found_user.email_verified
         )
     else:
-        return jsonify(response="Error: User not found"), 404
+        response = jsonify(response="Error: User not found"), 404
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/users/find/<username>/balance", methods=["GET"])
@@ -93,9 +96,11 @@ def get_user(username):
 def find_balance(username):
     found_balance = Account.query.filter_by(username=username).first()
     if found_balance:
-        return jsonify(balance=found_balance.balance)
+        response = jsonify(balance=found_balance.balance)
     else:
-        return jsonify(response="Error: User not found"), 404
+        response = jsonify(response="Error: User not found"), 404
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route("/users/delete/<username>", methods=["DELETE"])
@@ -106,9 +111,11 @@ def delete(username):
     if found_user:
         db.session.delete(found_user)
         db.session.commit()
-        return jsonify(message="Successfully deleted user: %s" % username)
+        response = jsonify(message="Successfully deleted user: %s" % username)
     else:
-        return jsonify(response="Error: User not found"), 404
+        response = jsonify(response="Error: User not found"), 404
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/new', methods=['POST'])
@@ -122,7 +129,7 @@ def new():
     email = request.json.get("email")
     print(username, password, balance)
     if not request.json.get("username") or not request.json.get("password") or not request.json.get("email"):
-        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             account = Account(idd, username, email, password, created_on, balance)
@@ -130,13 +137,15 @@ def new():
             db.session.add(account)
             db.session.commit()
             sendEmail(email, "emailVerification", "Verify Your Email!", idd)
-            return "{\"response\": \"you have successfully added an account to the db\"}", 200
+            response = "{\"response\": \"you have successfully added an account to the db\"}", 200
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
-                return "{\"response\": \"username has been taken\"}", 400
+                response = "{\"response\": \"username has been taken\"}", 400
             else:
                 print(ex)
-                return "{\"response\": \"bruh idk what happened\"}", 500
+                response = "{\"response\": \"bruh idk what happened\"}", 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/auth', methods=['POST'])
@@ -144,20 +153,22 @@ def auth():
     username = request.json.get("username").lower()
     password1 = request.json.get("password")
     if not request.json.get("username") or not request.json.get("password"):
-        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             password2 = Account.query.filter_by(username=username).first().password
             password2 = decryptString(password2)
             if password1 == password2:
-                return "{\"response\": \"True\"}", 200
+                response = "{\"response\": \"True\"}", 200
             else:
-                return "{\"response\": \"False\"}", 403
+                response = "{\"response\": \"False\"}", 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                return "{\"response\": \"Username doesn't exist in database\"}", 404
+                response = "{\"response\": \"Username doesn't exist in database\"}", 404
             else:
-                return "{\"response\": \"bruh idk what happened\"}", 500
+                response = "{\"response\": \"bruh idk what happened\"}", 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/change_password', methods=['PATCH'])
@@ -166,7 +177,7 @@ def change_password():
     old_password = request.json.get("old_password")
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
-        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             real_password = Account.query.filter_by(username=username).first().password
@@ -175,15 +186,17 @@ def change_password():
             if old_password == real_password:
                 account.password = new_password
                 db.session.commit()
-                return "{\"response\": \"Your password has been updated!\"}", 200
+                response = "{\"response\": \"Your password has been updated!\"}", 200
             else:
-                return "{\"response\": \"Old password doesn\'t match records\"}", 403
+                response = "{\"response\": \"Old password doesn\'t match records\"}", 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                return "{\"response\": \"Username doesn't exist in database\"}", 404
+                response = "{\"response\": \"Username doesn't exist in database\"}", 404
             else:
                 print(str(ex))
-                return "{\"response\": \"bruh idk what happened\"}", 500
+                response = "{\"response\": \"bruh idk what happened\"}", 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/forgot_password', methods=['PATCH'])
@@ -195,10 +208,12 @@ def forgot_password():
         found_user.forgot_expiry = datetime.datetime.now(datetime.timezone.utc)
         db.session.commit()
         sendEmail(found_user.email, "ForgotPassword", "Reset Your Password!", found_user.id)
-        return jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
+        response = jsonify(response=datetime.datetime.strftime(found_user.forgot_expiry, '%Y-%m-%d %H:%M:%S UTC'))
 
     else:
-        return jsonify(response="Error: User not found"), 404
+        response = jsonify(response="Error: User not found"), 404
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/forgot_password/change_password/<idd>', methods=['GET'])
@@ -207,9 +222,11 @@ def return_forgot_password_page(idd):
         account = Account.query.filter_by(id=idd).first()
         account.email_verified = True
         db.session.commit()
-        return flask.render_template('VerificationSuccess.html')
+        response = flask.render_template('VerificationSuccess.html')
     except Exception as ex:
-        return flask.render_template('VerificationFail.html')
+        response = flask.render_template('VerificationFail.html')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/forgot_password/change_password', methods=['PATCH'])
@@ -217,7 +234,7 @@ def change_password_email():
     email = request.json.get("email")
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("email") or not request.json.get("new_password"):
-        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             real_password = decryptString(Account.query.filter_by(email=email).first().password)
@@ -230,17 +247,19 @@ def change_password_email():
                 if test_time < datetime.timedelta(minutes=15):
                     account.password = new_password
                     db.session.commit()
-                    return jsonify(response="Your password has been updated!"), 200
+                    response = jsonify(response="Your password has been updated!"), 200
                 else:
-                    return jsonify(response="Password reset has expired"), 403
+                    response = jsonify(response="Password reset has expired"), 403
             else:
-                return jsonify(response="Please choose a different password"), 403
+                response = jsonify(response="Please choose a different password"), 403
         except Exception as ex:
             if "NoneType" in str(ex):
-                return jsonify(response="Username doesn't exist in database"), 404
+                response = jsonify(response="Username doesn't exist in database"), 404
             else:
                 print(str(ex))
-                return jsonify(response="bruh idk what happened"), 500
+                response = jsonify(response="bruh idk what happened"), 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/change_balance', methods=['PATCH'])
@@ -248,7 +267,7 @@ def change_balance():
     idd = request.json.get("id")
     change = int(request.json.get("change"))
     if not request.json.get("id") or not request.json.get("change"):
-        return "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
     else:
         try:
             account = Account.query.filter_by(id=idd).first()
@@ -256,32 +275,36 @@ def change_balance():
             if account.balance < 0:
                 account.balance = 0
             db.session.commit()
-            return "{\"response\": \"Balance has been updated to " + str(account.balance) + "\"}", 200
+            response = "{\"response\": \"Balance has been updated to " + str(account.balance) + "\"}", 200
         except Exception as ex:
             if "NoneType" in str(ex):
-                return "{\"response\": \"Id doesn't exist in database\"}", 404
+                response = "{\"response\": \"Id doesn't exist in database\"}", 404
             else:
                 print(str(ex))
-                return "{\"response\": \"bruh idk what happened\"}", 500
+                response = "{\"response\": \"bruh idk what happened\"}", 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/reset_balance', methods=['PATCH'])
 def reset_balance():
     idd = request.json.get("id")
     if not request.json.get("id"):
-        return jsonify(response="you're missing one or more values in the body"), 400
+        response = jsonify(response="you're missing one or more values in the body"), 400
     else:
         try:
             account = Account.query.filter_by(id=idd).first()
             account.balance = 1000
             db.session.commit()
-            return jsonify(response="Balance has been reset to 1000"), 200
+            response = jsonify(response="Balance has been reset to 1000"), 200
         except Exception as ex:
             if "NoneType" in str(ex):
-                return jsonify(response="ID doesn't exist in database"), 404
+                response = jsonify(response="ID doesn't exist in database"), 404
             else:
                 print(str(ex))
-                return jsonify(response="bruh idk what happened"), 500
+                response = jsonify(response="bruh idk what happened"), 500
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 @app.route('/email_verified/<idd>', methods=['GET'])
@@ -290,9 +313,11 @@ def email_verified(idd):
         account = Account.query.filter_by(id=idd).first()
         account.email_verified = True
         db.session.commit()
-        return flask.render_template('VerificationSuccess.html')
+        response =  flask.render_template('VerificationSuccess.html')
     except Exception as ex:
-        return flask.render_template('VerificationFail.html')
+        response = flask.render_template('VerificationFail.html')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 def sendEmail(email, htmlFileName, subject, idd):
