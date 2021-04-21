@@ -312,13 +312,13 @@ def reset_balance():
             account = Account.query.filter_by(id=idd).first()
             account.balance = 1000
             db.session.commit()
-            response = Response(jsonify(response="Balance has been reset to 1000"), 200)
+            response = Response("{\"response\": \"Balance has been updated to 500\"}", 200)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = Response(jsonify(response="ID doesn't exist in database"), 404)
+                response = Response("{\"response\": \"ID doesn't exist in database\"}", 404)
             else:
                 print(str(ex))
-                response = Response(jsonify(response="bruh idk what happened"), 500)
+                response = Response(jsonify("{\"response\" :\"bruh idk what happened\"}"), 500)
     # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
