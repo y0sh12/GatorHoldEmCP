@@ -6,7 +6,7 @@ import Register from "../Register/Register";
 import ForgotPasswordEmail from "../ForgotPasswordEmail/ForgotPasswordEmail";
 import Home from "../Home/Home";
 import Header from "../BasicComponents/Header"
-import {Alert, Form, Button, Spinner, Nav} from 'react-bootstrap'
+import {Alert, Form, Button, Spinner, Nav, InputGroup} from 'react-bootstrap'
 
 export default class Login extends Component {
     constructor(props) {
