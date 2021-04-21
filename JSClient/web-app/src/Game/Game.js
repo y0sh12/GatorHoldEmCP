@@ -340,7 +340,7 @@ export default class Game extends Component {
                     <input type = "range" disabled = {!this.state.myTurn || this.state.balance == 0} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
                 </ListGroup>
                 <ButtonGroup>
-                    <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.small_blind}
+                    <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.dealer}
                     <img style = {{width:"3vw"}} src = "images/SB.png"></img>{this.state.small_blind}
                     <img style = {{width:"3vw"}} src = "images/BB.png"></img>{this.state.big_blind}
                 </ButtonGroup>

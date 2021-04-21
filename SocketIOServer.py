@@ -370,17 +370,22 @@ def game_loop(room, num_raises=0):
             pass
         else:
             try:
-                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 300)
+                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 3)
                 print("OPTION: ", option)
-            except:
-                print("Client failed to respond")
+
+            except TimeoutError as ex:
+                print(ex)
                 if is_check:
-                    sio.emit('message', str(player.name) + " has been forced to check", room = room.room_id)
+                    sio.emit('message', str(player.name) + " has been forced to check", room=room.room_id)
                     option = 1
                 else:
-                    sio.emit('message', str(player.name) + " has been forced to fold", room = room.room_id)
+                    sio.emit('message', str(player.name) + " has been forced to fold", room=room.room_id)
                     option = 2
                 sio.emit('you_timed_out')
+
+            except Exception as ex:
+                print(ex)
+
         sio.emit('player_action', (player.get_name(), option), room=room.room_id)
         if int(option) == 1:
             # Going all in because cannot match table bet
