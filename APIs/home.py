@@ -56,6 +56,7 @@ def root_route():
 
 
 @app.route("/users/all", methods=["GET"])
+@cross_origin()
 # Gives all users and their information
 # FORMAT: link.com/users/all
 def all_users():
@@ -71,11 +72,12 @@ def all_users():
         }
         all_users_list.append(new_user)
     response = jsonify(all_users_list)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
 @app.route("/users/find/<username>", methods=["GET"])
+@cross_origin()
 def get_user(username):
     found_user = Account.query.filter_by(username=username).first()
     if found_user:
@@ -89,11 +91,12 @@ def get_user(username):
         )
     else:
         response = jsonify(response="Error: User not found"), 404
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
 @app.route("/users/find/<username>/balance", methods=["GET"])
+@cross_origin()
 # Balance of a user
 # FORMAT: link.com/users/find/<username_to_query>/balance
 def find_balance(username):
@@ -102,7 +105,7 @@ def find_balance(username):
         response = jsonify(balance=found_balance.balance)
     else:
         response = Response(jsonify(response="Error: User not found"), 404)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -118,7 +121,7 @@ def delete(username):
         response = jsonify(message="Successfully deleted user: %s" % username)
     else:
         response = Response(jsonify(response="Error: User not found"), 404)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -149,7 +152,7 @@ def new():
             else:
                 print(ex)
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -174,7 +177,7 @@ def auth():
                 response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
             else:
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -203,7 +206,7 @@ def change_password():
             else:
                 print(str(ex))
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -221,11 +224,12 @@ def forgot_password():
 
     else:
         response = jsonify(response="Error: User not found"), 404
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
 @app.route('/forgot_password/change_password/<idd>', methods=['GET'])
+@cross_origin()
 def return_forgot_password_page(idd):
     try:
         account = Account.query.filter_by(id=idd).first()
@@ -234,7 +238,7 @@ def return_forgot_password_page(idd):
         response = flask.render_template('VerificationSuccess.html')
     except Exception as ex:
         response = flask.render_template('VerificationFail.html')
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -268,7 +272,7 @@ def change_password_email():
             else:
                 print(str(ex))
                 response = Response(jsonify(response="bruh idk what happened"), 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -293,7 +297,7 @@ def change_balance():
             else:
                 print(str(ex))
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
@@ -315,11 +319,12 @@ def reset_balance():
             else:
                 print(str(ex))
                 response = Response(jsonify(response="bruh idk what happened"), 500)
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
 @app.route('/email_verified/<idd>', methods=['GET'])
+@cross_origin()
 def email_verified(idd):
     try:
         account = Account.query.filter_by(id=idd).first()
@@ -328,7 +333,7 @@ def email_verified(idd):
         response =  flask.render_template('VerificationSuccess.html')
     except Exception as ex:
         response = flask.render_template('VerificationFail.html')
-    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
 
