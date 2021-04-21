@@ -465,7 +465,12 @@ def game_loop(room, num_raises=0):
                     else:
                         sio.emit('message', str(player.name) + " has raised by $" + str(_raise), room=room.room_id)
 
-                    table.change_minimum_bet(int(_raise))
+                    if player.investment < 50:
+                        new_num = int(_raise) - table.minimum_bet + player.investment
+                        table.change_minimum_bet(new_num)
+
+                    else:
+                        table.change_minimum_bet(int(_raise))
 
                     try:
                         player.change_balance(-(table.minimum_bet - player.investment))
