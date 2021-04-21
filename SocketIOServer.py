@@ -369,7 +369,7 @@ def game_loop(room, num_raises=0):
             pass
         else:
             try:
-                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout=60)
+                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout=1200)
                 print("OPTION: ", option)
 
             except socketio.exceptions.TimeoutError as ex:
