@@ -371,10 +371,11 @@ def game_loop(room, num_raises=0):
             pass
         else:
             try:
-                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 3)
+                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 15)
                 print("OPTION: ", option)
 
             except TimeoutError as ex:
+                print("This player timed out here!!")
                 print(ex)
                 if is_check:
                     sio.emit('message', str(player.name) + " has been forced to check", room=room.room_id)
@@ -385,6 +386,7 @@ def game_loop(room, num_raises=0):
                 sio.emit('you_timed_out')
 
             except Exception as ex:
+                print("A general exception was caught near your_turn!!")
                 print(ex)
                 option = 2
 
