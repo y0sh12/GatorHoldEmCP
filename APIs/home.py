@@ -71,7 +71,7 @@ def all_users():
         }
         all_users_list.append(new_user)
     response = jsonify(all_users_list)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -89,7 +89,7 @@ def get_user(username):
         )
     else:
         response = jsonify(response="Error: User not found"), 404
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -102,7 +102,7 @@ def find_balance(username):
         response = jsonify(balance=found_balance.balance)
     else:
         response = Response(jsonify(response="Error: User not found"), 404)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -118,7 +118,7 @@ def delete(username):
         response = jsonify(message="Successfully deleted user: %s" % username)
     else:
         response = Response(jsonify(response="Error: User not found"), 404)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -149,7 +149,7 @@ def new():
             else:
                 print(ex)
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -174,7 +174,7 @@ def auth():
                 response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
             else:
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -203,7 +203,7 @@ def change_password():
             else:
                 print(str(ex))
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -221,7 +221,7 @@ def forgot_password():
 
     else:
         response = jsonify(response="Error: User not found"), 404
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -234,7 +234,7 @@ def return_forgot_password_page(idd):
         response = flask.render_template('VerificationSuccess.html')
     except Exception as ex:
         response = flask.render_template('VerificationFail.html')
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -268,7 +268,7 @@ def change_password_email():
             else:
                 print(str(ex))
                 response = Response(jsonify(response="bruh idk what happened"), 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -293,7 +293,7 @@ def change_balance():
             else:
                 print(str(ex))
                 response = Response("{\"response\": \"bruh idk what happened\"}", 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -315,7 +315,7 @@ def reset_balance():
             else:
                 print(str(ex))
                 response = Response(jsonify(response="bruh idk what happened"), 500)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
@@ -328,7 +328,7 @@ def email_verified(idd):
         response =  flask.render_template('VerificationSuccess.html')
     except Exception as ex:
         response = flask.render_template('VerificationFail.html')
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com/')
     return response
 
 
