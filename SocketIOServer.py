@@ -365,6 +365,7 @@ def game_loop(room, num_raises=0):
         print("ROOM: " , room)
         sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
         sio.emit('which_players_turn', [player.get_client_number(), str(table.minimum_bet)], room=room.room_id)
+        option = 2
         if player.AI:
             option = player.make_choice(num_of_opponents, player.hand, table.visible_cards, table.pot, table.minimum_bet - player.investment, player.investment)
             pass
@@ -385,6 +386,7 @@ def game_loop(room, num_raises=0):
 
             except Exception as ex:
                 print(ex)
+                option = 2
 
         sio.emit('player_action', (player.get_name(), option), room=room.room_id)
         if int(option) == 1:
