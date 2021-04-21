@@ -106,7 +106,7 @@ def disconnect(sid):
         player._investment = 0
         player.declare_bankrupt()
         player._connected = False
-        
+
         # If game in progress, just make sure that there are at least two active players
         if room.game_in_progress:
             pass
@@ -137,22 +137,20 @@ def disconnect(sid):
             # count ai players in room
             ai_players = sum([1 for p in room.get_player_list() if p.AI == True])
 
-
             # If player disconnecting is vip
             if is_vip_:
                 # Set VIP to other person not AI
                 for p in room.get_player_list():
-                        if not p.AI:
-                            p.is_vip = True
-                            # print("We have a new vip: ", p)
-                            sio.emit('vip', room=p.get_client_number())
-                            break
+                    if not p.AI:
+                        p.is_vip = True
+                        # print("We have a new vip: ", p)
+                        sio.emit('vip', room=p.get_client_number())
+                        break
 
         ai_players = sum([1 for p in room.get_player_list() if p.AI == True])
         # No players in room or all players in room are AI
         if len(room.get_player_list()) == 0 or ai_players == len(room.get_player_list()):
             roomList.remove(room)
-
 
         print('disconnect', sid)
 
@@ -226,7 +224,6 @@ def leave_room(sid):
     print(sid)
 
 
-
 @sio.on('start_game')
 def start_game(sid, room_id):
     room = next((room for room in roomList if room.room_id == room_id), None)
@@ -240,7 +237,7 @@ def start_game(sid, room_id):
     balance_dict = {p.get_client_number(): p.balance for p in room.get_player_list()}
 
     while True:
-        #If everyone is bankrupt get out
+        # If everyone is bankrupt get out
         isBroke = 0
         for player in room.get_player_list():
             if player.balance == 0:
@@ -264,7 +261,7 @@ def start_game(sid, room_id):
                 if not player.bankrupt:
                     card_string = str(player.hand[0]), str(player.hand[1])
                     sio.emit('emit_hand', card_string, room=player.get_client_number())
-                    
+
             sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
             sio.emit('board_init_info', [dealer, small_blind, big_blind, min_bet, round_num], room=room.room_id)
             if not game_loop(room):
@@ -338,7 +335,6 @@ def start_game(sid, room_id):
     sio.emit('game_ended', "The game has ended.", room=room.room_id)
 
 
-
 def find_room(sid):
     for room in roomList:
         if room.player_present_sid(sid):
@@ -354,6 +350,7 @@ def game_loop(room, num_raises=0):
     folded = sum([1 for p in room.get_player_list() if p.isFolded])
     check = len(room.get_player_list()) - bankrupt_players - folded
     last_action_was_fold = False
+    all_in_flag = False
     # number of opponents
     num_of_opponents = check - 1
 
@@ -362,12 +359,13 @@ def game_loop(room, num_raises=0):
         is_check = True if player.investment == table.minimum_bet else False
         checkOrCall = "Check" if is_check else "Call"
         info = str(player.balance), str(player.investment), str(table.minimum_bet), str(checkOrCall)
-        print("ROOM: " , room)
+        print("ROOM: ", room)
         sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
         sio.emit('which_players_turn', [player.get_client_number(), str(table.minimum_bet)], room=room.room_id)
         option = 2
         if player.AI:
-            option = player.make_choice(num_of_opponents, player.hand, table.visible_cards, table.pot, table.minimum_bet - player.investment, player.investment)
+            option = player.make_choice(num_of_opponents, player.hand, table.visible_cards, table.pot,
+                                        table.minimum_bet - player.investment, player.investment)
             pass
         else:
             try:
@@ -394,7 +392,8 @@ def game_loop(room, num_raises=0):
         if int(option) == 1:
             # Going all in because cannot match table bet
             if table.minimum_bet >= player.balance + player.investment:
-                sio.emit('message', str(player.name) + " is going all in!", room = room.room_id)
+                sio.emit('message', str(player.name) + " is going all in!", room=room.room_id)
+                all_in_flag = True
                 table.add_to_pot(player.balance)
                 player.add_investment(player.balance)
                 try:
@@ -405,9 +404,9 @@ def game_loop(room, num_raises=0):
                     sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
             else:
                 if is_check:
-                    sio.emit('message', str(player.name) + " checked", room = room.room_id)
+                    sio.emit('message', str(player.name) + " checked", room=room.room_id)
                 else:
-                    sio.emit('message', str(player.name) + " called", room = room.room_id)
+                    sio.emit('message', str(player.name) + " called", room=room.room_id)
                 try:
                     player.change_balance(-(table.minimum_bet - player.investment))
 
@@ -440,7 +439,7 @@ def game_loop(room, num_raises=0):
                     last_action_was_fold = True
 
             player.fold()
-            sio.emit('message', str(player.name) + " has folded", room = room.room_id)
+            sio.emit('message', str(player.name) + " has folded", room=room.room_id)
             folded += 1
             check -= 1
         if int(option) == 3:
@@ -451,14 +450,21 @@ def game_loop(room, num_raises=0):
                 if player.AI:
                     _raise = math.floor(player.make_raise(table.minimum_bet, player.balance))
                     _raise = _raise - (_raise % 5)
-                    pass  
+                    pass
                 else:
                     _raise = sio.call(event='raise', data=ask, sid=player.get_client_number())
                 if int(_raise) > player.balance:
                     # sio.emit('message', "You ain't a millionaire, try a smaller raise", room=player.get_client_number())
                     error += 1
+
                 else:
-                    sio.emit('message', str(player.name) + " has raised by $" + str(_raise), room = room.room_id)
+                    if int(_raise) == player.balance:
+                        sio.emit('message', str(player.name) + " is going all in!", room=room.room_id)
+                        all_in_flag = True
+
+                    else:
+                        sio.emit('message', str(player.name) + " has raised by $" + str(_raise), room=room.room_id)
+
                     table.change_minimum_bet(int(_raise))
 
                     try:
@@ -466,15 +472,17 @@ def game_loop(room, num_raises=0):
 
                     except reqs.HTTPError as err:
                         print(err)
-                        sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+                        sio.emit('connection_error', "Error: Account server unreachable",
+                                 room=player.get_client_number())
 
                     table.add_to_pot(table.minimum_bet - player.investment)
                     player.add_investment(table.minimum_bet - player.investment)
                     check = len(room.get_player_list()) - folded - bankrupt_players
                     break
+
             if error == 4:
                 player.fold()
-                sio.emit('message', str(player.name) + " has folded", room = room.room_id)
+                sio.emit('message', str(player.name) + " has folded", room=room.room_id)
                 folded += 1
                 check -= 1
 
@@ -493,19 +501,36 @@ def game_loop(room, num_raises=0):
 
                     except reqs.HTTPError as err:
                         print(err)
-                        sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+                        sio.emit('connection_error', "Error: Account server unreachable",
+                                 room=player.get_client_number())
 
                     sio.emit('message', str(p) + " has won the pot: $" + str(table.pot), room=room.room_id)
             return False
 
-        sane_players = 0
-        for p in room.get_player_list():
-            # player is active and not all in
-            if not p.bankrupt and not p.isFolded and p.balance != 0:
-                sane_players += 1
+        # sane_players = 0
+        # for p in room.get_player_list():
+        #     # player is active and not all in
+        #     if not p.bankrupt and not p.isFolded and p.balance != 0:
+        #         sane_players += 1
+        #
+        # # Check edge case if everyone has gone all in
+        # if sane_players <= 1:
+        #     table.skip_to_show = True
+        #     return True
+        #
+
+        all_in_players = 0
+        if all_in_flag is True:
+            for p in room.get_player_list():
+                # player is active and not all in
+
+                if not p.bankrupt and not p.isFolded and p._connected:
+                    if p.balance == 0 or p.investment == table.minimum_bet:
+                        all_in_players += 1
 
         # Check edge case if everyone has gone all in
-        if sane_players < 1:
+        connected_players = sum([1 for p in room.get_player_list() if p._connected])
+        if all_in_players == connected_players:
             table.skip_to_show = True
             return True
 
@@ -518,8 +543,6 @@ def game_loop(room, num_raises=0):
         table.next_player()  # ++player
 
     return True
-
-
 
 
 def show(room):
@@ -535,7 +558,8 @@ def show(room):
             player.set_best_sum(play[1])
             if play[2] != None:
                 player.set_best_hand_sum(play[2])
-            sio.emit('message', "Your best hand: " + str(table.hand_dict[player.best_hand]), room=player.get_client_number())
+            sio.emit('message', "Your best hand: " + str(table.hand_dict[player.best_hand]),
+                     room=player.get_client_number())
     max_combination = max(p.best_hand for p in room.get_player_list())
     if max_combination == 2 or max_combination == 3 or max_combination == 4 or max_combination == 8:
         max_hand_sum = max(p.best_hand_sum for p in room.get_player_list() if p.best_hand == max_combination)
@@ -565,6 +589,7 @@ def show(room):
             except reqs.HTTPError as err:
                 print(err)
                 sio.emit('connection_error', "Error: Account server unreachable", room=player.get_client_number())
+
 
 def main():
     try:
