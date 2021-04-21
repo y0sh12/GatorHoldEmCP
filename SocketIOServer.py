@@ -505,7 +505,7 @@ def game_loop(room, num_raises=0):
                 sane_players += 1
 
         # Check edge case if everyone has gone all in
-        if sane_players <= 1:
+        if sane_players < 1:
             table.skip_to_show = True
             return True
 
