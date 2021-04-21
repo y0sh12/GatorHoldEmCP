@@ -181,7 +181,7 @@ def auth():
     return response
 
 
-@app.route('/change_password', methods=['POST'])
+@app.route('/change_password', methods=['POST, PATCH'])
 @cross_origin()
 def change_password():
     username = request.json.get("username").lower()
@@ -210,7 +210,7 @@ def change_password():
     return response
 
 
-@app.route('/forgot_password', methods=['POST'])
+@app.route('/forgot_password', methods=['POST, PATCH'])
 @cross_origin()
 def forgot_password():
     email = request.json.get("email").lower()
@@ -242,7 +242,7 @@ def return_forgot_password_page(idd):
     return response
 
 
-@app.route('/forgot_password/change_password', methods=['POST'])
+@app.route('/forgot_password/change_password', methods=['POST, PATCH'])
 @cross_origin()
 def change_password_email():
     email = request.json.get("email").lower()
@@ -276,7 +276,7 @@ def change_password_email():
     return response
 
 
-@app.route('/change_balance', methods=['POST'])
+@app.route('/change_balance', methods=['POST, PATCH'])
 @cross_origin()
 def change_balance():
     idd = request.json.get("id")
@@ -301,7 +301,7 @@ def change_balance():
     return response
 
 
-@app.route('/reset_balance', methods=['POST'])
+@app.route('/reset_balance', methods=['POST, PATCH'])
 @cross_origin()
 def reset_balance():
     idd = request.json.get("id")
