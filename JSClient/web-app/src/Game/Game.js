@@ -338,8 +338,8 @@ export default class Game extends Component {
                 <ListGroup horizontal>
                     <Button disabled = {!this.state.myTurn} name = 'CheckorCall' onClick = {this.chooseOption} style = {{color:"blue", marginRight:"1vw"}} variant="warning">{this.state.theCheckorCall}</Button>
                     <Button disabled = {!this.state.myTurn} name = 'Fold' onClick = {this.chooseOption} variant = "danger">FOLD</Button>
-                    <Button disabled = {!this.state.myTurn || this.state.balance == 0} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE ${this.state.raiseAmount}</Button>
-                    <input type = "range" disabled = {!this.state.myTurn || this.state.balance == 0} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
+                    <Button disabled = {!this.state.myTurn} name = 'Raise' onClick = {this.chooseOption} style = {{color:"blue", marginLeft:"1vw"}} variant="warning">RAISE ${this.state.raiseAmount}</Button>
+                    <input type = "range" disabled = {!this.state.myTurn} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
                 </ListGroup>
                 <ButtonGroup>
                     <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.dealer}
