@@ -9,6 +9,7 @@ from email.mime.text import MIMEText
 import flask
 from cryptography.fernet import Fernet
 from flask import Flask, request, jsonify
+from flask import Response
 from flask_sqlalchemy import SQLAlchemy
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -98,7 +99,7 @@ def find_balance(username):
     if found_balance:
         response = jsonify(balance=found_balance.balance)
     else:
-        response = jsonify(response="Error: User not found"), 404
+        response = Response(jsonify(response="Error: User not found"), 404)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -113,7 +114,7 @@ def delete(username):
         db.session.commit()
         response = jsonify(message="Successfully deleted user: %s" % username)
     else:
-        response = jsonify(response="Error: User not found"), 404
+        response = Response(jsonify(response="Error: User not found"), 404)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -129,7 +130,7 @@ def new():
     email = request.json.get("email")
     print(username, password, balance)
     if not request.json.get("username") or not request.json.get("password") or not request.json.get("email"):
-        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
     else:
         try:
             account = Account(idd, username, email, password, created_on, balance)
@@ -137,13 +138,13 @@ def new():
             db.session.add(account)
             db.session.commit()
             sendEmail(email, "emailVerification", "Verify Your Email!", idd)
-            response = "{\"response\": \"you have successfully added an account to the db\"}", 200
+            response = Response("{\"response\": \"you have successfully added an account to the db\"}", 200)
         except Exception as ex:
             if "UNIQUE constraint failed" in str(ex):
-                response = "{\"response\": \"username has been taken\"}", 400
+                response = Response("{\"response\": \"username has been taken\"}", 400)
             else:
                 print(ex)
-                response = "{\"response\": \"bruh idk what happened\"}", 500
+                response = Response("{\"response\": \"bruh idk what happened\"}", 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -153,20 +154,21 @@ def auth():
     username = request.json.get("username").lower()
     password1 = request.json.get("password")
     if not request.json.get("username") or not request.json.get("password"):
-        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = Response("{\"response\": \"you're missing one or more values in the body\"}")
+        response.status = 400
     else:
         try:
             password2 = Account.query.filter_by(username=username).first().password
             password2 = decryptString(password2)
             if password1 == password2:
-                response = "{\"response\": \"True\"}", 200
+                response = Response("{\"response\": \"True\"}", 200)
             else:
-                response = "{\"response\": \"False\"}", 403
+                response = Response("{\"response\": \"False\"}", 403)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = "{\"response\": \"Username doesn't exist in database\"}", 404
+                response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
             else:
-                response = "{\"response\": \"bruh idk what happened\"}", 500
+                response = Response("{\"response\": \"bruh idk what happened\"}", 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -177,7 +179,7 @@ def change_password():
     old_password = request.json.get("old_password")
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("username") or not request.json.get("old_password") or not request.json.get("new_password"):
-        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
     else:
         try:
             real_password = Account.query.filter_by(username=username).first().password
@@ -186,15 +188,15 @@ def change_password():
             if old_password == real_password:
                 account.password = new_password
                 db.session.commit()
-                response = "{\"response\": \"Your password has been updated!\"}", 200
+                response = Response("{\"response\": \"Your password has been updated!\"}", 200)
             else:
-                response = "{\"response\": \"Old password doesn\'t match records\"}", 403
+                response = Response("{\"response\": \"Old password doesn\'t match records\"}", 403)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = "{\"response\": \"Username doesn't exist in database\"}", 404
+                response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
             else:
                 print(str(ex))
-                response = "{\"response\": \"bruh idk what happened\"}", 500
+                response = Response("{\"response\": \"bruh idk what happened\"}", 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -234,7 +236,7 @@ def change_password_email():
     email = request.json.get("email")
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("email") or not request.json.get("new_password"):
-        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
     else:
         try:
             real_password = decryptString(Account.query.filter_by(email=email).first().password)
@@ -247,17 +249,17 @@ def change_password_email():
                 if test_time < datetime.timedelta(minutes=15):
                     account.password = new_password
                     db.session.commit()
-                    response = jsonify(response="Your password has been updated!"), 200
+                    response = Response(jsonify(response="Your password has been updated!"), 200)
                 else:
-                    response = jsonify(response="Password reset has expired"), 403
+                    response = Response(jsonify(response="Password reset has expired"), 403)
             else:
-                response = jsonify(response="Please choose a different password"), 403
+                response = Response(jsonify(response="Please choose a different password"), 403)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = jsonify(response="Username doesn't exist in database"), 404
+                response = Response(jsonify(response="Username doesn't exist in database"), 404)
             else:
                 print(str(ex))
-                response = jsonify(response="bruh idk what happened"), 500
+                response = Response(jsonify(response="bruh idk what happened"), 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -267,7 +269,7 @@ def change_balance():
     idd = request.json.get("id")
     change = int(request.json.get("change"))
     if not request.json.get("id") or not request.json.get("change"):
-        response = "{\"response\": \"you're missing one or more values in the body\"}", 400
+        response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
     else:
         try:
             account = Account.query.filter_by(id=idd).first()
@@ -275,13 +277,13 @@ def change_balance():
             if account.balance < 0:
                 account.balance = 0
             db.session.commit()
-            response = "{\"response\": \"Balance has been updated to " + str(account.balance) + "\"}", 200
+            response = Response("{\"response\": \"Balance has been updated to " + str(account.balance) + "\"}", 200)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = "{\"response\": \"Id doesn't exist in database\"}", 404
+                response = Response("{\"response\": \"Id doesn't exist in database\"}", 404)
             else:
                 print(str(ex))
-                response = "{\"response\": \"bruh idk what happened\"}", 500
+                response = Response("{\"response\": \"bruh idk what happened\"}", 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
@@ -290,19 +292,19 @@ def change_balance():
 def reset_balance():
     idd = request.json.get("id")
     if not request.json.get("id"):
-        response = jsonify(response="you're missing one or more values in the body"), 400
+        response = Response(jsonify(response="you're missing one or more values in the body"), 400)
     else:
         try:
             account = Account.query.filter_by(id=idd).first()
             account.balance = 1000
             db.session.commit()
-            response = jsonify(response="Balance has been reset to 1000"), 200
+            response = Response(jsonify(response="Balance has been reset to 1000"), 200)
         except Exception as ex:
             if "NoneType" in str(ex):
-                response = jsonify(response="ID doesn't exist in database"), 404
+                response = Response(jsonify(response="ID doesn't exist in database"), 404)
             else:
                 print(str(ex))
-                response = jsonify(response="bruh idk what happened"), 500
+                response = Response(jsonify(response="bruh idk what happened"), 500)
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
