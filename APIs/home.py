@@ -275,11 +275,11 @@ def change_password_email():
                 if test_time < datetime.timedelta(minutes=15):
                     account.password = new_password
                     db.session.commit()
-                    response = Response("{\"response: \"Your password has been updated!\"}", 200)
+                    response = Response("{\"response\": \"Your password has been updated!\"}", 200)
                 else:
-                    response = Response("{\"response: \"Password reset has expired\"}", 403)
+                    response = Response("{\"response\": \"Password reset has expired\"}", 403)
             else:
-                response = Response("{\"response: \"Please choose a different password\"}", 403)
+                response = Response("{\"response:\"Please choose a different password\"}", 403)
         except Exception as ex:
             if "NoneType" in str(ex):
                 response = Response("{\"response\": \"Username doesn't exist in database\"}", 404)
