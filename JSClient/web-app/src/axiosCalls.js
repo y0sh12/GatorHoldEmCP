@@ -10,7 +10,7 @@ userData.createUser = async function(user){
         created: false,
     }
     try{
-    const userCreate = await axios.post('http://abaig.pythonanywhere.com/new', user);
+    const userCreate = await axios.post('https://abaig.pythonanywhere.com/new', user);
     if(userCreate.data.response === "you have successfully added an account to the db"){
         response.created = true;
     }
@@ -35,7 +35,7 @@ userData.loginUser = async function(credentials) {
     }
     console.log(credentials);
     try{
-        const userLogin = await axios.post('http://abaig.pythonanywhere.com/auth', credentials);
+        const userLogin = await axios.post('https://abaig.pythonanywhere.com/auth', credentials);
         if(userLogin.data.response === "True"){
             response.loggedIn = true;
         }
@@ -62,7 +62,7 @@ userData.resetPass = async function(reset) {
         isReset: false,
     }
     try{
-        const userReset = await axios.patch('http://abaig.pythonanywhere.com/forgot_password/change_password', reset);
+        const userReset = await axios.patch('https://abaig.pythonanywhere.com/forgot_password/change_password', reset);
         console.log(userReset.data.response);
         if(userReset.data.response === "Your password has been updated!"){
             response.isReset = true;
@@ -92,7 +92,7 @@ userData.resetPassEmail = async function(email){
         isSent: false,
     }
     try{
-        const userReset = await axios.patch('http://abaig.pythonanywhere.com/forgot_password', email);
+        const userReset = await axios.patch('https://abaig.pythonanywhere.com/forgot_password', email);
         if(userReset.data.response.toString().includes('UTC')){
             response.isSent = true;
         }
@@ -112,7 +112,7 @@ userData.changePass = async function(change){
         isChanged: false,
     }
     try{
-        const userChange = await axios.patch('http://abaig.pythonanywhere.com/change_password', change);
+        const userChange = await axios.patch('https://abaig.pythonanywhere.com/change_password', change);
         if(userChange.data.response.toString().includes("Your password has been updated!")){
             response.isChanged = true;
         }
@@ -134,7 +134,7 @@ userData.changePass = async function(change){
 
 //PLAYER BALANCE AXIOS CALL
 userData.getBalance = async function(username) {
-        const userBalance = await axios.get('http://abaig.pythonanywhere.com/users/find/' + username + '/balance');
+        const userBalance = await axios.get('https://abaig.pythonanywhere.com/users/find/' + username + '/balance');
         if(userBalance.data.balance != null){
             return userBalance.data.balance
         }
@@ -149,7 +149,7 @@ userData.resetBalance = async function(id){
         errors: "",
         isReset: false,
     }
-    const userReset = await axios.patch('http://abaig.pythonanywhere.com/reset_balance', id);
+    const userReset = await axios.patch('https://abaig.pythonanywhere.com/reset_balance', id);
     console.log(userReset.data.response);
     try{
         if(userReset.data.response === "Balance has been reset to 1000") {
@@ -169,7 +169,7 @@ userData.resetBalance = async function(id){
 
 //PLAYER ID AXIOS CALL
 userData.getID = async function(username) {
-    const userID = await axios.get('http://abaig.pythonanywhere.com/users/find/' + username);;
+    const userID = await axios.get('https://abaig.pythonanywhere.com/users/find/' + username);;
         return userID.data.id;
 
 }
@@ -177,7 +177,7 @@ userData.getID = async function(username) {
 
 //ACCOUNT VERIFICATION CHECKER AXIOS CALL
 userData.verifiedOrNot = async function(username) {
-    const userVerified = await axios.get('http://abaig.pythonanywhere.com/users/find/' + username);
+    const userVerified = await axios.get('https://abaig.pythonanywhere.com/users/find/' + username);
     return userVerified.data.email_verified;
 }
 
