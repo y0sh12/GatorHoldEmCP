@@ -365,22 +365,31 @@ def game_loop(room, num_raises=0):
         print("ROOM: " , room)
         sio.emit('update_players', active_player_list_webapp(room.room_id), room=room.room_id)
         sio.emit('which_players_turn', [player.get_client_number(), str(table.minimum_bet)], room=room.room_id)
+        option = 2
         if player.AI:
             option = player.make_choice(num_of_opponents, player.hand, table.visible_cards, table.pot, table.minimum_bet - player.investment, player.investment)
             pass
         else:
             try:
-                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 300)
+                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout=60)
                 print("OPTION: ", option)
-            except:
-                print("Client failed to respond")
+
+            except socketio.exceptions.TimeoutError as ex:
+                print("This player timed out here!!")
+                print(ex)
                 if is_check:
-                    sio.emit('message', str(player.name) + " has been forced to check", room = room.room_id)
+                    # sio.emit('message', str(player.name) + " has been forced to check", room=room.room_id)
                     option = 1
                 else:
-                    sio.emit('message', str(player.name) + " has been forced to fold", room = room.room_id)
+                    # sio.emit('message', str(player.name) + " has been forced to fold", room=room.room_id)
                     option = 2
                 sio.emit('you_timed_out')
+
+            except Exception as ex:
+                print("A general exception was caught near your_turn!!")
+                print(ex)
+                option = 2
+
         sio.emit('player_action', (player.get_name(), option), room=room.room_id)
         if int(option) == 1:
             # Going all in because cannot match table bet
