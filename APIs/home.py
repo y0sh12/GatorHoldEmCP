@@ -134,7 +134,7 @@ def new():
     balance = 1000
     created_on = datetime.datetime.utcnow()
     idd = str(uuid.uuid1())
-    email = request.json.get("email")
+    email = request.json.get("email").lower()
     print(username, password, balance)
     if not request.json.get("username") or not request.json.get("password") or not request.json.get("email"):
         response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
@@ -213,7 +213,7 @@ def change_password():
 @app.route('/forgot_password', methods=['POST'])
 @cross_origin()
 def forgot_password():
-    email = request.json.get("email")
+    email = request.json.get("email").lower()
     found_user = Account.query.filter_by(email=email).first()
 
     if found_user:
@@ -245,7 +245,7 @@ def return_forgot_password_page(idd):
 @app.route('/forgot_password/change_password', methods=['POST'])
 @cross_origin()
 def change_password_email():
-    email = request.json.get("email")
+    email = request.json.get("email").lower()
     new_password = encryptString(request.json.get("new_password"))
     if not request.json.get("email") or not request.json.get("new_password"):
         response = Response("{\"response\": \"you're missing one or more values in the body\"}", 400)
