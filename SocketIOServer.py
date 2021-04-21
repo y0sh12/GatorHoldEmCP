@@ -371,17 +371,17 @@ def game_loop(room, num_raises=0):
             pass
         else:
             try:
-                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout = 15)
+                option = sio.call(event='your_turn', data=info, sid=player.get_client_number(), timeout=60)
                 print("OPTION: ", option)
 
-            except TimeoutError as ex:
+            except socketio.exceptions.TimeoutError as ex:
                 print("This player timed out here!!")
                 print(ex)
                 if is_check:
-                    sio.emit('message', str(player.name) + " has been forced to check", room=room.room_id)
+                    # sio.emit('message', str(player.name) + " has been forced to check", room=room.room_id)
                     option = 1
                 else:
-                    sio.emit('message', str(player.name) + " has been forced to fold", room=room.room_id)
+                    # sio.emit('message', str(player.name) + " has been forced to fold", room=room.room_id)
                     option = 2
                 sio.emit('you_timed_out')
 
