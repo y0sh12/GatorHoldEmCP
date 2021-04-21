@@ -10,6 +10,7 @@ import flask
 from cryptography.fernet import Fernet
 from flask import Flask, request, jsonify
 from flask import Response
+from flask_cors import cross_origin
 from flask_sqlalchemy import SQLAlchemy
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
@@ -105,6 +106,7 @@ def find_balance(username):
 
 
 @app.route("/users/delete/<username>", methods=["DELETE"])
+@cross_origin()
 # Deletes a user based on the username
 # FORMAT: link.com/users/delete/<username_to_delete>
 def delete(username):
@@ -120,6 +122,7 @@ def delete(username):
 
 
 @app.route('/new', methods=['POST'])
+@cross_origin()
 def new():
     username = request.json.get("username").lower()
     password = request.json.get("password")
@@ -150,6 +153,7 @@ def new():
 
 
 @app.route('/auth', methods=['POST'])
+@cross_origin()
 def auth():
     username = request.json.get("username").lower()
     password1 = request.json.get("password")
@@ -174,6 +178,7 @@ def auth():
 
 
 @app.route('/change_password', methods=['PATCH'])
+@cross_origin()
 def change_password():
     username = request.json.get("username").lower()
     old_password = request.json.get("old_password")
@@ -202,6 +207,7 @@ def change_password():
 
 
 @app.route('/forgot_password', methods=['PATCH'])
+@cross_origin()
 def forgot_password():
     email = request.json.get("email")
     found_user = Account.query.filter_by(email=email).first()
@@ -232,6 +238,7 @@ def return_forgot_password_page(idd):
 
 
 @app.route('/forgot_password/change_password', methods=['PATCH'])
+@cross_origin()
 def change_password_email():
     email = request.json.get("email")
     new_password = encryptString(request.json.get("new_password"))
@@ -265,6 +272,7 @@ def change_password_email():
 
 
 @app.route('/change_balance', methods=['PATCH'])
+@cross_origin()
 def change_balance():
     idd = request.json.get("id")
     change = int(request.json.get("change"))
@@ -289,6 +297,7 @@ def change_balance():
 
 
 @app.route('/reset_balance', methods=['PATCH'])
+@cross_origin()
 def reset_balance():
     idd = request.json.get("id")
     if not request.json.get("id"):
