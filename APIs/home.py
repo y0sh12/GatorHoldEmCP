@@ -10,13 +10,14 @@ import flask
 from cryptography.fernet import Fernet
 from flask import Flask, request, jsonify
 from flask import Response
-from flask_cors import cross_origin
+from flask_cors import cross_origin, CORS
 from flask_sqlalchemy import SQLAlchemy
 
 project_dir = os.path.dirname(os.path.abspath(__file__))
 database_file = "sqlite:///{}".format(os.path.join(project_dir, "accounts.db"))
 
 app = Flask(__name__)
+CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = database_file
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = "random string"
