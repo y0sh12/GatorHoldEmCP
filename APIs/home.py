@@ -94,6 +94,20 @@ def get_user(username):
     # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
     return response
 
+@app.route("/users/findById/<idd>", methods=["GET"])
+@cross_origin()
+def get_user(idd):
+    found_user = Account.query.filter_by(id=idd).first()
+    if found_user:
+        response = jsonify(
+            username=found_user.username,
+            email=found_user.email
+        )
+    else:
+        response = jsonify(response="Error: User not found"), 404
+    # response.headers.add('Access-Control-Allow-Origin', 'http://gatorholdem-webapp.herokuapp.com')
+    return response
+
 
 @app.route("/users/find/<username>/balance", methods=["GET"])
 @cross_origin()
