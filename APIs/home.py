@@ -96,7 +96,7 @@ def get_user(username):
 
 @app.route("/users/findById/<idd>", methods=["GET"])
 @cross_origin()
-def get_user(idd):
+def get_user_findById(idd):
     found_user = Account.query.filter_by(id=idd).first()
     if found_user:
         response = jsonify(
