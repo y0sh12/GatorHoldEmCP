@@ -6,7 +6,7 @@ import Register from "../Register/Register";
 import ForgotPasswordEmail from "../ForgotPasswordEmail/ForgotPasswordEmail";
 import Home from "../Home/Home";
 import Header from "../BasicComponents/Header"
-import {Alert, Form, Button, Spinner, Nav, InputGroup, OverlayTrigger, Popover} from 'react-bootstrap'
+import {Alert, Form, Button, Spinner, Nav} from 'react-bootstrap'
 
 export default class Login extends Component {
     constructor(props) {
@@ -100,7 +100,7 @@ export default class Login extends Component {
                     </Button>
                 </Form>
                <Nav.Item> Don't have an account? <Nav.Link style = {{color: "blue", display:"inline", padding:"0"}} href = "/Register">Register Now!</Nav.Link></Nav.Item>
-                </body>
+            </body>    
             </>
         )
         }

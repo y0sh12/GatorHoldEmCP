@@ -36,6 +36,7 @@ export default class ChangePassword extends Component {
             console.log("Here");
             this.setState({isLoggedIn: false});
         }
+        this.setState({username:this.props.location.state.username});
     } 
 
       matchingPasswords() {
@@ -104,7 +105,7 @@ export default class ChangePassword extends Component {
                             <InputGroup.Prepend>
                             <InputGroup.Text><img style = {{width:"1.2rem", height:"1.2rem"}} src = "images/User.png"></img></InputGroup.Text>
                         </InputGroup.Prepend>
-                        <Form.Control maxLength = "12" required type="username" placeholder="Username" name= "username" value={this.state.username} onChange={this.handleChange} />
+                        <Form.Control disabled defaultValue={this.state.username} onChange={this.handleChange} />
                         </InputGroup>
                     </Form.Group>
                     <Form.Group>

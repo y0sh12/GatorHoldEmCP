@@ -29,7 +29,7 @@ export default class Game extends Component {
             myTurn:false,
             theMessage:'GAME HAS BEGUN',
             theMessage2:'',
-            theCheckorCall:'Check',
+            theCheckorCall:'CHECK',
             raiseAmount:50,
             option:'',
             modal:false
@@ -126,7 +126,7 @@ export default class Game extends Component {
         socket.on('your_turn', (balance, investment, minimum_bet, checkOrCall, ack) => {
             let choice = "";
             this.setState({myTurn:true});
-            this.setState({theCheckorCall:checkOrCall});
+            this.setState({theCheckorCall:checkOrCall.toUpperCase()});
             var myFunc = () => {
                 if(this.state.option != ''){
                     this.setState({myTurn:false});
@@ -144,6 +144,7 @@ export default class Game extends Component {
             ack(this.state.raiseAmount);
         });
         socket.on('you_timed_out', () => {
+            // this.setState({option:"2"});
             this.setState({myTurn:false});
         });
         socket.on('flop', (flop) => {
@@ -190,7 +191,7 @@ export default class Game extends Component {
     renderPlayer = (player) => {  
         if(player._name != this.props.location.state.username){
         return(
-            <Card key = {player._client_id} text='black' style={{marginRight: "1vw", backgroundColor:"#C3770F", opacity: ((player._isFolded || player._isBankrupt || !player._connected) ? "50%" : "100%")}}>
+            <Card key = {player._client_id} text='black' style={{marginRight: "1vw", backgroundColor:"#C3770F", opacity: ((player._isFolded || player._bankrupt || !player._connected) ? "50%" : "100%")}}>
                 <Card.Header><b>{player._name}</b></Card.Header>
                 <Card.Body>
                     <Card.Text>
@@ -209,8 +210,8 @@ export default class Game extends Component {
         return (
             <Card key = {me._client_id} text='black' style={{backgroundColor:"#C3770F"}}>
                 <Card.Body>
-                <i>Your balance: </i><b>{this.state.balance}</b><br></br>
-                <i>Your investment: </i><b>{me._investment}</b>
+                <i>Your balance: </i><b>${this.state.balance}</b><br></br>
+                <i>Your investment: </i><b>${me._investment}</b>
                 </Card.Body>
             </Card>
         )
@@ -272,6 +273,7 @@ export default class Game extends Component {
     //When Player exits to main menu
     handleLeave = (event) => {
         event.preventDefault();
+        this.setState({option:"2"});
         socket.disconnect();
     }
 
@@ -340,7 +342,7 @@ export default class Game extends Component {
                     <input type = "range" disabled = {!this.state.myTurn || this.state.balance == 0} min = {this.state.minimum_bet} max = {this.state.balance} value = {this.state.raiseAmount} onChange = {this.raiseSlider.bind(this)}></input>
                 </ListGroup>
                 <ButtonGroup>
-                    <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.small_blind}
+                    <img style = {{width:"3vw"}} src = "images/D.png"></img>{this.state.dealer}
                     <img style = {{width:"3vw"}} src = "images/SB.png"></img>{this.state.small_blind}
                     <img style = {{width:"3vw"}} src = "images/BB.png"></img>{this.state.big_blind}
                 </ButtonGroup>
